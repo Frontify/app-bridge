@@ -1,15 +1,16 @@
 {
-  "name": "frontify-app-bridge",
-  "version": "1.0.0",
-  "description": "Package to establish communication between Frontify and third party apps",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "@frontify",
-  "license": "ISC",
-  "devDependencies": {
-    "prettier": "^2.2.1",
-    "typescript": "^4.2.3"
-  }
+    "name": "frontify-app-bridge",
+    "version": "1.0.0",
+    "description": "Package to establish communication between Frontify and third party apps",
+    "main": "src/index.ts",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "tsc"
+    },
+    "author": "@frontify",
+    "license": "ISC",
+    "devDependencies": {
+        "prettier": "^2.2.1",
+        "typescript": "^4.2.3"
+    }
 }
