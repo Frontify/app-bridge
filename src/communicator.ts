@@ -1,4 +1,3 @@
-import { REQUEST_TIMEOUT } from "./constants";
 import { allowedFetchKeys } from "./actions";
 
 export interface CrossDocumentMessage {
@@ -14,6 +13,8 @@ export interface CrossDocumentMessageResponse {
 
 export default class Communicator {
     private readonly originUrl: string;
+
+    private static readonly REQUEST_TIMEOUT: number = 3000;
 
     constructor(originUrl: string) {
         this.originUrl = originUrl;
@@ -47,7 +48,7 @@ export default class Communicator {
 
             setTimeout(() => {
                 reject(`Invocation with key "${key}" not successful.`);
-            }, REQUEST_TIMEOUT);
+            }, Communicator.REQUEST_TIMEOUT);
         });
     }
 }
