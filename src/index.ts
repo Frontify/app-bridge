@@ -1,4 +1,4 @@
-import Communicator from "./communicator";
+import Communicator, { CrossDocumentMessageResponse } from "./communicator";
 import { allowedDispatchKeys, allowedFetchKeys } from "./actions";
 
 export default class AppBridge {
@@ -11,13 +11,15 @@ export default class AppBridge {
 
     dispatch(key: allowedDispatchKeys): void {
         const token = this.communicator.getMessageToken();
-        postMessage(key, token);
+        this.communicator.postMessage({ key, token });
     }
 
-    fetch(key: allowedFetchKeys, data?: object): Promise<object> {
-        return new Promise((resolve, reject) => {
+    fetch(key: allowedFetchKeys, data?: object): Promise<CrossDocumentMessageResponse> {
+        return new Promise(() => {
             const token = this.communicator.getMessageToken();
             this.communicator.postMessage({ key, token, data });
+
+            return this.communicator.subscribeResponse(key, token);
         });
     }
 }

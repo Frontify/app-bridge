@@ -1,4 +1,5 @@
 import { REQUEST_TIMEOUT } from "./constants";
+import { allowedFetchKeys } from "./actions";
 
 export interface CrossDocumentMessage {
     key: string;
@@ -25,5 +26,28 @@ export default class Communicator {
     postMessage(message: CrossDocumentMessage): void {
         const parentWindow = window.top;
         parentWindow.postMessage(message, this.originUrl);
+    }
+
+    subscribeResponse(key: allowedFetchKeys, token: string): Promise<CrossDocumentMessageResponse> {
+        return new Promise((resolve, reject) => {
+            window.addEventListener(
+                "message",
+                (event) => {
+                    if (event.origin !== this.originUrl || event.data.token !== token || event.data.key !== key) {
+                        return;
+                    }
+
+                    resolve({
+                        success: event.data.success,
+                        data: event.data.data,
+                    });
+                },
+                { once: true },
+            );
+
+            setTimeout(() => {
+                reject(`Invocation with key "${key}" not successful.`);
+            }, REQUEST_TIMEOUT);
+        });
     }
 }
