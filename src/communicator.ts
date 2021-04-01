@@ -8,7 +8,8 @@ export interface CrossDocumentMessage {
 
 export interface CrossDocumentMessageResponse {
     success: boolean;
-    data?: { error?: string };
+    error?: string;
+    data?: Record<string, unknown>;
 }
 
 export default class Communicator {
