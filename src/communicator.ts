@@ -39,7 +39,8 @@ export default class Communicator {
 
                     resolve({
                         success: event.data.success,
-                        data: event.data.data,
+                        data: event.data.data || null,
+                        error: event.data.error || null,
                     });
                 },
                 { once: true },
