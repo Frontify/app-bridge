@@ -47,7 +47,7 @@ export default class Communicator {
             );
 
             setTimeout(() => {
-                reject(`Invocation with key "${key}" not successful.`);
+                reject(`Timeout for call with key "${key}" expired. Call was aborted.`);
             }, timeout);
         });
     }
