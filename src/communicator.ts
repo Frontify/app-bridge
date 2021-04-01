@@ -1,4 +1,7 @@
 import { allowedFetchKeys } from "./actions";
+import FetchError from "./errors/FetchError";
+import InvalidOriginError from "./errors/InvalidOriginError";
+import TimeoutReachedError from "./errors/TimeoutReachedError";
 
 export interface CrossDocumentMessage {
     key: string;
@@ -33,21 +36,28 @@ export default class Communicator {
             window.addEventListener(
                 "message",
                 (event) => {
-                    if (event.origin !== this.originUrl || event.data.token !== token || event.data.key !== key) {
+                    const response = event.data;
+
+                    if (response.token !== token || response.key !== key) {
                         return;
                     }
 
-                    resolve({
-                        success: event.data.success,
-                        data: event.data.data || null,
-                        error: event.data.error || null,
-                    });
+                    if (event.origin !== this.originUrl) {
+                        reject(new InvalidOriginError());
+                    }
+
+                    response.success
+                        ? resolve({
+                              success: response.success,
+                              data: response.data,
+                          })
+                        : reject(new FetchError(key));
                 },
                 { once: true },
             );
 
             setTimeout(() => {
-                reject(`Timeout for call with key "${key}" expired. Call was aborted.`);
+                reject(new TimeoutReachedError(key));
             }, timeout);
         });
     }
