@@ -3,7 +3,7 @@ import { allowedFetchKeys } from "./actions";
 export interface CrossDocumentMessage {
     key: string;
     token: string;
-    data?: object;
+    data?: Record<string, unknown>;
 }
 
 export interface CrossDocumentMessageResponse {
@@ -13,8 +13,6 @@ export interface CrossDocumentMessageResponse {
 
 export default class Communicator {
     private readonly originUrl: string;
-
-    private static readonly REQUEST_TIMEOUT: number = 3000;
 
     constructor(originUrl: string) {
         this.originUrl = originUrl;
@@ -29,7 +27,7 @@ export default class Communicator {
         parentWindow.postMessage(message, this.originUrl);
     }
 
-    subscribeResponse(key: allowedFetchKeys, token: string): Promise<CrossDocumentMessageResponse> {
+    subscribeResponse(key: allowedFetchKeys, token: string, timeout = 3000): Promise<CrossDocumentMessageResponse> {
         return new Promise((resolve, reject) => {
             window.addEventListener(
                 "message",
@@ -48,7 +46,7 @@ export default class Communicator {
 
             setTimeout(() => {
                 reject(`Invocation with key "${key}" not successful.`);
-            }, Communicator.REQUEST_TIMEOUT);
+            }, timeout);
         });
     }
 }

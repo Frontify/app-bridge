@@ -1,12 +1,12 @@
 import Communicator, { CrossDocumentMessageResponse } from "./communicator";
-import { allowedDispatchKeys, allowedFetchKeys } from "./actions";
+import { allowedDispatchKeys, allowedFetchKeys, GET_THIRDPARTY_OAUTH2_TOKEN } from "./actions";
 
 export default class AppBridge {
     private communicator: Communicator;
+    private static OAUTH2_TIMEOUT = 5 * 60 * 1000;
 
     constructor(originUrl: string) {
         this.communicator = new Communicator(originUrl);
-        this.dispatch("oAuth2Flow");
     }
 
     dispatch(key: allowedDispatchKeys): void {
@@ -14,12 +14,21 @@ export default class AppBridge {
         this.communicator.postMessage({ key, token });
     }
 
-    fetch(key: allowedFetchKeys, data?: object): Promise<CrossDocumentMessageResponse> {
+    fetch(key: allowedFetchKeys, data?: Record<string, unknown>): Promise<CrossDocumentMessageResponse> {
         return new Promise(() => {
             const token = this.communicator.getMessageToken();
             this.communicator.postMessage({ key, token, data });
 
             return this.communicator.subscribeResponse(key, token);
+        });
+    }
+
+    getThirdpartyOAuth2Token(): Promise<CrossDocumentMessageResponse> {
+        return new Promise(() => {
+            const token = this.communicator.getMessageToken();
+            this.communicator.postMessage({ key: GET_THIRDPARTY_OAUTH2_TOKEN, token });
+
+            return this.communicator.subscribeResponse(GET_THIRDPARTY_OAUTH2_TOKEN, token, AppBridge.OAUTH2_TIMEOUT);
         });
     }
 }
