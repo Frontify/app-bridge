@@ -1,4 +1,4 @@
-import { allowedFetchKeys } from "../actions";
+import { allowedFetchKeys } from "../Actions";
 
 export default class TimeoutReachedError extends Error {
     constructor(key: allowedFetchKeys) {
