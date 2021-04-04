@@ -1,20 +1,22 @@
 import { allowedFetchKeys } from "./actions";
+import FetchError from "./errors/FetchError";
+import InvalidOriginError from "./errors/InvalidOriginError";
+import TimeoutReachedError from "./errors/TimeoutReachedError";
 
 export interface CrossDocumentMessage {
     key: string;
     token: string;
-    data?: object;
+    data?: Record<string, unknown>;
 }
 
 export interface CrossDocumentMessageResponse {
     success: boolean;
-    data?: { error?: string };
+    error?: string;
+    data?: Record<string, unknown>;
 }
 
 export default class Communicator {
     private readonly originUrl: string;
-
-    private static readonly REQUEST_TIMEOUT: number = 3000;
 
     constructor(originUrl: string) {
         this.originUrl = originUrl;
@@ -29,26 +31,34 @@ export default class Communicator {
         parentWindow.postMessage(message, this.originUrl);
     }
 
-    subscribeResponse(key: allowedFetchKeys, token: string): Promise<CrossDocumentMessageResponse> {
+    subscribeResponse(key: allowedFetchKeys, token: string, timeout = 3000): Promise<CrossDocumentMessageResponse> {
         return new Promise((resolve, reject) => {
             window.addEventListener(
                 "message",
                 (event) => {
-                    if (event.origin !== this.originUrl || event.data.token !== token || event.data.key !== key) {
+                    const response = event.data;
+
+                    if (response.token !== token || response.key !== key) {
                         return;
                     }
 
-                    resolve({
-                        success: event.data.success,
-                        data: event.data.data,
-                    });
+                    if (event.origin !== this.originUrl) {
+                        reject(new InvalidOriginError());
+                    }
+
+                    response.success
+                        ? resolve({
+                              success: response.success,
+                              data: response.data,
+                          })
+                        : reject(new FetchError(key));
                 },
                 { once: true },
             );
 
             setTimeout(() => {
-                reject(`Invocation with key "${key}" not successful.`);
-            }, Communicator.REQUEST_TIMEOUT);
+                reject(new TimeoutReachedError(key));
+            }, timeout);
         });
     }
 }
