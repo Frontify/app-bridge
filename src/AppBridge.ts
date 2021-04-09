@@ -15,11 +15,13 @@ export default class AppBridge {
     }
 
     fetch(key: allowedFetchKeys, data?: Record<string, unknown>): Promise<CrossDocumentMessageResponse> {
-        return new Promise(() => {
+        return new Promise((resolve) => {
             const token = this.messenger.getMessageToken();
             this.messenger.postMessage({ key, token, data });
 
-            return this.messenger.subscribeResponse(key, token);
+            this.messenger.subscribeResponse(key, token).then((response) => {
+                resolve(response);
+            });
         });
     }
 
