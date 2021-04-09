@@ -26,7 +26,7 @@ const config = {
     },
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename: "index.js",
+        filename: "AppBridge.js",
         libraryTarget: "umd",
         library: "AppBridge",
         umdNamedDefine: true,
