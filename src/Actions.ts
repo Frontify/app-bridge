@@ -11,6 +11,6 @@ export type allowedFetchKeys =
     | typeof POST_EXTERNAL_ASSET;
 
 //Dispatch keys
-export const DISPATCH_CLOSE_MODAL = "closeModal";
+export const DISPATCH_CLOSE_APP = "closeApp";
 
-export type allowedDispatchKeys = typeof DISPATCH_CLOSE_MODAL;
+export type allowedDispatchKeys = typeof DISPATCH_CLOSE_APP;

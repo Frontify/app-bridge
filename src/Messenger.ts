@@ -1,7 +1,7 @@
-import { allowedFetchKeys } from "./actions";
-import FetchError from "./errors/FetchError";
+import { allowedFetchKeys } from "./Actions";
 import InvalidOriginError from "./errors/InvalidOriginError";
 import TimeoutReachedError from "./errors/TimeoutReachedError";
+import FetchError from "./errors/FetchError";
 
 export interface CrossDocumentMessage {
     key: string;
@@ -15,7 +15,7 @@ export interface CrossDocumentMessageResponse {
     data?: Record<string, unknown>;
 }
 
-export default class Communicator {
+export default class Messenger {
     private readonly originUrl: string;
     private readonly tokenLength: number = 6;
 

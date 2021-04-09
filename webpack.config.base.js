@@ -1,7 +1,7 @@
 const path = require("path");
 
 const config = {
-    entry: "./src/index.ts",
+    entry: "./src/AppBridge.ts",
     module: {
         rules: [
             {
@@ -26,7 +26,7 @@ const config = {
     },
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename: "index.js",
+        filename: "AppBridge.js",
         libraryTarget: "umd",
         library: "AppBridge",
         umdNamedDefine: true,
