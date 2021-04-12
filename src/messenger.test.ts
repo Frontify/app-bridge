@@ -1,4 +1,4 @@
-import { GET_APP_STATE } from "./actions";
+import { GET_APP_STATE } from "./Actions";
 import Messenger from "./Messenger";
 
 const originUrl = "https://www.localhost.com";
