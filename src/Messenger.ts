@@ -1,15 +1,19 @@
-import { allowedFetchKeys } from "./Actions";
+import { allowedDispatchKeys, allowedFetchKeys } from "./Actions";
 import InvalidOriginError from "./errors/InvalidOriginError";
 import TimeoutReachedError from "./errors/TimeoutReachedError";
 import FetchError from "./errors/FetchError";
 
 export interface CrossDocumentMessage {
-    key: string;
+    key: allowedFetchKeys | allowedDispatchKeys;
     token: string;
     data?: Record<string, unknown>;
 }
 
-export interface CrossDocumentMessageResponse {
+export interface CrossDocumentMessageResponse extends CrossDocumentMessage {
+    success: boolean;
+}
+
+export interface AppBridgeResponse {
     success: boolean;
     error?: string;
     data?: Record<string, unknown>;
@@ -31,12 +35,12 @@ export default class Messenger {
         parentWindow.postMessage(message, this.originUrl);
     }
 
-    subscribeResponse(key: allowedFetchKeys, token: string, timeout = 3000): Promise<CrossDocumentMessageResponse> {
+    subscribeResponse(key: allowedFetchKeys, token: string, timeout = 3000): Promise<AppBridgeResponse> {
         return new Promise((resolve, reject) => {
             window.addEventListener(
                 "message",
                 (event) => {
-                    const response = event.data;
+                    const response: CrossDocumentMessageResponse = event.data;
 
                     if (response.token !== token || response.key !== key) {
                         return;
