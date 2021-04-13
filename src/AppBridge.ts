@@ -15,13 +15,15 @@ export default class AppBridge {
     }
 
     fetch(key: allowedFetchKeys, data?: Record<string, unknown>): Promise<AppBridgeResponse> {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             const token = this.messenger.getMessageToken();
             this.messenger.postMessage({ key, token, data });
 
-            this.messenger.subscribeResponse(key, token).then((response) => {
-                resolve(response);
-            });
+            try {
+                resolve(this.messenger.subscribeResponse(key, token));
+            } catch (error) {
+                reject(error);
+            }
         });
     }
 
