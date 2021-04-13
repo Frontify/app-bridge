@@ -28,11 +28,15 @@ export default class AppBridge {
     }
 
     fetchThirdpartyOAuth2Token(): Promise<AppBridgeResponse> {
-        return new Promise(() => {
+        return new Promise((resolve, reject) => {
             const token = this.messenger.getMessageToken();
             this.messenger.postMessage({ key: GET_THIRDPARTY_OAUTH2_TOKEN, token });
 
-            return this.messenger.subscribeResponse(GET_THIRDPARTY_OAUTH2_TOKEN, token, AppBridge.OAUTH2_TIMEOUT);
+            try {
+                resolve(this.messenger.subscribeResponse(GET_THIRDPARTY_OAUTH2_TOKEN, token, AppBridge.OAUTH2_TIMEOUT));
+            } catch (error) {
+                reject(error);
+            }
         });
     }
 }
