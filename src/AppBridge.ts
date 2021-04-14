@@ -1,5 +1,5 @@
 import Messenger, { AppBridgeResponse } from "./Messenger";
-import { allowedDispatchKeys, allowedFetchKeys, GET_THIRDPARTY_OAUTH2_TOKEN } from "./Actions";
+import { allowedDispatchKeys, AllowedFetchKeys, GET_THIRDPARTY_OAUTH2_TOKEN } from "./Actions";
 
 export default class AppBridge {
     private messenger: Messenger;
@@ -14,7 +14,7 @@ export default class AppBridge {
         this.messenger.postMessage({ key, token });
     }
 
-    fetch(key: allowedFetchKeys, data?: Record<string, unknown>): Promise<AppBridgeResponse> {
+    fetch(key: AllowedFetchKeys, data?: Record<string, unknown>): Promise<AppBridgeResponse> {
         return new Promise((resolve, reject) => {
             const token = this.messenger.getMessageToken();
             this.messenger.postMessage({ key, token, data });

@@ -4,7 +4,7 @@ export const GET_THIRDPARTY_OAUTH2_TOKEN = "getThirdpartyOAuth2Token";
 export const POST_APP_STATE = "postAppState";
 export const POST_EXTERNAL_ASSET = "postExternalAsset";
 
-export type allowedFetchKeys =
+export type AllowedFetchKeys =
     | typeof GET_APP_STATE
     | typeof GET_THIRDPARTY_OAUTH2_TOKEN
     | typeof POST_APP_STATE
