@@ -21,13 +21,14 @@ export interface AppBridgeResponse {
 
 export default class Messenger {
     private readonly originUrl: string;
+    private readonly tokenLength: number = 6;
 
     constructor(originUrl: string) {
         this.originUrl = originUrl;
     }
 
     getMessageToken(): string {
-        return Math.random().toString(20).substr(2, 6);
+        return Math.random().toString(20).substr(2, this.tokenLength);
     }
 
     postMessage(message: CrossDocumentMessage): void {
