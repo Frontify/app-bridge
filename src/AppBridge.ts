@@ -1,4 +1,4 @@
-import Messenger, { CrossDocumentMessageResponse } from "./Messenger";
+import Messenger, { AppBridgeResponse } from "./Messenger";
 import { allowedDispatchKeys, allowedFetchKeys, GET_THIRDPARTY_OAUTH2_TOKEN } from "./Actions";
 
 export default class AppBridge {
@@ -14,21 +14,29 @@ export default class AppBridge {
         this.messenger.postMessage({ key, token });
     }
 
-    fetch(key: allowedFetchKeys, data?: Record<string, unknown>): Promise<CrossDocumentMessageResponse> {
-        return new Promise(() => {
+    fetch(key: allowedFetchKeys, data?: Record<string, unknown>): Promise<AppBridgeResponse> {
+        return new Promise((resolve, reject) => {
             const token = this.messenger.getMessageToken();
             this.messenger.postMessage({ key, token, data });
 
-            return this.messenger.subscribeResponse(key, token);
+            try {
+                resolve(this.messenger.subscribeResponse(key, token));
+            } catch (error) {
+                reject(error);
+            }
         });
     }
 
-    fetchThirdpartyOAuth2Token(): Promise<CrossDocumentMessageResponse> {
-        return new Promise(() => {
+    fetchThirdpartyOAuth2Token(): Promise<AppBridgeResponse> {
+        return new Promise((resolve, reject) => {
             const token = this.messenger.getMessageToken();
             this.messenger.postMessage({ key: GET_THIRDPARTY_OAUTH2_TOKEN, token });
 
-            return this.messenger.subscribeResponse(GET_THIRDPARTY_OAUTH2_TOKEN, token, AppBridge.OAUTH2_TIMEOUT);
+            try {
+                resolve(this.messenger.subscribeResponse(GET_THIRDPARTY_OAUTH2_TOKEN, token, AppBridge.OAUTH2_TIMEOUT));
+            } catch (error) {
+                reject(error);
+            }
         });
     }
 }
