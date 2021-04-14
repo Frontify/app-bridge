@@ -1,9 +1,9 @@
 import { GET_APP_STATE } from "./Actions";
-import Messenger from "./Messenger";
+import Messenger, { CrossDocumentMessage } from "./Messenger";
 
 const originUrl = "https://www.localhost.com";
 const tokenLength = 6;
-const message = { key: "121243oas!6ihdf", token: "1719248ty$^&" };
+const message: CrossDocumentMessage = { key: GET_APP_STATE, token: "1719248ty$^&" };
 
 const messenger = new Messenger(originUrl);
 
