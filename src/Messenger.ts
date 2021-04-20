@@ -1,10 +1,10 @@
-import { allowedDispatchKeys, AllowedFetchKeys } from "./Actions";
-import InvalidOriginError from "./errors/InvalidOriginError";
-import TimeoutReachedError from "./errors/TimeoutReachedError";
-import FetchError from "./errors/FetchError";
+import { FetchKey, DispatchKey } from "./Actions";
+import { InvalidOriginError } from "./errors/InvalidOriginError";
+import { TimeoutReachedError } from "./errors/TimeoutReachedError";
+import { FetchError } from "./errors/FetchError";
 
 export interface CrossDocumentMessage {
-    key: AllowedFetchKeys | allowedDispatchKeys;
+    key: FetchKey | DispatchKey;
     token: string;
     data?: Record<string, unknown>;
 }
@@ -19,24 +19,21 @@ export interface AppBridgeResponse {
     data?: Record<string, unknown>;
 }
 
-export default class Messenger {
-    private readonly originUrl: string;
+export class Messenger {
     private readonly tokenLength: number = 6;
 
-    constructor(originUrl: string) {
-        this.originUrl = originUrl;
-    }
+    constructor(private readonly originUrl: string) {}
 
-    getMessageToken(): string {
+    public getMessageToken(): string {
         return Math.random().toString(20).substr(2, this.tokenLength);
     }
 
-    postMessage(message: CrossDocumentMessage): void {
+    public postMessage(message: CrossDocumentMessage): void {
         const parentWindow = window.top;
         parentWindow.postMessage(message, this.originUrl);
     }
 
-    subscribeResponse(key: AllowedFetchKeys, token: string, timeout = 3000): Promise<AppBridgeResponse> {
+    public subscribeResponse(key: FetchKey, token: string, timeout = 3000): Promise<AppBridgeResponse> {
         return new Promise((resolve, reject) => {
             window.addEventListener(
                 "message",
@@ -61,9 +58,7 @@ export default class Messenger {
                 { once: true },
             );
 
-            setTimeout(() => {
-                reject(new TimeoutReachedError(key));
-            }, timeout);
+            setTimeout(() => reject(new TimeoutReachedError(key)), timeout);
         });
     }
 }
