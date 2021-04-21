@@ -15,35 +15,17 @@ export default class AppBridge {
         this.messenger.postMessage({ key, token });
     }
 
-    public fetch(key: FetchKey, data?: Record<string, unknown>): Promise<AppBridgeResponse> {
-        return new Promise((resolve, reject) => {
-            const token = this.messenger.getMessageToken();
-            this.messenger.postMessage({ key, token, data });
+    public async fetch(key: FetchKey, data?: Record<string, unknown>): Promise<AppBridgeResponse> {
+        const token = this.messenger.getMessageToken();
+        this.messenger.postMessage({ key, token, data });
 
-            try {
-                resolve(this.messenger.subscribeResponse(key, token));
-            } catch (error) {
-                reject(error);
-            }
-        });
+        return this.messenger.subscribeResponse(key, token);
     }
 
-    public fetchThirdpartyOAuth2Token(): Promise<AppBridgeResponse> {
-        return new Promise((resolve, reject) => {
-            const token = this.messenger.getMessageToken();
-            this.messenger.postMessage({ key: FetchKey.GetThirdpartyOauth2Token, token });
+    public async fetchThirdpartyOAuth2Token(): Promise<AppBridgeResponse> {
+        const token = this.messenger.getMessageToken();
+        this.messenger.postMessage({ key: FetchKey.GetThirdpartyOauth2Token, token });
 
-            try {
-                resolve(
-                    this.messenger.subscribeResponse(
-                        FetchKey.GetThirdpartyOauth2Token,
-                        token,
-                        AppBridge.OAUTH2_TIMEOUT,
-                    ),
-                );
-            } catch (error) {
-                reject(error);
-            }
-        });
+        return this.messenger.subscribeResponse(FetchKey.GetThirdpartyOauth2Token, token, AppBridge.OAUTH2_TIMEOUT);
     }
 }
