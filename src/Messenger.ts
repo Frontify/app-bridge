@@ -1,10 +1,10 @@
-import { allowedDispatchKeys, AllowedFetchKeys } from "./Actions";
+import { DispatchKey, FetchKey } from "./Actions";
 import InvalidOriginError from "./errors/InvalidOriginError";
 import TimeoutReachedError from "./errors/TimeoutReachedError";
 import FetchError from "./errors/FetchError";
 
 export interface CrossDocumentMessage {
-    key: AllowedFetchKeys | allowedDispatchKeys;
+    key: DispatchKey | FetchKey;
     token: string;
     data?: Record<string, unknown>;
 }
@@ -36,7 +36,7 @@ export default class Messenger {
         parentWindow.postMessage(message, this.originUrl);
     }
 
-    subscribeResponse(key: AllowedFetchKeys, token: string, timeout = 3000): Promise<AppBridgeResponse> {
+    subscribeResponse(key: FetchKey, token: string, timeout = 3000): Promise<AppBridgeResponse> {
         return new Promise((resolve, reject) => {
             window.addEventListener(
                 "message",

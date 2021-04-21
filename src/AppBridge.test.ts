@@ -1,7 +1,7 @@
 import AppBridge from "./AppBridge";
 import Messenger from "./Messenger";
 import { mocked } from "ts-jest/utils";
-import { DISPATCH_CLOSE_APP, GET_THIRDPARTY_OAUTH2_TOKEN, GET_APP_STATE } from "./Actions";
+import { DispatchKey, FetchKey } from "./Actions";
 jest.mock("./Messenger");
 
 const originUrl = "https://www.localhost.com";
@@ -19,22 +19,22 @@ beforeEach(() => {
 });
 
 test("dispatch", () => {
-    appBridge.dispatch(DISPATCH_CLOSE_APP);
+    appBridge.dispatch(DispatchKey.DispatchCloseApp);
 
     expect(messenger.getMessageToken).toHaveBeenCalledTimes(1);
     expect(messenger.postMessage).toHaveBeenCalledTimes(1);
-    expect(messenger.postMessage).toHaveBeenCalledWith({ key: DISPATCH_CLOSE_APP, token });
+    expect(messenger.postMessage).toHaveBeenCalledWith({ key: DispatchKey.DispatchCloseApp, token });
 });
 
 test("fetch", () => {
-    appBridge.fetch(GET_APP_STATE);
+    appBridge.fetch(FetchKey.GetAppState);
 
     expect(messenger.getMessageToken).toHaveBeenCalledTimes(1);
     expect(messenger.postMessage).toHaveBeenCalledTimes(1);
-    expect(messenger.postMessage).toHaveBeenCalledWith({ key: GET_APP_STATE, token });
+    expect(messenger.postMessage).toHaveBeenCalledWith({ key: FetchKey.GetAppState, token });
 
     expect(messenger.subscribeResponse).toHaveBeenCalledTimes(1);
-    expect(messenger.subscribeResponse).toHaveBeenCalledWith(GET_APP_STATE, token);
+    expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.GetAppState, token);
 });
 
 test("fetchThirdpartyOAuth2Token", () => {
@@ -42,8 +42,8 @@ test("fetchThirdpartyOAuth2Token", () => {
 
     expect(messenger.getMessageToken).toHaveBeenCalledTimes(1);
     expect(messenger.postMessage).toHaveBeenCalledTimes(1);
-    expect(messenger.postMessage).toHaveBeenCalledWith({ key: GET_THIRDPARTY_OAUTH2_TOKEN, token });
+    expect(messenger.postMessage).toHaveBeenCalledWith({ key: FetchKey.GetThirdpartyOauth2Token, token });
 
     expect(messenger.subscribeResponse).toHaveBeenCalledTimes(1);
-    expect(messenger.subscribeResponse).toHaveBeenCalledWith(GET_THIRDPARTY_OAUTH2_TOKEN, token, oauth2_timeout);
+    expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.GetThirdpartyOauth2Token, token, oauth2_timeout);
 });
