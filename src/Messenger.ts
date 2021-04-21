@@ -27,16 +27,16 @@ export default class Messenger {
         this.originUrl = originUrl;
     }
 
-    getMessageToken(): string {
+    public getMessageToken(): string {
         return Math.random().toString(20).substr(2, this.tokenLength);
     }
 
-    postMessage(message: CrossDocumentMessage): void {
+    public postMessage(message: CrossDocumentMessage): void {
         const parentWindow = window.top;
         parentWindow.postMessage(message, this.originUrl);
     }
 
-    subscribeResponse(key: FetchKey, token: string, timeout = 3000): Promise<AppBridgeResponse> {
+    public subscribeResponse(key: FetchKey, token: string, timeout = 3000): Promise<AppBridgeResponse> {
         return new Promise((resolve, reject) => {
             window.addEventListener(
                 "message",
