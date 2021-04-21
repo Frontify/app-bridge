@@ -1,5 +1,6 @@
 import Messenger, { AppBridgeResponse } from "./Messenger";
 import { DispatchKey, FetchKey } from "./Actions";
+export { DispatchKey, FetchKey } from "./Actions";
 
 export default class AppBridge {
     private messenger: Messenger;
