@@ -55,7 +55,7 @@ jobs:
                   GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
               run: |
                   git add dist -f
-                  git commit --allow-empty git s-m "Released new version"
+                  git commit --allow-empty -m "Released new version"
                   git push --force https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY
 
             # - name: Publish to npm
