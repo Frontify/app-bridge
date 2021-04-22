@@ -54,7 +54,7 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
               run: |
-                  git add --force -A
+                  git add --force ./dist
                   git commit -m "Released new version"
                   git push --force https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY
 
