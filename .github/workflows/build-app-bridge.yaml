@@ -1,4 +1,3 @@
-
 name: Build App Bridge
 
 on:
@@ -17,13 +16,13 @@ jobs:
             - name: Use Node.js 15
               uses: actions/setup-node@v1
               with:
-                  node-version: '15'
+                  node-version: "15"
 
             - name: Cache NPM dependencies
               id: npm_cache
               uses: actions/cache@v2
               with:
-                  path: '**/node_modules'
+                  path: "**/node_modules"
                   key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
             - name: Install NPM dependencies
@@ -38,6 +37,13 @@ jobs:
             - name: Lint TypeScript files
               run: npm run lint
 
+            - name: Set up git user
+              env:
+                  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+              run: |
+                  git config user.name "$GITHUB_ACTOR"
+                  git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
             - name: Increase the version
               run: npm version patch
 
@@ -46,13 +52,11 @@ jobs:
 
             - name: Push the `dist` folder
               env:
-                GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+                  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
               run: |
-                git config user.name "$GITHUB_ACTOR"
-                git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-                git add --force -A
-                git commit -m "Released new version"
-                git push --force https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY
+                  git add --force -A
+                  git commit -m "Released new version"
+                  git push --force https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY
 
             # - name: Publish to npm
             #   run: npm publish
