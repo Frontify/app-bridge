@@ -10,7 +10,7 @@
         "test": "jest",
         "start": "webpack --config webpack.config.dev.js",
         "typecheck": "tsc --noEmit",
-        "lint": "eslint .",
+        "lint": "eslint ./src",
         "build": "webpack --config webpack.config.prod.js",
         "prepare": "husky install"
     },
