@@ -1,3 +1,4 @@
+//eslint-disable-next-line
 const baseConfig = require("./webpack.config.base");
 
 const config = { mode: "production", devtool: "source-map" };
