@@ -4,12 +4,14 @@
     "description": "Package to establish communication between Frontify and third party apps",
     "main": "dist/AppBridge.js",
     "files": [
-        "dist/AppBridge.js"
+        "dist"
     ],
     "scripts": {
         "test": "jest",
         "start": "webpack --config webpack.config.dev.js",
-        "build": "tsc --noEmit && webpack --config webpack.config.prod.js",
+        "typecheck": "tsc --noEmit",
+        "lint": "eslint .",
+        "build": "webpack --config webpack.config.prod.js",
         "prepare": "husky install"
     },
     "author": "@frontify",
