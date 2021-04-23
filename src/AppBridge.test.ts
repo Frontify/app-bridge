@@ -18,16 +18,16 @@ beforeEach(() => {
     expect(mocked(messenger.getMessageToken).mockReturnValue(token));
 });
 
-test("dispatch", () => {
-    appBridge.dispatch(DispatchKey.DispatchCloseApp);
+test("closeApp", () => {
+    appBridge.closeApp();
 
     expect(messenger.getMessageToken).toHaveBeenCalledTimes(1);
     expect(messenger.postMessage).toHaveBeenCalledTimes(1);
     expect(messenger.postMessage).toHaveBeenCalledWith({ key: DispatchKey.DispatchCloseApp, token });
 });
 
-test("fetch", () => {
-    appBridge.fetch(FetchKey.GetAppState);
+test("getAppState", () => {
+    appBridge.getAppState();
 
     expect(messenger.getMessageToken).toHaveBeenCalledTimes(1);
     expect(messenger.postMessage).toHaveBeenCalledTimes(1);
@@ -37,8 +37,8 @@ test("fetch", () => {
     expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.GetAppState, token);
 });
 
-test("fetchThirdpartyOAuth2Token", () => {
-    appBridge.fetchThirdpartyOAuth2Token();
+test("getThirdpartyOAuth2Token", () => {
+    appBridge.getThirdpartyOAuth2Token();
 
     expect(messenger.getMessageToken).toHaveBeenCalledTimes(1);
     expect(messenger.postMessage).toHaveBeenCalledTimes(1);

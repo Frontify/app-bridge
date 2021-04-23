@@ -1,5 +1,7 @@
 import Messenger, { AppBridgeResponse } from "./Messenger";
 import { DispatchKey, FetchKey } from "./Actions";
+import { AppState, Asset } from "./ResponseType";
+
 export { DispatchKey, FetchKey } from "./Actions";
 
 export default class AppBridge {
@@ -10,22 +12,42 @@ export default class AppBridge {
         this.messenger = new Messenger(originUrl);
     }
 
-    public dispatch(key: DispatchKey): void {
+    public closeApp(): void {
+        this.dispatch(DispatchKey.DispatchCloseApp);
+    }
+
+    public async getAppState(): Promise<AppBridgeResponse<AppState>> {
+        return this.fetch<AppState>(FetchKey.GetAppState);
+    }
+
+    public async getThirdpartyOAuth2Token(): Promise<AppBridgeResponse<AppState>> {
+        const token = this.messenger.getMessageToken();
+        this.messenger.postMessage({ key: FetchKey.GetThirdpartyOauth2Token, token });
+
+        return this.messenger.subscribeResponse<AppState>(
+            FetchKey.GetThirdpartyOauth2Token,
+            token,
+            AppBridge.OAUTH2_TIMEOUT,
+        );
+    }
+
+    public async putAppState(state: Record<string, unknown>): Promise<AppBridgeResponse<AppState>> {
+        return this.fetch<AppState>(FetchKey.PutAppState, state);
+    }
+
+    public async postExternalAsset(asset: { url: string; title: string }): Promise<AppBridgeResponse<Asset>> {
+        return this.fetch<Asset>(FetchKey.PostExternalAsset, asset);
+    }
+
+    private dispatch(key: DispatchKey): void {
         const token = this.messenger.getMessageToken();
         this.messenger.postMessage({ key, token });
     }
 
-    public async fetch(key: FetchKey, data?: Record<string, unknown>): Promise<AppBridgeResponse> {
+    private async fetch<T>(key: FetchKey, data?: Record<string, unknown>): Promise<AppBridgeResponse<T>> {
         const token = this.messenger.getMessageToken();
         this.messenger.postMessage({ key, token, data });
 
-        return this.messenger.subscribeResponse(key, token);
-    }
-
-    public async fetchThirdpartyOAuth2Token(): Promise<AppBridgeResponse> {
-        const token = this.messenger.getMessageToken();
-        this.messenger.postMessage({ key: FetchKey.GetThirdpartyOauth2Token, token });
-
-        return this.messenger.subscribeResponse(FetchKey.GetThirdpartyOauth2Token, token, AppBridge.OAUTH2_TIMEOUT);
+        return this.messenger.subscribeResponse<T>(key, token);
     }
 }

@@ -9,14 +9,17 @@ export interface CrossDocumentMessage {
     data?: Record<string, unknown>;
 }
 
-export interface CrossDocumentMessageResponse extends CrossDocumentMessage {
+export interface CrossDocumentMessageResponse<T> {
     success: boolean;
+    key: DispatchKey | FetchKey;
+    token: string;
+    data?: T;
 }
 
-export interface AppBridgeResponse {
+export interface AppBridgeResponse<T> {
     success: boolean;
     error?: string;
-    data?: Record<string, unknown>;
+    data?: T;
 }
 
 export default class Messenger {
@@ -36,12 +39,12 @@ export default class Messenger {
         parentWindow.postMessage(message, this.originUrl);
     }
 
-    public subscribeResponse(key: FetchKey, token: string, timeout = 3000): Promise<AppBridgeResponse> {
+    public subscribeResponse<T>(key: FetchKey, token: string, timeout = 3000): Promise<AppBridgeResponse<T>> {
         return new Promise((resolve, reject) => {
             window.addEventListener(
                 "message",
                 (event) => {
-                    const response: CrossDocumentMessageResponse = event.data;
+                    const response: CrossDocumentMessageResponse<T> = event.data;
 
                     if (response.token !== token || response.key !== key) {
                         return;
