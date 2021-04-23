@@ -4,13 +4,16 @@ export interface CrossDocumentMessage {
     token: string;
     data?: Record<string, unknown>;
 }
-export interface CrossDocumentMessageResponse extends CrossDocumentMessage {
+export interface CrossDocumentMessageResponse<T> {
     success: boolean;
+    key: DispatchKey | FetchKey;
+    token: string;
+    data?: T;
 }
-export interface AppBridgeResponse {
+export interface AppBridgeResponse<T> {
     success: boolean;
     error?: string;
-    data?: Record<string, unknown>;
+    data?: T;
 }
 export default class Messenger {
     private readonly originUrl;
@@ -18,5 +21,5 @@ export default class Messenger {
     constructor(originUrl: string);
     getMessageToken(): string;
     postMessage(message: CrossDocumentMessage): void;
-    subscribeResponse(key: FetchKey, token: string, timeout?: number): Promise<AppBridgeResponse>;
+    subscribeResponse<T>(key: FetchKey, token: string, timeout?: number): Promise<AppBridgeResponse<T>>;
 }
