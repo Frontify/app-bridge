@@ -3,23 +3,22 @@ import InvalidOriginError from "./errors/InvalidOriginError";
 import TimeoutReachedError from "./errors/TimeoutReachedError";
 import FetchError from "./errors/FetchError";
 
-export interface CrossDocumentMessage {
+export interface CrossDocumentMessage<T> {
     key: DispatchKey | FetchKey;
     token: string;
-    data?: Record<string, unknown>;
+    data?: T;
 }
 
 export interface CrossDocumentMessageResponse<T> {
     success: boolean;
     key: DispatchKey | FetchKey;
     token: string;
-    data?: T;
+    data: T;
 }
 
 export interface AppBridgeResponse<T> {
     success: boolean;
-    error?: string;
-    data?: T;
+    data: T;
 }
 
 export default class Messenger {
@@ -34,7 +33,7 @@ export default class Messenger {
         return Math.random().toString(20).substr(2, this.tokenLength);
     }
 
-    public postMessage(message: CrossDocumentMessage): void {
+    public postMessage<T>(message: CrossDocumentMessage<T>): void {
         const parentWindow = window.top;
         parentWindow.postMessage(message, this.originUrl);
     }

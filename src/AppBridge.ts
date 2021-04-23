@@ -1,6 +1,6 @@
 import Messenger, { AppBridgeResponse } from "./Messenger";
 import { DispatchKey, FetchKey } from "./Actions";
-import { AppState, Asset } from "./ResponseType";
+import { Asset, ThirdpartyOAuth2Token } from "./ResponseType";
 
 export { DispatchKey, FetchKey } from "./Actions";
 
@@ -16,26 +16,26 @@ export default class AppBridge {
         this.dispatch(DispatchKey.DispatchCloseApp);
     }
 
-    public async getAppState(): Promise<AppBridgeResponse<AppState>> {
-        return this.fetch<AppState>(FetchKey.GetAppState);
+    public async getAppState<T>(): Promise<AppBridgeResponse<T>> {
+        return this.fetch<T>(FetchKey.GetAppState);
     }
 
-    public async getThirdpartyOAuth2Token(): Promise<AppBridgeResponse<AppState>> {
+    public async getThirdpartyOAuth2Token(): Promise<AppBridgeResponse<ThirdpartyOAuth2Token>> {
         const token = this.messenger.getMessageToken();
         this.messenger.postMessage({ key: FetchKey.GetThirdpartyOauth2Token, token });
 
-        return this.messenger.subscribeResponse<AppState>(
+        return this.messenger.subscribeResponse<ThirdpartyOAuth2Token>(
             FetchKey.GetThirdpartyOauth2Token,
             token,
             AppBridge.OAUTH2_TIMEOUT,
         );
     }
 
-    public async putAppState(state: Record<string, unknown>): Promise<AppBridgeResponse<AppState>> {
-        return this.fetch<AppState>(FetchKey.PutAppState, state);
+    public async putAppState<T>(state: T): Promise<AppBridgeResponse<T>> {
+        return this.fetch<T>(FetchKey.PutAppState, state);
     }
 
-    public async postExternalAsset(asset: { url: string; title: string }): Promise<AppBridgeResponse<Asset>> {
+    public async postExternalAsset(asset: Asset): Promise<AppBridgeResponse<Asset>> {
         return this.fetch<Asset>(FetchKey.PostExternalAsset, asset);
     }
 
@@ -44,9 +44,9 @@ export default class AppBridge {
         this.messenger.postMessage({ key, token });
     }
 
-    private async fetch<T>(key: FetchKey, data?: Record<string, unknown>): Promise<AppBridgeResponse<T>> {
+    private async fetch<T>(key: FetchKey, data?: T): Promise<AppBridgeResponse<T>> {
         const token = this.messenger.getMessageToken();
-        this.messenger.postMessage({ key, token, data });
+        this.messenger.postMessage<T>({ key, token, data });
 
         return this.messenger.subscribeResponse<T>(key, token);
     }
