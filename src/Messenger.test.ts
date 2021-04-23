@@ -3,7 +3,7 @@ import Messenger, { CrossDocumentMessage } from "./Messenger";
 
 const originUrl = "https://www.localhost.com";
 const tokenLength = 6;
-const message: CrossDocumentMessage = { key: FetchKey.GetAppState, token: "1719248ty$^&" };
+const message: CrossDocumentMessage<Record<string, unknown>> = { key: FetchKey.GetAppState, token: "1719248ty$^&" };
 
 const messenger = new Messenger(originUrl);
 
