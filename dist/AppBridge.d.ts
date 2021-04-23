@@ -1,11 +1,18 @@
 import { AppBridgeResponse } from "./Messenger";
-import { DispatchKey, FetchKey } from "./Actions";
+import { AppState, Asset } from "./ResponseType";
 export { DispatchKey, FetchKey } from "./Actions";
 export default class AppBridge {
     private messenger;
     private static OAUTH2_TIMEOUT;
     constructor(originUrl: string);
-    dispatch(key: DispatchKey): void;
-    fetch(key: FetchKey, data?: Record<string, unknown>): Promise<AppBridgeResponse>;
-    fetchThirdpartyOAuth2Token(): Promise<AppBridgeResponse>;
+    closeApp(): void;
+    getAppState(): Promise<AppBridgeResponse<AppState>>;
+    getThirdpartyOAuth2Token(): Promise<AppBridgeResponse<AppState>>;
+    putAppState(state: Record<string, unknown>): Promise<AppBridgeResponse<AppState>>;
+    postExternalAsset(asset: {
+        url: string;
+        title: string;
+    }): Promise<AppBridgeResponse<Asset>>;
+    private dispatch;
+    private fetch;
 }
