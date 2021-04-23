@@ -1,25 +1,24 @@
 import { DispatchKey, FetchKey } from "./Actions";
-export interface CrossDocumentMessage {
+export interface CrossDocumentMessage<T> {
     key: DispatchKey | FetchKey;
     token: string;
-    data?: Record<string, unknown>;
+    data?: T;
 }
 export interface CrossDocumentMessageResponse<T> {
     success: boolean;
     key: DispatchKey | FetchKey;
     token: string;
-    data?: T;
+    data: T;
 }
 export interface AppBridgeResponse<T> {
     success: boolean;
-    error?: string;
-    data?: T;
+    data: T;
 }
 export default class Messenger {
     private readonly originUrl;
     private readonly tokenLength;
     constructor(originUrl: string);
     getMessageToken(): string;
-    postMessage(message: CrossDocumentMessage): void;
+    postMessage<T>(message: CrossDocumentMessage<T>): void;
     subscribeResponse<T>(key: FetchKey, token: string, timeout?: number): Promise<AppBridgeResponse<T>>;
 }
