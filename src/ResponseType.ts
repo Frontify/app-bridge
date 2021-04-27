@@ -1,4 +1,4 @@
-export interface ThirdpartyOAuth2Token {
+export interface ThirdPartyOAuth2Token {
     access_token: string;
     refresh_token: string;
     expires_in: number;

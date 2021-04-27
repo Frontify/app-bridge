@@ -1,6 +1,6 @@
 export enum FetchKey {
     GetAppState = "getAppState",
-    GetThirdpartyOauth2Token = "getThirdpartyOAuth2Token",
+    GetThirdPartyOauth2Token = "getThirdPartyOAuth2Token",
     PutAppState = "putAppState",
     PostExternalAsset = "postExternalAsset",
 }

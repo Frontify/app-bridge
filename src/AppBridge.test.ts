@@ -37,13 +37,13 @@ test("getAppState", () => {
     expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.GetAppState, token);
 });
 
-test("getThirdpartyOAuth2Token", () => {
-    appBridge.getThirdpartyOAuth2Token();
+test("getThirdPartyOAuth2Token", () => {
+    appBridge.getThirdPartyOAuth2Token();
 
     expect(messenger.getMessageToken).toHaveBeenCalledTimes(1);
     expect(messenger.postMessage).toHaveBeenCalledTimes(1);
-    expect(messenger.postMessage).toHaveBeenCalledWith({ key: FetchKey.GetThirdpartyOauth2Token, token });
+    expect(messenger.postMessage).toHaveBeenCalledWith({ key: FetchKey.GetThirdPartyOauth2Token, token });
 
     expect(messenger.subscribeResponse).toHaveBeenCalledTimes(1);
-    expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.GetThirdpartyOauth2Token, token, oauth2_timeout);
+    expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.GetThirdPartyOauth2Token, token, oauth2_timeout);
 });
