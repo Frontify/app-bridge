@@ -1,11 +1,10 @@
 import { FetchKey } from "./Actions";
 import Messenger, { CrossDocumentMessage } from "./Messenger";
 
-const originUrl = "https://www.localhost.com";
 const tokenLength = 6;
 const message: CrossDocumentMessage<Record<string, unknown>> = { key: FetchKey.GetAppState, token: "1719248ty$^&" };
 
-const messenger = new Messenger(originUrl);
+const messenger = new Messenger();
 
 test("getMessageToken", () => {
     const token = messenger.getMessageToken();
@@ -16,7 +15,7 @@ test("postMessage", () => {
     window.top.postMessage = jest.fn();
     messenger.postMessage(message);
     expect(window.top.postMessage).toHaveBeenCalledTimes(1);
-    expect(window.top.postMessage).toHaveBeenCalledWith(message, originUrl);
+    expect(window.top.postMessage).toHaveBeenCalledWith(message, "*");
 });
 
 test("subscribeResponse", () => {

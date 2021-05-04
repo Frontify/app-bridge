@@ -5,7 +5,6 @@ import { DispatchKey, FetchKey } from "./Actions";
 import { Asset } from "./ResponseType";
 jest.mock("./Messenger");
 
-const originUrl = "https://www.localhost.com";
 const token = "AbraCadabra";
 const oauth2_timeout = 300000;
 const state = { access_token: "topSecret" };
@@ -16,7 +15,7 @@ let appBridge: AppBridge;
 
 beforeEach(() => {
     mocked(Messenger).mockClear();
-    appBridge = new AppBridge(originUrl);
+    appBridge = new AppBridge();
     messenger = mocked(Messenger).mock.instances[0];
     expect(mocked(messenger.getMessageToken).mockReturnValue(token));
 });

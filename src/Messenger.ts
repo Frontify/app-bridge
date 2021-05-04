@@ -1,5 +1,4 @@
 import { DispatchKey, FetchKey } from "./Actions";
-import InvalidOriginError from "./errors/InvalidOriginError";
 import TimeoutReachedError from "./errors/TimeoutReachedError";
 import FetchError from "./errors/FetchError";
 
@@ -22,12 +21,7 @@ export interface AppBridgeResponse<T> {
 }
 
 export default class Messenger {
-    private readonly originUrl: string;
     private readonly tokenLength: number = 6;
-
-    constructor(originUrl: string) {
-        this.originUrl = originUrl;
-    }
 
     public getMessageToken(): string {
         return Math.random().toString(20).substr(2, this.tokenLength);
@@ -35,7 +29,7 @@ export default class Messenger {
 
     public postMessage<T>(message: CrossDocumentMessage<T>): void {
         const parentWindow = window.top;
-        parentWindow.postMessage(message, this.originUrl);
+        parentWindow.postMessage(message, "*");
     }
 
     public subscribeResponse<T>(key: FetchKey, token: string, timeout = 3000): Promise<AppBridgeResponse<T>> {
@@ -47,10 +41,6 @@ export default class Messenger {
 
                     if (response.token !== token || response.key !== key) {
                         return;
-                    }
-
-                    if (event.origin !== this.originUrl) {
-                        reject(new InvalidOriginError());
                     }
 
                     response.success

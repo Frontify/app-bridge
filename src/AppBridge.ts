@@ -8,8 +8,8 @@ export default class AppBridge {
     private messenger: Messenger;
     private static OAUTH2_TIMEOUT = 5 * 60 * 1000;
 
-    constructor(originUrl: string) {
-        this.messenger = new Messenger(originUrl);
+    constructor() {
+        this.messenger = new Messenger();
     }
 
     public closeApp(): void {
