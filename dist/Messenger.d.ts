@@ -15,9 +15,7 @@ export interface AppBridgeResponse<T> {
     data: T;
 }
 export default class Messenger {
-    private readonly originUrl;
     private readonly tokenLength;
-    constructor(originUrl: string);
     getMessageToken(): string;
     postMessage<T>(message: CrossDocumentMessage<T>): void;
     subscribeResponse<T>(key: FetchKey, token: string, timeout?: number): Promise<AppBridgeResponse<T>>;

@@ -4,7 +4,7 @@ export { DispatchKey, FetchKey } from "./Actions";
 export default class AppBridge {
     private messenger;
     private static OAUTH2_TIMEOUT;
-    constructor(originUrl: string);
+    constructor();
     closeApp(): void;
     getAppState<T>(): Promise<AppBridgeResponse<T>>;
     getThirdPartyOAuth2Token(): Promise<AppBridgeResponse<ThirdPartyOAuth2Token>>;
