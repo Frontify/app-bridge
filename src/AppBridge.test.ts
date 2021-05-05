@@ -2,13 +2,13 @@ import AppBridge from "./AppBridge";
 import Messenger from "./Messenger";
 import { mocked } from "ts-jest/utils";
 import { DispatchKey, FetchKey } from "./Actions";
-import { Asset } from "./ResponseType";
+import { PostExternalAssetParams } from "./RequestType";
 jest.mock("./Messenger");
 
 const token = "AbraCadabra";
 const oauth2_timeout = 300000;
 const state = { access_token: "topSecret" };
-const asset: Asset = { id: 9052 };
+const postExternalAssetParams: PostExternalAssetParams = { title: "My asset", url: "https://localhost.com" };
 
 let messenger: Messenger;
 let appBridge: AppBridge;
@@ -61,11 +61,15 @@ test("putAppState", () => {
 });
 
 test("postExternalAsset", () => {
-    appBridge.postExternalAsset(asset);
+    appBridge.postExternalAsset(postExternalAssetParams);
 
     expect(messenger.getMessageToken).toHaveBeenCalledTimes(1);
     expect(messenger.postMessage).toHaveBeenCalledTimes(1);
-    expect(messenger.postMessage).toHaveBeenCalledWith({ key: FetchKey.PostExternalAsset, token, data: asset });
+    expect(messenger.postMessage).toHaveBeenCalledWith({
+        key: FetchKey.PostExternalAsset,
+        token,
+        data: postExternalAssetParams,
+    });
 
     expect(messenger.subscribeResponse).toHaveBeenCalledTimes(1);
     expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.PostExternalAsset, token);

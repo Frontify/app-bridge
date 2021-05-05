@@ -1,6 +1,7 @@
 import Messenger, { AppBridgeResponse } from "./Messenger";
 import { DispatchKey, FetchKey } from "./Actions";
 import { Asset, ThirdPartyOAuth2Token } from "./ResponseType";
+import { PostExternalAssetParams } from "./RequestType";
 
 export { DispatchKey, FetchKey } from "./Actions";
 
@@ -17,7 +18,7 @@ export default class AppBridge {
     }
 
     public async getAppState<T>(): Promise<AppBridgeResponse<T>> {
-        return this.fetch<T>(FetchKey.GetAppState);
+        return this.fetch<T, T>(FetchKey.GetAppState);
     }
 
     public async getThirdPartyOAuth2Token(): Promise<AppBridgeResponse<ThirdPartyOAuth2Token>> {
@@ -32,11 +33,11 @@ export default class AppBridge {
     }
 
     public async putAppState<T>(state: T): Promise<AppBridgeResponse<T>> {
-        return this.fetch<T>(FetchKey.PutAppState, state);
+        return this.fetch<T, T>(FetchKey.PutAppState, state);
     }
 
-    public async postExternalAsset(asset: Asset): Promise<AppBridgeResponse<Asset>> {
-        return this.fetch<Asset>(FetchKey.PostExternalAsset, asset);
+    public async postExternalAsset(asset: PostExternalAssetParams): Promise<AppBridgeResponse<Asset>> {
+        return this.fetch<PostExternalAssetParams, Asset>(FetchKey.PostExternalAsset, asset);
     }
 
     private dispatch(key: DispatchKey): void {
@@ -44,10 +45,13 @@ export default class AppBridge {
         this.messenger.postMessage({ key, token });
     }
 
-    private async fetch<T>(key: FetchKey, data?: T): Promise<AppBridgeResponse<T>> {
+    private async fetch<RequestType, ResponseType>(
+        key: FetchKey,
+        data?: RequestType,
+    ): Promise<AppBridgeResponse<ResponseType>> {
         const token = this.messenger.getMessageToken();
-        this.messenger.postMessage<T>({ key, token, data });
+        this.messenger.postMessage<RequestType>({ key, token, data });
 
-        return this.messenger.subscribeResponse<T>(key, token);
+        return this.messenger.subscribeResponse<ResponseType>(key, token);
     }
 }
