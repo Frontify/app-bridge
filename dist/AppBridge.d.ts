@@ -1,5 +1,6 @@
 import { AppBridgeResponse } from "./Messenger";
 import { Asset, ThirdPartyOAuth2Token } from "./ResponseType";
+import { PostExternalAssetParams } from "./RequestType";
 export { DispatchKey, FetchKey } from "./Actions";
 export default class AppBridge {
     private messenger;
@@ -9,7 +10,7 @@ export default class AppBridge {
     getAppState<T>(): Promise<AppBridgeResponse<T>>;
     getThirdPartyOAuth2Token(): Promise<AppBridgeResponse<ThirdPartyOAuth2Token>>;
     putAppState<T>(state: T): Promise<AppBridgeResponse<T>>;
-    postExternalAsset(asset: Asset): Promise<AppBridgeResponse<Asset>>;
+    postExternalAsset(asset: PostExternalAssetParams): Promise<AppBridgeResponse<Asset>>;
     private dispatch;
     private fetch;
 }
