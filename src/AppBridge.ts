@@ -5,6 +5,9 @@ import { PostExternalAssetParams } from "./RequestType";
 
 export { DispatchKey, FetchKey } from "./Actions";
 
+import PackageJson from "../package.json";
+export const version = PackageJson.version;
+
 export default class AppBridge {
     private messenger: Messenger;
     private static OAUTH2_TIMEOUT = 5 * 60 * 1000;
