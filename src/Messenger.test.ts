@@ -23,5 +23,5 @@ test("subscribeResponse", () => {
     messenger.subscribeResponse(FetchKey.GetAppState, message.token);
 
     expect(window.top.postMessage).toHaveBeenCalledTimes(1);
-    expect(window.addEventListener).toHaveBeenCalledWith("message", expect.any(Function), { once: true });
+    expect(window.addEventListener).toHaveBeenCalledWith("message", expect.any(Function));
 });

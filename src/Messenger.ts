@@ -34,24 +34,20 @@ export default class Messenger {
 
     public subscribeResponse<T>(key: FetchKey, token: string, timeout = 3000): Promise<AppBridgeResponse<T>> {
         return new Promise((resolve, reject) => {
-            window.addEventListener(
-                "message",
-                (event) => {
-                    const response: CrossDocumentMessageResponse<T> = event.data;
+            window.addEventListener("message", (event) => {
+                const response: CrossDocumentMessageResponse<T> = event.data;
 
-                    if (response.token !== token || response.key !== key) {
-                        return;
-                    }
+                if (response.token !== token || response.key !== key) {
+                    return;
+                }
 
-                    response.success
-                        ? resolve({
-                              success: response.success,
-                              data: response.data,
-                          })
-                        : reject(new FetchError(key));
-                },
-                { once: true },
-            );
+                response.success
+                    ? resolve({
+                          success: response.success,
+                          data: response.data,
+                      })
+                    : reject(new FetchError(key));
+            });
 
             setTimeout(() => {
                 reject(new TimeoutReachedError(key));
