@@ -5,8 +5,8 @@ import { PostExternalAssetParams } from "./RequestType";
 
 export { DispatchKey, FetchKey } from "./Actions";
 
-import PackageJson from "../package.json";
-export const version = PackageJson.version;
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+export const version = require("../package.json").version;
 
 export default class AppBridge {
     private messenger: Messenger;
