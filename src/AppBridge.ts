@@ -39,6 +39,10 @@ export default class AppBridge {
         return this.fetch<T, T>(FetchKey.PutAppState, state);
     }
 
+    public async clearAppState(): Promise<AppBridgeResponse<null>> {
+        return this.fetch<null, null>(FetchKey.ClearAppState);
+    }
+
     public async postExternalAsset(asset: PostExternalAssetParams): Promise<AppBridgeResponse<Asset>> {
         return this.fetch<PostExternalAssetParams, Asset>(FetchKey.PostExternalAsset, asset);
     }
