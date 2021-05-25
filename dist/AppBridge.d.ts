@@ -11,7 +11,7 @@ export default class AppBridge {
     getAppState<T>(): Promise<AppBridgeResponse<T>>;
     getThirdPartyOAuth2Token(): Promise<AppBridgeResponse<ThirdPartyOAuth2Token>>;
     putAppState<T>(state: T): Promise<AppBridgeResponse<T>>;
-    clearAppState(): Promise<AppBridgeResponse<null>>;
+    deleteAppState(): Promise<AppBridgeResponse<null>>;
     postExternalAsset(asset: PostExternalAssetParams): Promise<AppBridgeResponse<Asset>>;
     private dispatch;
     private fetch;
