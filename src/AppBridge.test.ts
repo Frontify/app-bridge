@@ -27,7 +27,6 @@ test("closeApp", () => {
     expect(messenger.postMessage).toHaveBeenCalledWith({ key: DispatchKey.DispatchCloseApp, token });
 });
 
-
 test("getAppState", () => {
     appBridge.getAppState();
 
