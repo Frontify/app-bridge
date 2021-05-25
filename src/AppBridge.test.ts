@@ -27,6 +27,7 @@ test("closeApp", () => {
     expect(messenger.postMessage).toHaveBeenCalledWith({ key: DispatchKey.DispatchCloseApp, token });
 });
 
+
 test("getAppState", () => {
     appBridge.getAppState();
 
@@ -58,6 +59,17 @@ test("putAppState", () => {
 
     expect(messenger.subscribeResponse).toHaveBeenCalledTimes(1);
     expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.PutAppState, token);
+});
+
+test("clearAppState", () => {
+    appBridge.clearAppState();
+
+    expect(messenger.getMessageToken).toHaveBeenCalledTimes(1);
+    expect(messenger.postMessage).toHaveBeenCalledTimes(1);
+    expect(messenger.postMessage).toHaveBeenCalledWith({ key: FetchKey.ClearAppState, token });
+
+    expect(messenger.subscribeResponse).toHaveBeenCalledTimes(1);
+    expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.ClearAppState, token);
 });
 
 test("postExternalAsset", () => {
