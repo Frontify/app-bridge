@@ -1,6 +1,6 @@
 import { AppBridgeResponse } from "./Messenger";
 import { Asset, ThirdPartyOAuth2Token } from "./ResponseType";
-import { PostExternalAssetParams } from "./RequestType";
+import { GetRefreshedThirdpartyOauth2TokenParams, PostExternalAssetParams } from "./RequestType";
 export { DispatchKey, FetchKey } from "./Actions";
 export declare const version: any;
 export default class AppBridge {
@@ -10,6 +10,7 @@ export default class AppBridge {
     closeApp(): void;
     getAppState<T>(): Promise<AppBridgeResponse<T>>;
     getThirdPartyOAuth2Token(): Promise<AppBridgeResponse<ThirdPartyOAuth2Token>>;
+    getRefreshedThirdpartyOauth2Token(refreshToken: GetRefreshedThirdpartyOauth2TokenParams): Promise<AppBridgeResponse<ThirdPartyOAuth2Token>>;
     putAppState<T>(state: T): Promise<AppBridgeResponse<T>>;
     deleteAppState(): Promise<AppBridgeResponse<null>>;
     postExternalAsset(asset: PostExternalAssetParams): Promise<AppBridgeResponse<Asset>>;
