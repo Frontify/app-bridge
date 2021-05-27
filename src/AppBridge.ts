@@ -1,7 +1,7 @@
 import Messenger, { AppBridgeResponse } from "./Messenger";
 import { DispatchKey, FetchKey } from "./Actions";
 import { Asset, ThirdPartyOAuth2Token } from "./ResponseType";
-import { PostExternalAssetParams } from "./RequestType";
+import { GetRefreshedThirdpartyOauth2TokenParams, PostExternalAssetParams } from "./RequestType";
 
 export { DispatchKey, FetchKey } from "./Actions";
 
@@ -32,6 +32,15 @@ export default class AppBridge {
             FetchKey.GetThirdPartyOauth2Token,
             token,
             AppBridge.OAUTH2_TIMEOUT,
+        );
+    }
+
+    public async getRefreshedThirdpartyOauth2Token(
+        refreshToken: GetRefreshedThirdpartyOauth2TokenParams,
+    ): Promise<AppBridgeResponse<ThirdPartyOAuth2Token>> {
+        return this.fetch<GetRefreshedThirdpartyOauth2TokenParams, ThirdPartyOAuth2Token>(
+            FetchKey.GetRefreshedThirdpartyOauth2Token,
+            refreshToken,
         );
     }
 
