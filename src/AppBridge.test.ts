@@ -5,11 +5,9 @@ import { DispatchKey, FetchKey } from "./Actions";
 import { PostExternalAssetParams } from "./RequestType";
 jest.mock("./Messenger");
 
-
-
 const token = "AjY34F87Dsat^J";
 const defaultTimeout = 3000;
-const oauth2_timeout = 300000;
+const oauth2Timeout = 300000;
 const getRefreshedThirdpartyOauth2TokenParams = { refreshToken: "3GHsoiH7f$&37" };
 const putAppStateParams = { access_token: "topSecret" };
 const postExternalAssetParams: PostExternalAssetParams = { title: "My asset", url: "https://localhost.com" };
@@ -50,7 +48,7 @@ test("getThirdPartyOAuth2Token", () => {
 
     expect(messenger.getMessageToken).toHaveBeenCalledTimes(1);
     expect(messenger.postMessage).toHaveBeenCalledTimes(1);
-    expect(messenger.postMessage).toHaveBeenCalledWith({ key: FetchKey.GetThirdPartyOauth2Token, data: null, token });
+    expect(messenger.postMessage).toHaveBeenCalledWith({ key: FetchKey.GetThirdPartyOauth2Token, token });
 
     expect(messenger.subscribeResponse).toHaveBeenCalledTimes(1);
     expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.GetThirdPartyOauth2Token, token, oauth2Timeout);
@@ -68,7 +66,11 @@ test("getRefreshedThirdpartyOauth2Token", () => {
     });
 
     expect(messenger.subscribeResponse).toHaveBeenCalledTimes(1);
-    expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.GetRefreshedThirdpartyOauth2Token, token);
+    expect(messenger.subscribeResponse).toHaveBeenCalledWith(
+        FetchKey.GetRefreshedThirdpartyOauth2Token,
+        token,
+        defaultTimeout,
+    );
 });
 
 test("putAppState", () => {
