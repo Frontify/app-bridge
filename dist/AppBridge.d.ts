@@ -5,6 +5,8 @@ export { DispatchKey, FetchKey } from "./Actions";
 export declare const version: any;
 export default class AppBridge {
     private messenger;
+    private static DEFAULT_TIMEOUT;
+    private static FILE_UPLOAD_TIMEOUT;
     private static OAUTH2_TIMEOUT;
     constructor();
     closeApp(): void;

@@ -18,5 +18,5 @@ export default class Messenger {
     private readonly tokenLength;
     getMessageToken(): string;
     postMessage<T>(message: CrossDocumentMessage<T>): void;
-    subscribeResponse<T>(key: FetchKey, token: string, timeout?: number): Promise<AppBridgeResponse<T>>;
+    subscribeResponse<T>(key: FetchKey, token: string, timeout: number): Promise<AppBridgeResponse<T>>;
 }
