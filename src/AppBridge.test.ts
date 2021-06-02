@@ -5,7 +5,10 @@ import { DispatchKey, FetchKey } from "./Actions";
 import { PostExternalAssetParams } from "./RequestType";
 jest.mock("./Messenger");
 
+
+
 const token = "AjY34F87Dsat^J";
+const defaultTimeout = 3000;
 const oauth2_timeout = 300000;
 const getRefreshedThirdpartyOauth2TokenParams = { refreshToken: "3GHsoiH7f$&37" };
 const putAppStateParams = { access_token: "topSecret" };
@@ -25,7 +28,10 @@ test("closeApp", () => {
     appBridge.closeApp();
 
     expect(messenger.postMessage).toHaveBeenCalledTimes(1);
-    expect(messenger.postMessage).toHaveBeenCalledWith({ key: DispatchKey.DispatchCloseApp, token });
+    expect(messenger.postMessage).toHaveBeenCalledWith({
+        key: DispatchKey.DispatchCloseApp,
+        token,
+    });
 });
 
 test("getAppState", () => {
@@ -36,7 +42,7 @@ test("getAppState", () => {
     expect(messenger.postMessage).toHaveBeenCalledWith({ key: FetchKey.GetAppState, token });
 
     expect(messenger.subscribeResponse).toHaveBeenCalledTimes(1);
-    expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.GetAppState, token);
+    expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.GetAppState, token, defaultTimeout);
 });
 
 test("getThirdPartyOAuth2Token", () => {
@@ -44,10 +50,10 @@ test("getThirdPartyOAuth2Token", () => {
 
     expect(messenger.getMessageToken).toHaveBeenCalledTimes(1);
     expect(messenger.postMessage).toHaveBeenCalledTimes(1);
-    expect(messenger.postMessage).toHaveBeenCalledWith({ key: FetchKey.GetThirdPartyOauth2Token, token });
+    expect(messenger.postMessage).toHaveBeenCalledWith({ key: FetchKey.GetThirdPartyOauth2Token, data: null, token });
 
     expect(messenger.subscribeResponse).toHaveBeenCalledTimes(1);
-    expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.GetThirdPartyOauth2Token, token, oauth2_timeout);
+    expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.GetThirdPartyOauth2Token, token, oauth2Timeout);
 });
 
 test("getRefreshedThirdpartyOauth2Token", () => {
@@ -73,7 +79,7 @@ test("putAppState", () => {
     expect(messenger.postMessage).toHaveBeenCalledWith({ key: FetchKey.PutAppState, token, data: putAppStateParams });
 
     expect(messenger.subscribeResponse).toHaveBeenCalledTimes(1);
-    expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.PutAppState, token);
+    expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.PutAppState, token, defaultTimeout);
 });
 
 test("deleteAppState", () => {
@@ -84,7 +90,7 @@ test("deleteAppState", () => {
     expect(messenger.postMessage).toHaveBeenCalledWith({ key: FetchKey.DeleteAppState, token });
 
     expect(messenger.subscribeResponse).toHaveBeenCalledTimes(1);
-    expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.DeleteAppState, token);
+    expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.DeleteAppState, token, defaultTimeout);
 });
 
 test("postExternalAsset", () => {
@@ -99,5 +105,5 @@ test("postExternalAsset", () => {
     });
 
     expect(messenger.subscribeResponse).toHaveBeenCalledTimes(1);
-    expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.PostExternalAsset, token);
+    expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.PostExternalAsset, token, defaultTimeout);
 });
