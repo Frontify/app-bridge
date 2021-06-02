@@ -32,7 +32,7 @@ export default class Messenger {
         parentWindow.postMessage(message, "*");
     }
 
-    public subscribeResponse<T>(key: FetchKey, token: string, timeout = 3000): Promise<AppBridgeResponse<T>> {
+    public subscribeResponse<T>(key: FetchKey, token: string, timeout: number): Promise<AppBridgeResponse<T>> {
         return new Promise((resolve, reject) => {
             const subscribeResponseCallback = (event: MessageEvent) => {
                 const response: CrossDocumentMessageResponse<T> = event.data;

@@ -3,6 +3,7 @@ import Messenger, { CrossDocumentMessage } from "./Messenger";
 
 const tokenLength = 6;
 const message: CrossDocumentMessage<Record<string, unknown>> = { key: FetchKey.GetAppState, token: "1719248ty$^&" };
+const defaultTimeout = 3000;
 
 const messenger = new Messenger();
 
@@ -20,7 +21,7 @@ test("postMessage", () => {
 
 test("subscribeResponse", () => {
     window.addEventListener = jest.fn();
-    messenger.subscribeResponse(FetchKey.GetAppState, message.token);
+    messenger.subscribeResponse(FetchKey.GetAppState, message.token, defaultTimeout);
 
     expect(window.top.postMessage).toHaveBeenCalledTimes(1);
     expect(window.addEventListener).toHaveBeenCalledWith("message", expect.any(Function));
