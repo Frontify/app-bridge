@@ -5,10 +5,13 @@ import { DispatchKey, FetchKey } from "./Actions";
 import { PostExternalAssetParams } from "./RequestType";
 jest.mock("./Messenger");
 
-const token = "AbraCadabra";
+
+
+const token = "AjY34F87Dsat^J";
 const defaultTimeout = 3000;
-const oauth2Timeout = 300000;
-const state = { access_token: "topSecret" };
+const oauth2_timeout = 300000;
+const getRefreshedThirdpartyOauth2TokenParams = { refreshToken: "3GHsoiH7f$&37" };
+const putAppStateParams = { access_token: "topSecret" };
 const postExternalAssetParams: PostExternalAssetParams = { title: "My asset", url: "https://localhost.com" };
 
 let messenger: Messenger;
@@ -53,12 +56,27 @@ test("getThirdPartyOAuth2Token", () => {
     expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.GetThirdPartyOauth2Token, token, oauth2Timeout);
 });
 
-test("putAppState", () => {
-    appBridge.putAppState(state);
+test("getRefreshedThirdpartyOauth2Token", () => {
+    appBridge.getRefreshedThirdpartyOauth2Token(getRefreshedThirdpartyOauth2TokenParams);
 
     expect(messenger.getMessageToken).toHaveBeenCalledTimes(1);
     expect(messenger.postMessage).toHaveBeenCalledTimes(1);
-    expect(messenger.postMessage).toHaveBeenCalledWith({ key: FetchKey.PutAppState, token, data: state });
+    expect(messenger.postMessage).toHaveBeenCalledWith({
+        key: FetchKey.GetRefreshedThirdpartyOauth2Token,
+        token,
+        data: getRefreshedThirdpartyOauth2TokenParams,
+    });
+
+    expect(messenger.subscribeResponse).toHaveBeenCalledTimes(1);
+    expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.GetRefreshedThirdpartyOauth2Token, token);
+});
+
+test("putAppState", () => {
+    appBridge.putAppState(putAppStateParams);
+
+    expect(messenger.getMessageToken).toHaveBeenCalledTimes(1);
+    expect(messenger.postMessage).toHaveBeenCalledTimes(1);
+    expect(messenger.postMessage).toHaveBeenCalledWith({ key: FetchKey.PutAppState, token, data: putAppStateParams });
 
     expect(messenger.subscribeResponse).toHaveBeenCalledTimes(1);
     expect(messenger.subscribeResponse).toHaveBeenCalledWith(FetchKey.PutAppState, token, defaultTimeout);
