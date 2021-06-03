@@ -4,6 +4,7 @@ import { Asset, ThirdPartyOAuth2Token } from "./ResponseType";
 import { GetRefreshedThirdpartyOauth2TokenParams, PostExternalAssetParams } from "./RequestType";
 
 export { DispatchKey, FetchKey } from "./Actions";
+export { CrossDocumentMessage, CrossDocumentMessageResponse } from "./Messenger";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 export const version = require("../package.json").version;
