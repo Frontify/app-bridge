@@ -8,7 +8,7 @@ export interface CrossDocumentMessage<T = Record<string, unknown>> {
     data?: T;
 }
 
-export interface CrossDocumentMessageResponse<T = Record<string, unknown>> {
+export interface CrossDocumentMessageResponse<T> {
     success: boolean;
     key: DispatchKey | FetchKey;
     token: string;
