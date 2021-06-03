@@ -1,5 +1,5 @@
 import { DispatchKey, FetchKey } from "./Actions";
-export interface CrossDocumentMessage<T> {
+export interface CrossDocumentMessage<T = Record<string, unknown>> {
     key: DispatchKey | FetchKey;
     token: string;
     data?: T;
@@ -8,7 +8,7 @@ export interface CrossDocumentMessageResponse<T> {
     success: boolean;
     key: DispatchKey | FetchKey;
     token: string;
-    data: T;
+    data?: T;
 }
 export interface AppBridgeResponse<T> {
     success: boolean;
