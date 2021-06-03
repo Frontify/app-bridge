@@ -2,7 +2,7 @@ import { DispatchKey, FetchKey } from "./Actions";
 import TimeoutReachedError from "./errors/TimeoutReachedError";
 import FetchError from "./errors/FetchError";
 
-export interface CrossDocumentMessage<T> {
+export interface CrossDocumentMessage<T = Record<string, unknown>> {
     key: DispatchKey | FetchKey;
     token: string;
     data?: T;
@@ -12,7 +12,7 @@ export interface CrossDocumentMessageResponse<T> {
     success: boolean;
     key: DispatchKey | FetchKey;
     token: string;
-    data: T;
+    data?: T;
 }
 
 export interface AppBridgeResponse<T> {
@@ -41,7 +41,7 @@ export default class Messenger {
                     return;
                 }
 
-                response.success
+                response.success && response.data
                     ? resolve({
                           success: response.success,
                           data: response.data,
