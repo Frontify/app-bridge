@@ -1,6 +1,6 @@
 {
     "name": "frontify-app-bridge",
-    "version": "1.0.25",
+    "version": "1.0.26",
     "description": "Package to establish communication between Frontify and third party apps",
     "main": "dist/AppBridge.js",
     "files": [
