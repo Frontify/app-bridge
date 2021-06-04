@@ -2,7 +2,6 @@ import { AppBridgeResponse } from "./Messenger";
 import { Asset, ThirdPartyOAuth2Token } from "./ResponseType";
 import { GetRefreshedThirdpartyOauth2TokenParams, PostExternalAssetParams } from "./RequestType";
 export { CrossDocumentMessage, CrossDocumentMessageResponse } from "./Messenger";
-export { PostExternalAssetParams, GetRefreshedThirdpartyOauth2TokenParams } from "./RequestType";
 export declare const version: any;
 export default class AppBridge {
     private messenger;
