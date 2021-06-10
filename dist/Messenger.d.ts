@@ -12,7 +12,7 @@ export interface CrossDocumentMessageResponse<T> {
 }
 export interface AppBridgeResponse<T> {
     success: boolean;
-    data: T;
+    data?: T;
 }
 export default class Messenger {
     private readonly tokenLength;
