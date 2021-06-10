@@ -17,7 +17,7 @@ export interface CrossDocumentMessageResponse<T> {
 
 export interface AppBridgeResponse<T> {
     success: boolean;
-    data: T;
+    data?: T;
 }
 
 export default class Messenger {
@@ -41,7 +41,7 @@ export default class Messenger {
                     return;
                 }
 
-                response.success && response.data
+                response.success
                     ? resolve({
                           success: response.success,
                           data: response.data,
