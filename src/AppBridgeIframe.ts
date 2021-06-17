@@ -37,7 +37,7 @@ const appState: AppBridgeAppState = {
     },
 
     async deleteAppState(): Promise<boolean> {
-        notify(Topic.GetAppState, PUBSUB_TOKEN);
+        notify(Topic.DeleteAppState, PUBSUB_TOKEN);
         return subscribe<boolean>(Topic.DeleteAppState, PUBSUB_TOKEN);
     },
 };
@@ -54,7 +54,7 @@ const assets: AppBridgeAssets = {
 
     async postExternalAsset(asset: PostExternalAssetParams): Promise<Asset> {
         const timeout = asset.previewUrl ? FILE_UPLOAD_TIMEOUT : DEFAULT_TIMEOUT;
-        notify(Topic.GetThirdPartyOauth2Token, PUBSUB_TOKEN);
+        notify(Topic.PostExternalAsset, PUBSUB_TOKEN);
         return subscribe<Asset>(Topic.PostExternalAsset, PUBSUB_TOKEN, {
             timeout,
         });
@@ -64,7 +64,7 @@ const assets: AppBridgeAssets = {
 const auth: AppBridgeAuth = {
     getThirdPartyOauth2Tokens(): Promise<OauthTokens> {
         notify(Topic.GetThirdPartyOauth2Token, PUBSUB_TOKEN);
-        return subscribe<OauthTokens>(Topic.GetRefreshedThirdpartyOauth2Token, PUBSUB_TOKEN, {
+        return subscribe<OauthTokens>(Topic.GetThirdPartyOauth2Token, PUBSUB_TOKEN, {
             timeout: OAUTH2_TIMEOUT,
         });
     },
