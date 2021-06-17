@@ -1,6 +1,4 @@
-import ApiResponse from "./ApiResponse";
-
-export default interface CrossDocumentMessageResponse<T> extends ApiResponse<T> {
+export default interface CrossDocumentMessageResponse<T> {
     success: boolean;
     topic: string;
     token: string;

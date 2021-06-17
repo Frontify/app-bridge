@@ -1,3 +1,3 @@
-export type Asset = {
+export default interface Asset {
     id: number;
-};
+}

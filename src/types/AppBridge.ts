@@ -1,4 +1,4 @@
-import { OauthTokens } from "./OauthTokens";
+import type { Asset, OauthTokens, PostExternalAssetParams } from ".";
 
 export interface AppBridgeAppState {
     getAppState: <T = Record<string, unknown>>() => Promise<T>;
@@ -7,9 +7,9 @@ export interface AppBridgeAppState {
 }
 
 export interface AppBridgeAssets {
-    postExternalAsset: (asset: any) => Promise<void>;
+    getAssetById: (assetId: number) => Promise<Asset>;
     openAssetChooser: () => void;
-    getAssetById: (assetId: number) => any;
+    postExternalAsset: (asset: PostExternalAssetParams) => Promise<Asset>;
 }
 
 export interface AppBridgeAuth {
@@ -18,13 +18,13 @@ export interface AppBridgeAuth {
 }
 
 export interface AppBridgeBlock {
-    getBlockId: () => number;
+    getBlockId: (element: HTMLElement) => number;
     getBlockSettings: <T>() => Promise<T>;
     updateBlockSettings: (newSettings: Record<string, unknown>) => Promise<boolean>;
 }
 
 export interface AppBridgeContext {
-    getProjectId: () => number;
+    getProjectId: () => Promise<number>;
 }
 
 export interface AppBridgeUtilities {
@@ -40,8 +40,11 @@ export enum Topic {
     CloseApp = "closeApp",
     DeleteAppState = "deleteAppState",
     GetAppState = "getAppState",
+    GetAssetById = "getAssetById",
+    GetProjectId = "getProjectId",
     GetRefreshedThirdpartyOauth2Token = "getRefreshedThirdpartyOauth2Token",
     GetThirdPartyOauth2Token = "getThirdPartyOAuth2Token",
+    OpenAssetChooser = "openAssetChooser",
     PostExternalAsset = "postExternalAsset",
     PutAppState = "putAppState",
     UpdateAppState = "updateAppState",

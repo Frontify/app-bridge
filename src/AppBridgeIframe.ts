@@ -1,19 +1,29 @@
-import {
+import { Topic } from "./types/AppBridge";
+import { generateRandomString } from "./utilities/hash";
+import notify from "./utilities/notify";
+import subscribe from "./utilities/subscribe";
+import type {
     AppBridge,
     AppBridgeAppState,
     AppBridgeAssets,
     AppBridgeAuth,
     AppBridgeContext,
     AppBridgeUtilities,
-    Topic,
 } from "./types/AppBridge";
-import { OauthTokens } from "./types/OauthTokens";
-import { generateRandomString } from "./utilities/hash";
-import notify from "./utilities/notify";
-import subscribe from "./utilities/subscribe";
+import type { PostExternalAssetParams, OauthTokens, Asset } from "./types";
 
-const OAUTH2_TIMEOUT = 5 * 60 * 1000;
+export interface AppBridgeIframe extends AppBridge {
+    appState: AppBridgeAppState;
+    assets: AppBridgeAssets;
+    auth: AppBridgeAuth;
+    context: AppBridgeContext;
+    utilities: AppBridgeUtilities;
+}
+
 const PUBSUB_TOKEN = generateRandomString();
+const DEFAULT_TIMEOUT = 3 * 1000;
+const OAUTH2_TIMEOUT = 5 * 60 * 1000;
+const FILE_UPLOAD_TIMEOUT = 10 * 1000;
 
 const appState: AppBridgeAppState = {
     getAppState<T = Record<string, unknown>>(): Promise<T> {
@@ -33,16 +43,21 @@ const appState: AppBridgeAppState = {
 };
 
 const assets: AppBridgeAssets = {
-    async postExternalAsset(asset: any): Promise<void> {
-        console.log(asset);
+    getAssetById(assetId: number): Promise<Asset> {
+        notify(Topic.GetAssetById, PUBSUB_TOKEN, { assetId });
+        return subscribe<Asset>(Topic.GetAssetById, PUBSUB_TOKEN);
     },
 
     openAssetChooser: (): void => {
-        //
+        notify(Topic.OpenAssetChooser, PUBSUB_TOKEN);
     },
 
-    getAssetById(assetId: number): any {
-        return { foo: assetId };
+    async postExternalAsset(asset: PostExternalAssetParams): Promise<Asset> {
+        const timeout = asset.previewUrl ? FILE_UPLOAD_TIMEOUT : DEFAULT_TIMEOUT;
+        notify(Topic.GetThirdPartyOauth2Token, PUBSUB_TOKEN);
+        return subscribe<Asset>(Topic.PostExternalAsset, PUBSUB_TOKEN, {
+            timeout,
+        });
     },
 };
 
@@ -61,8 +76,9 @@ const auth: AppBridgeAuth = {
 };
 
 const context: AppBridgeContext = {
-    getProjectId: (): number => {
-        return 1;
+    getProjectId: (): Promise<number> => {
+        notify(Topic.GetProjectId, PUBSUB_TOKEN);
+        return subscribe<number>(Topic.GetProjectId, PUBSUB_TOKEN);
     },
 };
 
@@ -72,7 +88,7 @@ const utilities: AppBridgeUtilities = {
     },
 };
 
-export default <AppBridge>{
+export default <AppBridgeIframe>{
     appState,
     assets,
     auth,

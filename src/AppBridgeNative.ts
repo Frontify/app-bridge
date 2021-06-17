@@ -1,12 +1,25 @@
-import { AppBridge, AppBridgeAssets, AppBridgeBlock, AppBridgeContext } from "./types/AppBridge";
+import type { Asset, PostExternalAssetParams } from "./types";
+import type { AppBridge, AppBridgeAssets, AppBridgeBlock, AppBridgeContext } from "./types/AppBridge";
+import { TerrificEvent } from "./types/TerrificEvent";
+
+export interface AppBridgeNative extends AppBridge {
+    assets: AppBridgeAssets;
+    block: AppBridgeBlock;
+    context: AppBridgeContext;
+}
 
 const assets: AppBridgeAssets = {
-    async postExternalAsset(asset: any): Promise<void> {
+    async postExternalAsset(asset: PostExternalAssetParams): Promise<Asset> {
         console.log(asset);
+        return {} as Asset;
     },
 
     openAssetChooser: (): void => {
-        //
+        const $assetChooser = window.application.sandbox.config.tpl.render("c-assetchooser", {});
+        window.application.connectors.events.notify(null, TerrificEvent.OpenModal, {
+            modifier: "flex",
+            $content: $assetChooser,
+        });
     },
 
     getAssetById(assetId: number): any {
@@ -15,8 +28,15 @@ const assets: AppBridgeAssets = {
 };
 
 const block: AppBridgeBlock = {
-    getBlockId(): number {
-        return 1;
+    getBlockId(element: HTMLElement): number {
+        const parentDiv = element.closest("div[data-block]");
+        const parentDivBlockId = parseInt(parentDiv?.getAttribute("data-block") || "0");
+
+        if (parentDiv || parentDivBlockId > 0) {
+            return parentDivBlockId;
+        }
+
+        throw new Error("Block's parent div not found.");
     },
 
     getBlockSettings<T>(): Promise<T> {
@@ -30,12 +50,12 @@ const block: AppBridgeBlock = {
 };
 
 const context: AppBridgeContext = {
-    getProjectId: (): number => {
-        return window.application.config.context.project.id;
+    getProjectId: (): Promise<number> => {
+        return Promise.resolve(window.application.config.context.project.id);
     },
 };
 
-export default <AppBridge>{
+export default <AppBridgeNative>{
     assets,
     block,
     context,
