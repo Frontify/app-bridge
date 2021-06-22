@@ -32,8 +32,8 @@ const appState: AppBridgeAppState = {
     },
 
     async updateAppState<T = Record<string, unknown>>(newState: T): Promise<boolean> {
-        notify(Topic.UpdateAppState, PUBSUB_TOKEN);
-        return subscribe<boolean>(Topic.UpdateAppState, PUBSUB_TOKEN, newState);
+        notify(Topic.UpdateAppState, PUBSUB_TOKEN, { newState });
+        return subscribe<boolean>(Topic.UpdateAppState, PUBSUB_TOKEN);
     },
 
     async deleteAppState(): Promise<boolean> {
@@ -54,7 +54,7 @@ const assets: AppBridgeAssets = {
 
     async postExternalAsset(asset: PostExternalAssetParams): Promise<Asset> {
         const timeout = asset.previewUrl ? FILE_UPLOAD_TIMEOUT : DEFAULT_TIMEOUT;
-        notify(Topic.PostExternalAsset, PUBSUB_TOKEN);
+        notify(Topic.PostExternalAsset, PUBSUB_TOKEN, { asset });
         return subscribe<Asset>(Topic.PostExternalAsset, PUBSUB_TOKEN, {
             timeout,
         });
