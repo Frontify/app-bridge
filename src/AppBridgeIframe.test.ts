@@ -74,13 +74,6 @@ describe("AppBridgeAssets", () => {
         expect(mockSubscribe).toHaveBeenCalledWith(Topic.GetAssetById, token);
     });
 
-    test("openAssetChooser", () => {
-        appBridgeIframe.assets.openAssetChooser();
-
-        expect(mockNotify).toHaveBeenCalledTimes(1);
-        expect(mockNotify).toHaveBeenCalledWith(Topic.OpenAssetChooser, token);
-    });
-
     test("postExternalAssetWithPreview", () => {
         const asset = {
             title: "My external asset",
@@ -151,5 +144,12 @@ describe("Utilities", () => {
 
         expect(mockNotify).toHaveBeenCalledTimes(1);
         expect(mockNotify).toHaveBeenCalledWith(Topic.CloseApp, token);
+    });
+
+    test("openAssetChooser", () => {
+        appBridgeIframe.utilities.openAssetChooser();
+
+        expect(mockNotify).toHaveBeenCalledTimes(1);
+        expect(mockNotify).toHaveBeenCalledWith(Topic.OpenAssetChooser, token);
     });
 });

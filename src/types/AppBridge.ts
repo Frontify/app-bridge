@@ -8,7 +8,6 @@ export interface AppBridgeAppState {
 
 export interface AppBridgeAssets {
     getAssetById: (assetId: number) => Promise<Asset>;
-    openAssetChooser: () => void;
     postExternalAsset: (asset: PostExternalAssetParams) => Promise<Asset>;
 }
 
@@ -29,6 +28,7 @@ export interface AppBridgeContext {
 
 export interface AppBridgeUtilities {
     closeApp: () => void;
+    openAssetChooser: () => void;
 }
 
 export interface AppBridge {

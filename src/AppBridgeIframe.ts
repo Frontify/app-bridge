@@ -48,10 +48,6 @@ const assets: AppBridgeAssets = {
         return subscribe<Asset>(Topic.GetAssetById, PUBSUB_TOKEN);
     },
 
-    openAssetChooser: (): void => {
-        notify(Topic.OpenAssetChooser, PUBSUB_TOKEN);
-    },
-
     async postExternalAsset(asset: PostExternalAssetParams): Promise<Asset> {
         const timeout = asset.previewUrl ? FILE_UPLOAD_TIMEOUT : DEFAULT_TIMEOUT;
         notify(Topic.PostExternalAsset, PUBSUB_TOKEN, { asset });
@@ -85,6 +81,10 @@ const context: AppBridgeContext = {
 const utilities: AppBridgeUtilities = {
     closeApp(): void {
         notify(Topic.CloseApp, PUBSUB_TOKEN);
+    },
+
+    openAssetChooser: (): void => {
+        notify(Topic.OpenAssetChooser, PUBSUB_TOKEN);
     },
 };
 
