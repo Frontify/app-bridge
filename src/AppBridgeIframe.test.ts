@@ -119,7 +119,7 @@ describe("AppBridgeAuth", () => {
         const refreshToken = "8raSsn0nG5v4";
         appBridgeIframe.auth.getRefreshedThirdpartyOauth2Tokens(refreshToken);
         expect(mockNotify).toHaveBeenCalledTimes(1);
-        expect(mockNotify).toHaveBeenCalledWith(Topic.GetRefreshedThirdpartyOauth2Token, token, refreshToken);
+        expect(mockNotify).toHaveBeenCalledWith(Topic.GetRefreshedThirdpartyOauth2Token, token, { refreshToken });
 
         expect(mockSubscribe).toHaveBeenCalledTimes(1);
         expect(mockSubscribe).toHaveBeenCalledWith(Topic.GetRefreshedThirdpartyOauth2Token, token);

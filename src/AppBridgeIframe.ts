@@ -66,7 +66,7 @@ const auth: AppBridgeAuth = {
     },
 
     getRefreshedThirdpartyOauth2Tokens(refreshToken: string): Promise<OauthTokens> {
-        notify(Topic.GetRefreshedThirdpartyOauth2Token, PUBSUB_TOKEN, refreshToken);
+        notify(Topic.GetRefreshedThirdpartyOauth2Token, PUBSUB_TOKEN, { refreshToken });
         return subscribe<OauthTokens>(Topic.GetRefreshedThirdpartyOauth2Token, PUBSUB_TOKEN);
     },
 };
