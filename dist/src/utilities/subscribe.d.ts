@@ -1,4 +1,4 @@
-import { Topic } from "../types/AppBridge";
+import { Topic } from "../types";
 export declare type SubscribeOptions = {
     timeout?: number;
 };
