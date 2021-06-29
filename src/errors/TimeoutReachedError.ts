@@ -1,7 +1,5 @@
-import { FetchKey } from "../Actions";
-
 export default class TimeoutReachedError extends Error {
-    constructor(key: FetchKey) {
-        super(`Timeout for call with key "${key}" expired. Call was aborted.`);
+    constructor(topic: string) {
+        super(`Timeout for call with topic "${topic}" expired. Call was aborted.`);
     }
 }
