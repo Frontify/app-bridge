@@ -32,8 +32,8 @@ const appState: AppBridgeAppState = {
     },
 
     async updateAppState<T = Record<string, unknown>>(newState: T): Promise<boolean> {
-        notify(Topic.UpdateAppState, PUBSUB_TOKEN);
-        return subscribe<boolean>(Topic.UpdateAppState, PUBSUB_TOKEN, newState);
+        notify(Topic.UpdateAppState, PUBSUB_TOKEN, { newState });
+        return subscribe<boolean>(Topic.UpdateAppState, PUBSUB_TOKEN);
     },
 
     async deleteAppState(): Promise<boolean> {
@@ -48,13 +48,9 @@ const assets: AppBridgeAssets = {
         return subscribe<Asset>(Topic.GetAssetById, PUBSUB_TOKEN);
     },
 
-    openAssetChooser: (): void => {
-        notify(Topic.OpenAssetChooser, PUBSUB_TOKEN);
-    },
-
     async postExternalAsset(asset: PostExternalAssetParams): Promise<Asset> {
         const timeout = asset.previewUrl ? FILE_UPLOAD_TIMEOUT : DEFAULT_TIMEOUT;
-        notify(Topic.PostExternalAsset, PUBSUB_TOKEN);
+        notify(Topic.PostExternalAsset, PUBSUB_TOKEN, { asset });
         return subscribe<Asset>(Topic.PostExternalAsset, PUBSUB_TOKEN, {
             timeout,
         });
@@ -70,7 +66,7 @@ const auth: AppBridgeAuth = {
     },
 
     getRefreshedThirdpartyOauth2Tokens(refreshToken: string): Promise<OauthTokens> {
-        notify(Topic.GetRefreshedThirdpartyOauth2Token, PUBSUB_TOKEN, refreshToken);
+        notify(Topic.GetRefreshedThirdpartyOauth2Token, PUBSUB_TOKEN, { refreshToken });
         return subscribe<OauthTokens>(Topic.GetRefreshedThirdpartyOauth2Token, PUBSUB_TOKEN);
     },
 };
@@ -85,6 +81,10 @@ const context: AppBridgeContext = {
 const utilities: AppBridgeUtilities = {
     closeApp(): void {
         notify(Topic.CloseApp, PUBSUB_TOKEN);
+    },
+
+    openAssetChooser: (): void => {
+        notify(Topic.OpenAssetChooser, PUBSUB_TOKEN);
     },
 };
 

@@ -1,5 +1,11 @@
 import type { Asset, PostExternalAssetParams } from "./types";
-import type { AppBridge, AppBridgeAssets, AppBridgeBlock, AppBridgeContext } from "./types/AppBridge";
+import type {
+    AppBridge,
+    AppBridgeAssets,
+    AppBridgeBlock,
+    AppBridgeContext,
+    AppBridgeUtilities,
+} from "./types/AppBridge";
 import { TerrificEvent } from "./types/TerrificEvent";
 
 export interface AppBridgeNative extends AppBridge {
@@ -12,14 +18,6 @@ const assets: AppBridgeAssets = {
     async postExternalAsset(asset: PostExternalAssetParams): Promise<Asset> {
         console.log(asset);
         return {} as Asset;
-    },
-
-    openAssetChooser: (): void => {
-        const $assetChooser = window.application.sandbox.config.tpl.render("c-assetchooser", {});
-        window.application.connectors.events.notify(null, TerrificEvent.OpenModal, {
-            modifier: "flex",
-            $content: $assetChooser,
-        });
     },
 
     getAssetById(assetId: number): any {
@@ -55,8 +53,23 @@ const context: AppBridgeContext = {
     },
 };
 
+const utilities: AppBridgeUtilities = {
+    closeApp: () => {
+        return;
+    },
+
+    openAssetChooser: (): void => {
+        const $assetChooser = window.application.sandbox.config.tpl.render("c-assetchooser", {});
+        window.application.connectors.events.notify(null, TerrificEvent.OpenModal, {
+            modifier: "flex",
+            $content: $assetChooser,
+        });
+    },
+};
+
 export default <AppBridgeNative>{
     assets,
     block,
     context,
+    utilities,
 };
