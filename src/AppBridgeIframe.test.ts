@@ -2,7 +2,7 @@ const token = "AjY34F87Dsat^J";
 const mockGenerateRandomString = jest.fn().mockImplementation(() => token);
 
 import appBridgeIframe from "./AppBridgeIframe";
-import { Topic } from "./types/AppBridge";
+import { Topic } from "./types";
 import notify from "./utilities/notify";
 import subscribe from "./utilities/subscribe";
 import { generateRandomString } from "./utilities/hash";
@@ -43,15 +43,15 @@ describe("AppState", () => {
         expect(result).resolves.toEqual(expectedResult);
     });
 
-    test("updateAppState", () => {
+    test("putAppState", () => {
         const newState = { new: "state" };
-        const result = appBridgeIframe.appState.updateAppState(newState);
+        const result = appBridgeIframe.appState.putAppState(newState);
 
         expect(mockNotify).toHaveBeenCalledTimes(1);
-        expect(mockNotify).toHaveBeenCalledWith(Topic.UpdateAppState, token, { newState });
+        expect(mockNotify).toHaveBeenCalledWith(Topic.PutAppState, token, newState);
 
         expect(mockSubscribe).toHaveBeenCalledTimes(1);
-        expect(mockSubscribe).toHaveBeenCalledWith(Topic.UpdateAppState, token);
+        expect(mockSubscribe).toHaveBeenCalledWith(Topic.PutAppState, token);
         expect(result).resolves.toEqual(expectedResult);
     });
 
@@ -89,7 +89,7 @@ describe("AppBridgeAssets", () => {
         const result = appBridgeIframe.assets.postExternalAsset(asset);
 
         expect(mockNotify).toHaveBeenCalledTimes(1);
-        expect(mockNotify).toHaveBeenCalledWith(Topic.PostExternalAsset, token, { asset });
+        expect(mockNotify).toHaveBeenCalledWith(Topic.PostExternalAsset, token, { ...asset });
 
         expect(mockSubscribe).toHaveBeenCalledTimes(1);
         expect(mockSubscribe).toHaveBeenCalledWith(Topic.PostExternalAsset, token, { timeout: FILE_UPLOAD_TIMEOUT });
@@ -104,7 +104,7 @@ describe("AppBridgeAssets", () => {
         const result = appBridgeIframe.assets.postExternalAsset(asset);
 
         expect(mockNotify).toHaveBeenCalledTimes(1);
-        expect(mockNotify).toHaveBeenCalledWith(Topic.PostExternalAsset, token, { asset });
+        expect(mockNotify).toHaveBeenCalledWith(Topic.PostExternalAsset, token, { ...asset });
 
         expect(mockSubscribe).toHaveBeenCalledTimes(1);
         expect(mockSubscribe).toHaveBeenCalledWith(Topic.PostExternalAsset, token, { timeout: DEFAULT_TIMEOUT });
@@ -116,10 +116,10 @@ describe("AppBridgeAuth", () => {
         const result = appBridgeIframe.auth.getThirdPartyOauth2Tokens();
 
         expect(mockNotify).toHaveBeenCalledTimes(1);
-        expect(mockNotify).toHaveBeenCalledWith(Topic.GetThirdPartyOauth2Token, token);
+        expect(mockNotify).toHaveBeenCalledWith(Topic.GetThirdPartyOauth2Tokens, token);
 
         expect(mockSubscribe).toHaveBeenCalledTimes(1);
-        expect(mockSubscribe).toHaveBeenCalledWith(Topic.GetThirdPartyOauth2Token, token, {
+        expect(mockSubscribe).toHaveBeenCalledWith(Topic.GetThirdPartyOauth2Tokens, token, {
             timeout: OAUTH2_TIMEOUT,
         });
         expect(result).resolves.toEqual(expectedResult);
