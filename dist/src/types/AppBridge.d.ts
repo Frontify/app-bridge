@@ -1,7 +1,8 @@
 import type { Asset, OauthTokens, PostExternalAssetParams } from ".";
+import { NotifyData } from "../utilities/notify";
 export interface AppBridgeAppState {
     getAppState: <T = Record<string, unknown>>() => Promise<T>;
-    updateAppState: <T = Record<string, unknown>>(newState: T) => Promise<boolean>;
+    putAppState: (newState: NotifyData) => Promise<boolean>;
     deleteAppState: () => Promise<boolean>;
 }
 export interface AppBridgeAssets {
@@ -27,17 +28,4 @@ export interface AppBridgeUtilities {
 export interface AppBridge {
     assets: AppBridgeAssets;
     context: AppBridgeContext;
-}
-export declare enum Topic {
-    CloseApp = "closeApp",
-    DeleteAppState = "deleteAppState",
-    GetAppState = "getAppState",
-    GetAssetById = "getAssetById",
-    GetProjectId = "getProjectId",
-    GetRefreshedThirdpartyOauth2Token = "getRefreshedThirdpartyOauth2Token",
-    GetThirdPartyOauth2Token = "getThirdPartyOAuth2Token",
-    OpenAssetChooser = "openAssetChooser",
-    PostExternalAsset = "postExternalAsset",
-    PutAppState = "putAppState",
-    UpdateAppState = "updateAppState"
 }
