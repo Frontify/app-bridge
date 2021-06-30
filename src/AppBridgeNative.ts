@@ -1,18 +1,6 @@
-import type { Asset, PostExternalAssetParams } from "./types";
-import type {
-    AppBridge,
-    AppBridgeAssets,
-    AppBridgeBlock,
-    AppBridgeContext,
-    AppBridgeUtilities,
-} from "./types/AppBridge";
+import type { Asset, PostExternalAssetParams, AppBridgeNative } from "./types";
+import type { AppBridgeAssets, AppBridgeBlock, AppBridgeContext, AppBridgeUtilities } from "./types/AppBridge";
 import { TerrificEvent } from "./types/TerrificEvent";
-
-export interface AppBridgeNative extends AppBridge {
-    assets: AppBridgeAssets;
-    block: AppBridgeBlock;
-    context: AppBridgeContext;
-}
 
 const assets: AppBridgeAssets = {
     async postExternalAsset(asset: PostExternalAssetParams): Promise<Asset> {

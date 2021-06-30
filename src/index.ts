@@ -1,6 +1,7 @@
-import appBridgeIframe, { AppBridgeIframe } from "./AppBridgeIframe";
-import appBridgeNative, { AppBridgeNative } from "./AppBridgeNative";
+import appBridgeIframe from "./AppBridgeIframe";
+import appBridgeNative from "./AppBridgeNative";
 import packageJson from "../package.json";
+import { AppBridgeNative, AppBridgeIframe } from "./types";
 
 export const { version } = packageJson;
 export * from "./types";
