@@ -1,24 +1,15 @@
-import { Topic } from "./types/AppBridge";
 import { generateRandomString } from "./utilities/hash";
-import notify from "./utilities/notify";
+import notify, { NotifyData } from "./utilities/notify";
 import subscribe from "./utilities/subscribe";
 import type {
-    AppBridge,
     AppBridgeAppState,
     AppBridgeAssets,
     AppBridgeAuth,
     AppBridgeContext,
     AppBridgeUtilities,
 } from "./types/AppBridge";
-import type { PostExternalAssetParams, OauthTokens, Asset } from "./types";
-
-export interface AppBridgeIframe extends AppBridge {
-    appState: AppBridgeAppState;
-    assets: AppBridgeAssets;
-    auth: AppBridgeAuth;
-    context: AppBridgeContext;
-    utilities: AppBridgeUtilities;
-}
+import type { PostExternalAssetParams, OauthTokens, Asset, AppBridgeIframe } from "./types";
+import { Topic } from "./types";
 
 const PUBSUB_TOKEN = generateRandomString();
 const DEFAULT_TIMEOUT = 3 * 1000;
@@ -31,9 +22,9 @@ const appState: AppBridgeAppState = {
         return subscribe<T>(Topic.GetAppState, PUBSUB_TOKEN);
     },
 
-    async updateAppState<T = Record<string, unknown>>(newState: T): Promise<boolean> {
-        notify(Topic.UpdateAppState, PUBSUB_TOKEN, { newState });
-        return subscribe<boolean>(Topic.UpdateAppState, PUBSUB_TOKEN);
+    async putAppState(newState: NotifyData): Promise<boolean> {
+        notify(Topic.PutAppState, PUBSUB_TOKEN, newState);
+        return subscribe<boolean>(Topic.PutAppState, PUBSUB_TOKEN);
     },
 
     async deleteAppState(): Promise<boolean> {
@@ -50,7 +41,7 @@ const assets: AppBridgeAssets = {
 
     async postExternalAsset(asset: PostExternalAssetParams): Promise<Asset> {
         const timeout = asset.previewUrl ? FILE_UPLOAD_TIMEOUT : DEFAULT_TIMEOUT;
-        notify(Topic.PostExternalAsset, PUBSUB_TOKEN, { asset });
+        notify(Topic.PostExternalAsset, PUBSUB_TOKEN, { ...asset });
         return subscribe<Asset>(Topic.PostExternalAsset, PUBSUB_TOKEN, {
             timeout,
         });
@@ -59,8 +50,8 @@ const assets: AppBridgeAssets = {
 
 const auth: AppBridgeAuth = {
     getThirdPartyOauth2Tokens(): Promise<OauthTokens> {
-        notify(Topic.GetThirdPartyOauth2Token, PUBSUB_TOKEN);
-        return subscribe<OauthTokens>(Topic.GetThirdPartyOauth2Token, PUBSUB_TOKEN, {
+        notify(Topic.GetThirdPartyOauth2Tokens, PUBSUB_TOKEN);
+        return subscribe<OauthTokens>(Topic.GetThirdPartyOauth2Tokens, PUBSUB_TOKEN, {
             timeout: OAUTH2_TIMEOUT,
         });
     },

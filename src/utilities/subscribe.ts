@@ -1,6 +1,6 @@
 import FetchError from "../errors/NotifyError";
 import TimeoutReachedError from "../errors/TimeoutReachedError";
-import { Topic } from "../types/AppBridge";
+import { Topic } from "../types";
 import type CrossDocumentMessageResponse from "../types/CrossDocumentMessageResponse";
 
 export type SubscribeOptions = {

@@ -1,19 +1,7 @@
-import type { Asset, PostExternalAssetParams } from "./types";
-import type {
-    AppBridge,
-    AppBridgeAssets,
-    AppBridgeBlock,
-    AppBridgeContext,
-    AppBridgeUtilities,
-} from "./types/AppBridge";
+import type { Asset, PostExternalAssetParams, AppBridgeNative } from "./types";
+import type { AppBridgeAssets, AppBridgeBlock, AppBridgeContext, AppBridgeUtilities } from "./types/AppBridge";
 import { TerrificEvent } from "./types/TerrificEvent";
 import { getJqueryDataByElement, getJqueryDatasetByClassName } from "./utilities/jquery";
-
-export interface AppBridgeNative extends AppBridge {
-    assets: AppBridgeAssets;
-    block: AppBridgeBlock;
-    context: AppBridgeContext;
-}
 
 const assets: AppBridgeAssets = {
     getAssetById(assetId: number): Promise<Asset> {
