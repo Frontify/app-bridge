@@ -19,12 +19,13 @@ export interface AppBridgeAuth {
 
 export interface AppBridgeBlock {
     getBlockId: (element: HTMLElement) => number;
-    getBlockSettings: <T>(element: HTMLElement) => Promise<T>;
+    getBlockSettings: <T = Record<string, unknown>>(element: HTMLElement) => T;
     updateBlockSettings: (element: HTMLElement, newSettings: Record<string, unknown>) => Promise<boolean>;
 }
 
 export interface AppBridgeContext {
-    getProjectId: () => Promise<number>;
+    getEditorState: () => boolean;
+    getProjectId: () => number;
 }
 
 export interface AppBridgeUtilities {
