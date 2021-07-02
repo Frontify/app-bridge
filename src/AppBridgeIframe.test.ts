@@ -96,7 +96,7 @@ describe("AppBridgeAssets", () => {
         const result = appBridgeIframe.assets.postExternalAssets(assets);
 
         expect(mockNotify).toHaveBeenCalledTimes(1);
-        expect(mockNotify).toHaveBeenCalledWith(Topic.PostExternalAssets, token, { ...assets });
+        expect(mockNotify).toHaveBeenCalledWith(Topic.PostExternalAssets, token, assets);
 
         expect(mockSubscribe).toHaveBeenCalledTimes(1);
         expect(mockSubscribe).toHaveBeenCalledWith(Topic.PostExternalAssets, token, { timeout: FILE_UPLOAD_TIMEOUT });
@@ -117,7 +117,7 @@ describe("AppBridgeAssets", () => {
         const result = appBridgeIframe.assets.postExternalAssets(assets);
 
         expect(mockNotify).toHaveBeenCalledTimes(1);
-        expect(mockNotify).toHaveBeenCalledWith(Topic.PostExternalAssets, token, { ...assets });
+        expect(mockNotify).toHaveBeenCalledWith(Topic.PostExternalAssets, token, assets);
 
         expect(mockSubscribe).toHaveBeenCalledTimes(1);
         expect(mockSubscribe).toHaveBeenCalledWith(Topic.PostExternalAssets, token, { timeout: DEFAULT_TIMEOUT });
