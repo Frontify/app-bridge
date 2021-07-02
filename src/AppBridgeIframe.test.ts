@@ -85,12 +85,12 @@ describe("AppBridgeAssets", () => {
             {
                 title: "My external asset",
                 url: "https://www.post-external-asset.test",
-                preview: new File([""], "filename", { type: "text/html" }),
+                previewUrl: "https://www.preview-url.test",
             },
             {
                 title: "My external asset",
                 url: "https://www.post-external-asset.test",
-                preview: new File([""], "filename", { type: "text/html" }),
+                previewUrl: "https://www.preview-url.test",
             },
         ];
         const result = appBridgeIframe.assets.postExternalAssets(assets);
