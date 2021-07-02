@@ -2,6 +2,7 @@ import { TerrificEvent } from "./types/TerrificEvent";
 
 export declare global {
     interface Window {
+        styleguideSettings: Record<string, string>;
         application: {
             config: {
                 context: {

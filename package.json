@@ -1,6 +1,6 @@
 {
     "name": "@frontify/app-bridge",
-    "version": "1.0.39",
+    "version": "1.0.40",
     "description": "Package to establish communication between Frontify and marketplace apps",
     "main": "dist/index.js",
     "files": [
@@ -23,6 +23,7 @@
         "@babel/preset-typescript": "^7.14.5",
         "@frontify/eslint-config-typescript": "^0.6.0",
         "@types/jest": "^26.0.23",
+        "@types/react": "^17.0.13",
         "babel-loader": "^8.2.2",
         "husky": "^6.0.0",
         "jest": "^27.0.4",
@@ -32,5 +33,8 @@
         "typescript": "^4.3.2",
         "webpack": "^5.38.1",
         "webpack-cli": "^4.7.2"
+    },
+    "dependencies": {
+        "react": "^17.0.2"
     }
 }

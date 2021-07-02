@@ -1,4 +1,6 @@
 export const getJqueryDataByElement = (element: Element): Record<string, unknown> => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
     return Object.keys(element).reduce((stack, key) => ({ ...stack, ...element[key] }), {});
 };
 

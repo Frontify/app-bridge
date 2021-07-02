@@ -5,31 +5,11 @@ import { getJqueryDataByElement, getJqueryDatasetByClassName } from "./utilities
 
 const assets: AppBridgeAssets = {
     getAssetById(assetId: number): Promise<Asset> {
-        return new Promise(async (resolve) => {
-            const response = await window.fetch(`/api/asset/${assetId}`, {
-                method: "POST",
-                headers: {
-                    "x-csrf-token": (document.getElementsByName("x-csrf-token")[0] as HTMLMetaElement).content,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    settings: newSettings,
-                    ...(translationLanguage ? { language: translationLanguage } : {}),
-                }),
-            });
-
-            const responseJson = await response.json();
-            if (responseJson.success) {
-                return resolve(true);
-            } else {
-                throw new Error("Could not update the block settings");
-            }
-        });
+        return Promise.resolve({ assetId } as unknown as Asset);
     },
 
-    async postExternalAssets(assets: PostExternalAssetParams[]): Promise<Asset[]> {
-        console.log(assets);
-        return {} as Asset[];
+    async postExternalAsset(asset: PostExternalAssetParams): Promise<Asset> {
+        return { asset } as unknown as Asset;
     },
 };
 
@@ -45,9 +25,15 @@ const block: AppBridgeBlock = {
         throw new Error("Block's parent div not found.");
     },
 
-    getBlockSettings<T>(element: HTMLElement): Promise<T> {
-        console.log(element);
-        return new Promise((r) => r({} as unknown as T));
+    getBlockSettings<T = Record<string, unknown>>(element: HTMLElement): T {
+        const blockId = this.getBlockId(element);
+        const blockSettings = window.styleguideSettings[blockId];
+
+        if (!blockSettings) {
+            throw new Error(`Could not find settings for block ${blockId}`);
+        }
+
+        return JSON.parse(blockSettings) as T;
     },
 
     updateBlockSettings(element: HTMLElement, newSettings: Record<string, unknown>): Promise<boolean> {
@@ -60,6 +46,11 @@ const block: AppBridgeBlock = {
         const blockId = this.getBlockId(element);
 
         const { translationLanguage } = getJqueryDataByElement(document.body);
+
+        if (JSON.stringify(this.getBlockSettings(element)) === JSON.stringify(newSettings)) {
+            console.log("You have the same settings, skipping call...");
+            return Promise.resolve(true);
+        }
 
         return new Promise(async (resolve) => {
             const response = await window.fetch(`/api/document/block/${pageId}/${sectionId}/${blockId}`, {
@@ -76,6 +67,7 @@ const block: AppBridgeBlock = {
 
             const responseJson = await response.json();
             if (responseJson.success) {
+                window.styleguideSettings[blockId] = JSON.stringify(newSettings);
                 return resolve(true);
             } else {
                 throw new Error("Could not update the block settings");
@@ -85,8 +77,11 @@ const block: AppBridgeBlock = {
 };
 
 const context: AppBridgeContext = {
-    getProjectId: (): Promise<number> => {
-        return Promise.resolve(window.application.config.context.project.id);
+    getEditorState: (): boolean => {
+        return document.body.classList.contains("editor-enabled");
+    },
+    getProjectId: (): number => {
+        return window.application.config.context.project.id;
     },
 };
 
