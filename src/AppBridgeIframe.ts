@@ -34,7 +34,7 @@ const assets: AppBridgeAssets = {
     },
 
     async postExternalAssets(assets: PostExternalAssetParams[]): Promise<Asset[]> {
-        const assetsWithPreview = assets.filter((asset) => asset.preview);
+        const assetsWithPreview = assets.filter((asset) => asset.previewUrl);
         const timeout = assetsWithPreview.length ? FILE_UPLOAD_TIMEOUT : DEFAULT_TIMEOUT;
 
         notify(Topic.PostExternalAssets, PUBSUB_TOKEN, { ...assets });
