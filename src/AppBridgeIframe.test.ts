@@ -81,33 +81,46 @@ describe("AppBridgeAssets", () => {
     });
 
     test("postExternalAssetWithPreview", () => {
-        const asset = {
-            title: "My external asset",
-            url: "https://www.post-external-asset.test",
-            previewUrl: "https://www.perview-url.test",
-        };
-        const result = appBridgeIframe.assets.postExternalAsset(asset);
+        const assets = [
+            {
+                title: "My external asset",
+                url: "https://www.post-external-asset.test",
+                preview: new File([""], "filename", { type: "text/html" }),
+            },
+            {
+                title: "My external asset",
+                url: "https://www.post-external-asset.test",
+                preview: new File([""], "filename", { type: "text/html" }),
+            },
+        ];
+        const result = appBridgeIframe.assets.postExternalAssets(assets);
 
         expect(mockNotify).toHaveBeenCalledTimes(1);
-        expect(mockNotify).toHaveBeenCalledWith(Topic.PostExternalAsset, token, { ...asset });
+        expect(mockNotify).toHaveBeenCalledWith(Topic.PostExternalAssets, token, { ...assets });
 
         expect(mockSubscribe).toHaveBeenCalledTimes(1);
-        expect(mockSubscribe).toHaveBeenCalledWith(Topic.PostExternalAsset, token, { timeout: FILE_UPLOAD_TIMEOUT });
+        expect(mockSubscribe).toHaveBeenCalledWith(Topic.PostExternalAssets, token, { timeout: FILE_UPLOAD_TIMEOUT });
         expect(result).resolves.toEqual(expectedResult);
     });
 
     test("postExternalAssetWithoutPreview", () => {
-        const asset = {
-            title: "My external asset",
-            url: "https://www.post-external-asset.test",
-        };
-        const result = appBridgeIframe.assets.postExternalAsset(asset);
+        const assets = [
+            {
+                title: "My external asset",
+                url: "https://www.post-external-asset.test",
+            },
+            {
+                title: "My external asset",
+                url: "https://www.post-external-asset.test",
+            },
+        ];
+        const result = appBridgeIframe.assets.postExternalAssets(assets);
 
         expect(mockNotify).toHaveBeenCalledTimes(1);
-        expect(mockNotify).toHaveBeenCalledWith(Topic.PostExternalAsset, token, { ...asset });
+        expect(mockNotify).toHaveBeenCalledWith(Topic.PostExternalAssets, token, { ...assets });
 
         expect(mockSubscribe).toHaveBeenCalledTimes(1);
-        expect(mockSubscribe).toHaveBeenCalledWith(Topic.PostExternalAsset, token, { timeout: DEFAULT_TIMEOUT });
+        expect(mockSubscribe).toHaveBeenCalledWith(Topic.PostExternalAssets, token, { timeout: DEFAULT_TIMEOUT });
         expect(result).resolves.toEqual(expectedResult);
     });
 });

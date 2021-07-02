@@ -27,9 +27,9 @@ const assets: AppBridgeAssets = {
         });
     },
 
-    async postExternalAsset(asset: PostExternalAssetParams): Promise<Asset> {
-        console.log(asset);
-        return {} as Asset;
+    async postExternalAssets(assets: PostExternalAssetParams[]): Promise<Asset[]> {
+        console.log(assets);
+        return {} as Asset[];
     },
 };
 

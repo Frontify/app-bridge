@@ -39,10 +39,12 @@ const assets: AppBridgeAssets = {
         return subscribe<Asset>(Topic.GetAssetById, PUBSUB_TOKEN);
     },
 
-    async postExternalAsset(asset: PostExternalAssetParams): Promise<Asset> {
-        const timeout = asset.previewUrl ? FILE_UPLOAD_TIMEOUT : DEFAULT_TIMEOUT;
-        notify(Topic.PostExternalAsset, PUBSUB_TOKEN, { ...asset });
-        return subscribe<Asset>(Topic.PostExternalAsset, PUBSUB_TOKEN, {
+    async postExternalAssets(assets: PostExternalAssetParams[]): Promise<Asset[]> {
+        const assetsWithPreview = assets.filter((asset) => asset.preview);
+        const timeout = assetsWithPreview.length ? FILE_UPLOAD_TIMEOUT : DEFAULT_TIMEOUT;
+
+        notify(Topic.PostExternalAssets, PUBSUB_TOKEN, { ...assets });
+        return subscribe<Asset[]>(Topic.PostExternalAssets, PUBSUB_TOKEN, {
             timeout,
         });
     },
