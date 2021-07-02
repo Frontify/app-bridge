@@ -1,13 +1,7 @@
 import { generateRandomString } from "./utilities/hash";
 import notify, { NotifyData } from "./utilities/notify";
 import subscribe from "./utilities/subscribe";
-import type {
-    AppBridgeAppState,
-    AppBridgeAssets,
-    AppBridgeAuth,
-    AppBridgeContext,
-    AppBridgeUtilities,
-} from "./types/AppBridge";
+import type { AppBridgeAppState, AppBridgeAssets, AppBridgeAuth, AppBridgeUtilities } from "./types/AppBridge";
 import type { PostExternalAssetParams, OauthTokens, Asset, AppBridgeIframe } from "./types";
 import { Topic } from "./types";
 
@@ -62,13 +56,6 @@ const auth: AppBridgeAuth = {
     },
 };
 
-const context: AppBridgeContext = {
-    getProjectId: (): Promise<number> => {
-        notify(Topic.GetProjectId, PUBSUB_TOKEN);
-        return subscribe<number>(Topic.GetProjectId, PUBSUB_TOKEN);
-    },
-};
-
 const utilities: AppBridgeUtilities = {
     closeApp(): void {
         notify(Topic.CloseApp, PUBSUB_TOKEN);
@@ -83,6 +70,5 @@ export default <AppBridgeIframe>{
     appState,
     assets,
     auth,
-    context,
     utilities,
 };
