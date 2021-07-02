@@ -8,8 +8,8 @@ const assets: AppBridgeAssets = {
         return Promise.resolve({ assetId } as unknown as Asset);
     },
 
-    async postExternalAsset(asset: PostExternalAssetParams): Promise<Asset> {
-        return { asset } as unknown as Asset;
+    async postExternalAssets(asset: PostExternalAssetParams[]): Promise<Asset[]> {
+        return [{ asset }] as unknown as Asset[];
     },
 };
 
