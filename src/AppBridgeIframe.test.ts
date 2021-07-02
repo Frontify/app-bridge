@@ -137,19 +137,6 @@ describe("AppBridgeAuth", () => {
     });
 });
 
-describe("AppBridgeContext", () => {
-    test("getProjectId", () => {
-        const result = appBridgeIframe.context.getProjectId();
-
-        expect(mockNotify).toHaveBeenCalledTimes(1);
-        expect(mockNotify).toHaveBeenCalledWith(Topic.GetProjectId, token);
-
-        expect(mockSubscribe).toHaveBeenCalledTimes(1);
-        expect(mockSubscribe).toHaveBeenCalledWith(Topic.GetProjectId, token);
-        expect(result).resolves.toEqual(expectedResult);
-    });
-});
-
 describe("Utilities", () => {
     test("closeApp", () => {
         appBridgeIframe.utilities.closeApp();
