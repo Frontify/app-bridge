@@ -3,6 +3,7 @@ const path = require("path");
 
 const config = {
     entry: "./src/index.ts",
+    target: "es5",
     module: {
         rules: [
             {
