@@ -8,7 +8,7 @@ import { Topic } from "./types";
 const PUBSUB_TOKEN = generateRandomString();
 const DEFAULT_TIMEOUT = 3 * 1000;
 const OAUTH2_TIMEOUT = 5 * 60 * 1000;
-const FILE_UPLOAD_TIMEOUT = 10 * 1000;
+const FILE_UPLOAD_TIMEOUT = 30 * 1000;
 
 const appState: AppBridgeAppState = {
     getAppState<T = Record<string, unknown>>(): Promise<T> {
