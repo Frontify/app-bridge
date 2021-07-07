@@ -9,7 +9,7 @@ export interface AppBridgeAppState {
 
 export interface AppBridgeAssets {
     getAssetById: (assetId: number) => Promise<Asset>;
-    postExternalAsset: (asset: PostExternalAssetParams) => Promise<Asset>;
+    postExternalAssets: (asset: PostExternalAssetParams[]) => Promise<Asset[]>;
 }
 
 export interface AppBridgeAuth {

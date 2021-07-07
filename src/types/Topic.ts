@@ -7,6 +7,6 @@ export enum Topic {
     GetRefreshedThirdpartyOauth2Token = "getRefreshedThirdpartyOauth2Token",
     GetThirdPartyOauth2Tokens = "getThirdPartyOauth2Tokens",
     OpenAssetChooser = "openAssetChooser",
-    PostExternalAsset = "postExternalAsset",
+    PostExternalAssets = "postExternalAssets",
     PutAppState = "putAppState",
 }
