@@ -7,6 +7,9 @@ export const { version } = packageJson;
 export * from "./types";
 
 export const createNativeAppBridge = (): AppBridgeNative => {
+    if (!window.application.connectors.events.components.appBridge) {
+        window.application.connectors.events.registerComponent({ id: "appBridge" });
+    }
     return appBridgeNative;
 };
 

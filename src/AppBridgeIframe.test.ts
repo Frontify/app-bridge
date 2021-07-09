@@ -159,7 +159,7 @@ describe("Utilities", () => {
     });
 
     test("openAssetChooser", () => {
-        appBridgeIframe.utilities.openAssetChooser();
+        appBridgeIframe.utilities.openAssetChooser(() => null);
 
         expect(mockNotify).toHaveBeenCalledTimes(1);
         expect(mockNotify).toHaveBeenCalledWith(Topic.OpenAssetChooser, token);

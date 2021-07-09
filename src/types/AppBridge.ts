@@ -30,7 +30,7 @@ export interface AppBridgeContext {
 
 export interface AppBridgeUtilities {
     closeApp: () => void;
-    openAssetChooser: () => void;
+    openAssetChooser: (callback: (data: unknown) => void) => void;
 }
 
 export interface AppBridge {

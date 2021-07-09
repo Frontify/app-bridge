@@ -90,7 +90,9 @@ const utilities: AppBridgeUtilities = {
         return;
     },
 
-    openAssetChooser: (): void => {
+    openAssetChooser: (callback: (data: unknown) => void): void => {
+        window.application.connectors.events.components.appBridge.component.onAssetChooserAssetChosen = callback;
+
         const $assetChooser = window.application.sandbox.config.tpl.render("c-assetchooser", {});
         window.application.connectors.events.notify(null, TerrificEvent.OpenModal, {
             modifier: "flex",
