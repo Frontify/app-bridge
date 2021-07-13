@@ -7,8 +7,7 @@ import { Topic } from "./types";
 
 const PUBSUB_TOKEN = generateRandomString();
 const DEFAULT_TIMEOUT = 3 * 1000;
-const OAUTH2_TIMEOUT = 5 * 60 * 1000;
-const FILE_UPLOAD_TIMEOUT = 30 * 1000;
+const LONG_TIMEOUT = 5 * 60 * 1000;
 
 const appState: AppBridgeAppState = {
     getAppState<T = Record<string, unknown>>(): Promise<T> {
@@ -35,7 +34,7 @@ const assets: AppBridgeAssets = {
 
     async postExternalAssets(assets: PostExternalAssetParams[]): Promise<Asset[]> {
         const assetsWithPreview = assets.filter((asset) => asset.previewUrl);
-        const timeout = assetsWithPreview.length ? FILE_UPLOAD_TIMEOUT : DEFAULT_TIMEOUT;
+        const timeout = assetsWithPreview.length ? LONG_TIMEOUT : DEFAULT_TIMEOUT;
 
         notify<PostExternalAssetParams[]>(Topic.PostExternalAssets, PUBSUB_TOKEN, assets);
         return subscribe<Asset[]>(Topic.PostExternalAssets, PUBSUB_TOKEN, {
@@ -48,7 +47,7 @@ const auth: AppBridgeAuth = {
     getThirdPartyOauth2Tokens(): Promise<OauthTokens> {
         notify(Topic.GetThirdPartyOauth2Tokens, PUBSUB_TOKEN);
         return subscribe<OauthTokens>(Topic.GetThirdPartyOauth2Tokens, PUBSUB_TOKEN, {
-            timeout: OAUTH2_TIMEOUT,
+            timeout: LONG_TIMEOUT,
         });
     },
 

@@ -19,8 +19,7 @@ const mockGenerate = generateRandomString as jest.MockedFunction<typeof generate
 const expectedResult = { test: "passed" };
 
 const DEFAULT_TIMEOUT = 3 * 1000;
-const OAUTH2_TIMEOUT = 5 * 60 * 1000;
-const FILE_UPLOAD_TIMEOUT = 30 * 1000;
+const LONG_TIMEOUT = 5 * 60 * 1000;
 
 beforeEach(() => {
     mockNotify.mockClear();
@@ -99,7 +98,7 @@ describe("AppBridgeAssets", () => {
         expect(mockNotify).toHaveBeenCalledWith(Topic.PostExternalAssets, token, assets);
 
         expect(mockSubscribe).toHaveBeenCalledTimes(1);
-        expect(mockSubscribe).toHaveBeenCalledWith(Topic.PostExternalAssets, token, { timeout: FILE_UPLOAD_TIMEOUT });
+        expect(mockSubscribe).toHaveBeenCalledWith(Topic.PostExternalAssets, token, { timeout: LONG_TIMEOUT });
         expect(result).resolves.toEqual(expectedResult);
     });
 
@@ -133,7 +132,7 @@ describe("AppBridgeAuth", () => {
 
         expect(mockSubscribe).toHaveBeenCalledTimes(1);
         expect(mockSubscribe).toHaveBeenCalledWith(Topic.GetThirdPartyOauth2Tokens, token, {
-            timeout: OAUTH2_TIMEOUT,
+            timeout: LONG_TIMEOUT,
         });
         expect(result).resolves.toEqual(expectedResult);
     });
