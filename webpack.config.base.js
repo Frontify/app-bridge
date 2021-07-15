@@ -2,7 +2,10 @@
 const path = require("path");
 
 const config = {
-    entry: "./src/index.ts",
+    entry: {
+        index: "./src/index.ts",
+        "react/index": "./src/react/index.ts",
+    },
     target: "es5",
     module: {
         rules: [
@@ -26,9 +29,10 @@ const config = {
     resolve: {
         extensions: [".ts", ".js"],
     },
+    externals: { react: "react" },
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename: "index.js",
+        filename: "[name].js",
         libraryTarget: "umd",
         umdNamedDefine: true,
     },
