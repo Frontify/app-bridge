@@ -27,13 +27,13 @@ const block: AppBridgeBlock = {
 
     getBlockSettings<T = Record<string, unknown>>(element: HTMLElement): T {
         const blockId = this.getBlockId(element);
-        const blockSettings = window.styleguideSettings[blockId];
+        const blockSettings = window.blockSettings[blockId];
 
         if (!blockSettings) {
             throw new Error(`Could not find settings for block ${blockId}`);
         }
 
-        return JSON.parse(blockSettings) as T;
+        return blockSettings as T;
     },
 
     updateBlockSettings(element: HTMLElement, newSettings: Record<string, unknown>): Promise<boolean> {
@@ -67,7 +67,7 @@ const block: AppBridgeBlock = {
 
             const responseJson = await response.json();
             if (responseJson.success) {
-                window.styleguideSettings[blockId] = JSON.stringify(newSettings);
+                window.blockSettings[blockId] = newSettings;
                 return resolve(true);
             } else {
                 throw new Error("Could not update the block settings");

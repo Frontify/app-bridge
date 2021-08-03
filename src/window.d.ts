@@ -2,7 +2,7 @@ import { TerrificEvent } from "./types/TerrificEvent";
 
 export declare global {
     interface Window {
-        styleguideSettings: Record<string, string>;
+        blockSettings: Record<string, Record<string, unknown>>;
         application: {
             config: {
                 context: {
