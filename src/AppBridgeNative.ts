@@ -1,5 +1,13 @@
 import type { Asset, PostExternalAssetParams, AppBridgeNative } from "./types";
-import type { AppBridgeAssets, AppBridgeBlock, AppBridgeContext, AppBridgeUtilities } from "./types/AppBridge";
+import type {
+    AppBridgeAssets,
+    AppBridgeBlock,
+    AppBridgeColors,
+    AppBridgeContext,
+    AppBridgeUtilities,
+} from "./types/AppBridge";
+import Color from "./types/Color";
+import ColorPalette from "./types/ColorPalette";
 import { TerrificEvent } from "./types/TerrificEvent";
 import { getJqueryDataByElement, getJqueryDatasetByClassName } from "./utilities/jquery";
 
@@ -10,6 +18,41 @@ const assets: AppBridgeAssets = {
 
     async postExternalAssets(asset: PostExternalAssetParams[]): Promise<Asset[]> {
         return [{ asset }] as unknown as Asset[];
+    },
+};
+
+const colors: AppBridgeColors = {
+    async getColorsByIds(colorIds: number[]): Promise<Color[]> {
+        const response = await window.fetch(`/api/color/library/${window.application.config.context.project.id}`, {
+            method: "GET",
+            headers: {
+                "x-csrf-token": (document.getElementsByName("x-csrf-token")[0] as HTMLMetaElement).content,
+                "Content-Type": "application/json",
+            },
+        });
+
+        const responseJson: { palettes: ColorPalette[] } = await response.json();
+
+        return responseJson.palettes
+            .reduce((previous, current): Color[] => previous.concat(current.colors), <Color[]>[])
+            .filter((color) => colorIds.includes(Number(color.id)));
+    },
+
+    async getAvailableColors(): Promise<Color[]> {
+        const response = await window.fetch(`/api/color/library/${window.application.config.context.project.id}`, {
+            method: "GET",
+            headers: {
+                "x-csrf-token": (document.getElementsByName("x-csrf-token")[0] as HTMLMetaElement).content,
+                "Content-Type": "application/json",
+            },
+        });
+
+        const responseJson: { palettes: ColorPalette[] } = await response.json();
+
+        return responseJson.palettes.reduce(
+            (previous, current): Color[] => previous.concat(current.colors),
+            <Color[]>[],
+        );
     },
 };
 
@@ -104,6 +147,7 @@ const utilities: AppBridgeUtilities = {
 export default <AppBridgeNative>{
     assets,
     block,
+    colors,
     context,
     utilities,
 };

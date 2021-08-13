@@ -1,4 +1,4 @@
-import type { Asset, OauthTokens, PostExternalAssetParams } from ".";
+import type { Asset, OauthTokens, PostExternalAssetParams, Color } from ".";
 import { NotifyData } from "../utilities/notify";
 
 export interface AppBridgeAppState {
@@ -10,6 +10,11 @@ export interface AppBridgeAppState {
 export interface AppBridgeAssets {
     getAssetById: (assetId: number) => Promise<Asset>;
     postExternalAssets: (asset: PostExternalAssetParams[]) => Promise<Asset[]>;
+}
+
+export interface AppBridgeColors {
+    getColorsByIds(colorIds: number[]): Promise<Color[]>;
+    getAvailableColors(): Promise<Color[]>;
 }
 
 export interface AppBridgeAuth {
