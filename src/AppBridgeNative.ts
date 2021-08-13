@@ -23,21 +23,36 @@ const assets: AppBridgeAssets = {
 
 const colors: AppBridgeColors = {
     async getColorsByIds(colorIds: number[]): Promise<Color[]> {
-        const response = await window.application.config.data.get<{ success: boolean; palettes: ColorPalette[] }>(
-            `/api/color/library/${window.application.config.context.project.id}`,
-        );
+        const response = await window.fetch(`/api/color/library/${window.application.config.context.project.id}`, {
+            method: "GET",
+            headers: {
+                "x-csrf-token": (document.getElementsByName("x-csrf-token")[0] as HTMLMetaElement).content,
+                "Content-Type": "application/json",
+            },
+        });
 
-        return response.palettes
+        const responseJson: { palettes: ColorPalette[] } = await response.json();
+
+        return responseJson.palettes
             .reduce((previous, current): Color[] => previous.concat(current.colors), <Color[]>[])
             .filter((color) => colorIds.includes(Number(color.id)));
     },
 
     async getAvailableColors(): Promise<Color[]> {
-        const response = await window.application.config.data.get<{ success: boolean; palettes: ColorPalette[] }>(
-            `/api/color/library/${window.application.config.context.project.id}`,
-        );
+        const response = await window.fetch(`/api/color/library/${window.application.config.context.project.id}`, {
+            method: "GET",
+            headers: {
+                "x-csrf-token": (document.getElementsByName("x-csrf-token")[0] as HTMLMetaElement).content,
+                "Content-Type": "application/json",
+            },
+        });
 
-        return response.palettes.reduce((previous, current): Color[] => previous.concat(current.colors), <Color[]>[]);
+        const responseJson: { palettes: ColorPalette[] } = await response.json();
+
+        return responseJson.palettes.reduce(
+            (previous, current): Color[] => previous.concat(current.colors),
+            <Color[]>[],
+        );
     },
 };
 

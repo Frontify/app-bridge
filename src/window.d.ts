@@ -10,9 +10,6 @@ export declare global {
                         id: number;
                     };
                 };
-                data: {
-                    get: <T>(url: string) => Promise<T>;
-                };
             };
             connectors: {
                 events: {
