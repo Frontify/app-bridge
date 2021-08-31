@@ -97,11 +97,11 @@ const block: AppBridgeBlock = {
         });
 
         const responseJson = await response.json();
+
         if (!responseJson.success) {
             throw new Error("Could not update the block settings");
-        } else {
-            window.blockSettings[blockId] = newSettings;
         }
+        window.blockSettings[blockId] = newSettings;
     },
 };
 
