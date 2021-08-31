@@ -23,9 +23,8 @@ export interface AppBridgeAuth {
 }
 
 export interface AppBridgeBlock {
-    getBlockId: (element: HTMLElement) => number;
-    getBlockSettings: <T = Record<string, unknown>>(element: HTMLElement) => T;
-    updateBlockSettings: (element: HTMLElement, newSettings: Record<string, unknown>) => Promise<boolean>;
+    getBlockSettings: <T = Record<string, unknown>>(blockId: number) => T;
+    updateBlockSettings: (blockId: number, newSettings: Record<string, unknown>, sectionId?: number) => Promise<void>;
 }
 
 export interface AppBridgeContext {
