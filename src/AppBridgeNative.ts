@@ -57,19 +57,7 @@ const colors: AppBridgeColors = {
 };
 
 const block: AppBridgeBlock = {
-    getBlockId(element: HTMLElement): number {
-        const $parent = element.closest("div[data-block]");
-        const parentDivBlockId = parseInt($parent?.getAttribute("data-block") || "0");
-
-        if ($parent || parentDivBlockId > 0) {
-            return parentDivBlockId;
-        }
-
-        throw new Error("Block's parent div not found.");
-    },
-
-    getBlockSettings<T = Record<string, unknown>>(element: HTMLElement): T {
-        const blockId = this.getBlockId(element);
+    getBlockSettings<T = Record<string, unknown>>(blockId: number): T {
         const blockSettings = window.blockSettings[blockId];
 
         if (!blockSettings) {
@@ -79,43 +67,41 @@ const block: AppBridgeBlock = {
         return blockSettings as T;
     },
 
-    updateBlockSettings(element: HTMLElement, newSettings: Record<string, unknown>): Promise<boolean> {
+    async updateBlockSettings(
+        blockId: number,
+        newSettings: Record<string, unknown>,
+        sectionId?: number,
+    ): Promise<void> {
         const pageId = getJqueryDatasetByClassName("page").id;
         if (!pageId) {
             throw new Error("Page ID not found");
         }
 
-        const sectionId = getJqueryDataByElement(element).id;
-        const blockId = this.getBlockId(element);
-
         const { translationLanguage } = getJqueryDataByElement(document.body);
 
-        if (JSON.stringify(this.getBlockSettings(element)) === JSON.stringify(newSettings)) {
+        if (JSON.stringify(this.getBlockSettings(blockId)) === JSON.stringify(newSettings)) {
             console.log("You have the same settings, skipping call...");
-            return Promise.resolve(true);
+            return Promise.resolve();
         }
 
-        return new Promise(async (resolve) => {
-            const response = await window.fetch(`/api/document/block/${pageId}/${sectionId}/${blockId}`, {
-                method: "POST",
-                headers: {
-                    "x-csrf-token": (document.getElementsByName("x-csrf-token")[0] as HTMLMetaElement).content,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    settings: newSettings,
-                    ...(translationLanguage ? { language: translationLanguage } : {}),
-                }),
-            });
-
-            const responseJson = await response.json();
-            if (responseJson.success) {
-                window.blockSettings[blockId] = newSettings;
-                return resolve(true);
-            } else {
-                throw new Error("Could not update the block settings");
-            }
+        const response = await window.fetch(`/api/document/block/${pageId}/${sectionId}/${blockId}`, {
+            method: "POST",
+            headers: {
+                "x-csrf-token": (document.getElementsByName("x-csrf-token")[0] as HTMLMetaElement).content,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                settings: newSettings,
+                ...(translationLanguage ? { language: translationLanguage } : {}),
+            }),
         });
+
+        const responseJson = await response.json();
+
+        if (!responseJson.success) {
+            throw new Error("Could not update the block settings");
+        }
+        window.blockSettings[blockId] = newSettings;
     },
 };
 
