@@ -6,7 +6,6 @@ const config = {
         index: "./src/index.ts",
         "react/index": "./src/react/index.ts",
     },
-    target: "es5",
     module: {
         rules: [
             {
@@ -29,7 +28,7 @@ const config = {
     resolve: {
         extensions: [".ts", ".js"],
     },
-    externals: { react: "react" },
+    externals: { react: "React" },
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "[name].js",
