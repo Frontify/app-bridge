@@ -28,7 +28,9 @@ const config = {
     resolve: {
         extensions: [".ts", ".js"],
     },
-    externals: { react: "React" },
+    externals: {
+        react: "react",
+    },
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "[name].js",
