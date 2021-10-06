@@ -22,11 +22,6 @@ export interface AppBridgeAuth {
     getRefreshedThirdpartyOauth2Tokens: (refreshToken: string) => Promise<OauthTokens>;
 }
 
-export interface AppBridgeBlock {
-    getBlockSettings: <T = Record<string, unknown>>(blockId: number) => T;
-    updateBlockSettings: (blockId: number, newSettings: Record<string, unknown>, sectionId?: number) => Promise<void>;
-}
-
 export interface AppBridgeContext {
     getEditorState: () => boolean;
     getProjectId: () => number;
