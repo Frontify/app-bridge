@@ -82,11 +82,6 @@ export class AppBridgeNative {
 
         const { translationLanguage } = getJqueryDataByElement(document.body);
 
-        if (JSON.stringify(this.getBlockSettings()) === JSON.stringify(newSettings)) {
-            console.log("You have the same settings, skipping call...");
-            return Promise.resolve();
-        }
-
         const response = await window.fetch(`/api/document/block/${pageId}/${this.sectionId}/${this.blockId}`, {
             method: "POST",
             headers: {
