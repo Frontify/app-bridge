@@ -52,17 +52,29 @@ export class AppBridgeNative {
         );
     }
 
-    public getBlockSettings<T = Record<string, unknown>>(): T {
-        const blockSettings = window.blockSettings[this.blockId];
+    public async getBlockSettings<T = Record<string, unknown>>(): Promise<T> {
+        const translationLanguage = getJqueryDataByElement(document.body).translationLanguage;
+        const translationLanguageSuffix = translationLanguage ? `&lang=${translationLanguage}` : "";
+        const response = await window.fetch(
+            `/api/document/block/${this.blockId}?settings_only=true${translationLanguageSuffix}`,
+            {
+                headers: {
+                    "x-csrf-token": (document.getElementsByName("x-csrf-token")[0] as HTMLMetaElement).content,
+                    "Content-Type": "application/json",
+                },
+            },
+        );
 
-        if (!blockSettings) {
-            throw new Error(`Could not find settings for block ${this.blockId}`);
+        const responseJson = await response.json();
+
+        if (!responseJson.success) {
+            throw new Error("Could not get the block settings");
         }
 
-        return blockSettings as T;
+        return responseJson.settings as T;
     }
 
-    public async updateBlockSettings(newSettings: Record<string, unknown>): Promise<void> {
+    public async updateBlockSettings<T = Record<string, unknown>>(newSettings: T): Promise<void> {
         const pageId = getJqueryDatasetByClassName("page").id;
         if (!pageId) {
             throw new Error("Page ID not found");
@@ -92,7 +104,6 @@ export class AppBridgeNative {
         if (!responseJson.success) {
             throw new Error("Could not update the block settings");
         }
-        window.blockSettings[this.blockId] = newSettings;
     }
 
     public getEditorState(): boolean {

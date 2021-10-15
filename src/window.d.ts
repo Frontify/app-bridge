@@ -2,7 +2,6 @@ import { TerrificEvent } from "./types/TerrificEvent";
 
 export declare global {
     interface Window {
-        blockSettings: Record<string, Record<string, unknown>>;
         application: {
             config: {
                 context: {
