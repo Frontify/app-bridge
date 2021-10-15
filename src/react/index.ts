@@ -1,3 +1,2 @@
-import useEditorState from "./useEditorState";
-
-export { useEditorState };
+export { useBlockSettings } from "./useBlockSettings";
+export { useEditorState } from "./useEditorState";

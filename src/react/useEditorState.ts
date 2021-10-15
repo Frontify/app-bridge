@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { AppBridgeNative } from "../AppBridgeNative";
 
-const useEditorState = (): boolean => {
+export const useEditorState = (): boolean => {
     const appBridge = new AppBridgeNative(0, 0);
     const [editorState, setEditorState] = useState(appBridge.getEditorState());
 
@@ -25,5 +25,3 @@ const useEditorState = (): boolean => {
 
     return editorState;
 };
-
-export default useEditorState;
