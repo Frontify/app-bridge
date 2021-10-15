@@ -2,7 +2,7 @@
     "name": "@frontify/app-bridge",
     "version": "2.1.0",
     "description": "Package to establish communication between Frontify and marketplace apps",
-    "main": "dist/index.umd.js",
+    "main": "dist/index.js",
     "files": [
         "dist"
     ],

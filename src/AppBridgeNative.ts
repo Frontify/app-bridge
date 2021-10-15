@@ -5,7 +5,7 @@ import { TerrificEvent } from "./types/TerrificEvent";
 import { getJqueryDataByElement, getJqueryDatasetByClassName } from "./utilities/jquery";
 
 export class AppBridgeNative {
-    constructor(private blockId: number, private sectionId: number) {
+    constructor(public blockId: number, public sectionId: number) {
         this.registerAppBridgeSubscriberInTerrificContext();
     }
 
