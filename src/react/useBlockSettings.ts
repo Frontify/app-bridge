@@ -8,27 +8,27 @@ export const useBlockSettings = <T = Record<string, unknown>>(
 
     if (!window.blockSettings[appBridge.blockId].__isProxy) {
         window.blockSettings[appBridge.blockId] = new Proxy(window.blockSettings[appBridge.blockId], {
-            get: (_target: Record<string, unknown>, key: string) => {
+            get: (target: Record<string, unknown>, key: string) => {
                 if (key === "__isProxy") {
                     return true;
                 } else if (key) {
-                    return blockSettings[key as keyof T];
+                    return target[key];
                 }
-                return blockSettings;
+                return target;
             },
             set: (target: Record<string, unknown>, key: string, value: unknown) => {
-                console.log("proxy set");
-
                 target[key] = value;
-                setBlockSettings({ ...(target as T) });
+                setBlockSettings({ ...blockSettings, [key]: value });
                 return true;
             },
         });
     }
 
     const setBlockSettingsAndUpdate = async (newSettings: T): Promise<void> => {
-        setBlockSettings(newSettings);
-        await appBridge.updateBlockSettings<T>(window.blockSettings[appBridge.blockId] as T);
+        for (const settingsIndex in newSettings) {
+            window.blockSettings[appBridge.blockId][settingsIndex] = newSettings[settingsIndex];
+        }
+        await appBridge.updateBlockSettings({ ...newSettings });
     };
 
     return [blockSettings, setBlockSettingsAndUpdate];
