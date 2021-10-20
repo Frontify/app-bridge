@@ -5,7 +5,7 @@ import { TerrificEvent } from "./types/TerrificEvent";
 import { getJqueryDataByElement, getJqueryDatasetByClassName } from "./utilities/jquery";
 
 export class AppBridgeNative {
-    constructor(public blockId: number, public sectionId: number) {
+    constructor(public blockId?: number, public sectionId?: number) {
         this.registerAppBridgeSubscriberInTerrificContext();
     }
 
@@ -53,6 +53,10 @@ export class AppBridgeNative {
     }
 
     public async getBlockSettings<T = Record<string, unknown>>(): Promise<T> {
+        if (!this.blockId) {
+            console.error("You need to instanciate the App Bridge with a block id.");
+        }
+
         const translationLanguage = getJqueryDataByElement(document.body).translationLanguage;
         const translationLanguageSuffix = translationLanguage ? `&lang=${translationLanguage}` : "";
         const response = await window.fetch(
@@ -75,6 +79,10 @@ export class AppBridgeNative {
     }
 
     public async updateBlockSettings<T = Record<string, unknown>>(newSettings: T): Promise<void> {
+        if (!this.blockId) {
+            console.error("You need to instanciate the App Bridge with a block id.");
+        }
+
         const pageId = getJqueryDatasetByClassName("page").id;
         if (!pageId) {
             throw new Error("Page ID not found");
@@ -117,5 +125,9 @@ export class AppBridgeNative {
             modifier: "flex",
             $content: $assetChooser,
         });
+    }
+
+    public closeAssetChooser(): void {
+        window.application.connectors.events.notify(null, TerrificEvent.CloseModal, {});
     }
 }
