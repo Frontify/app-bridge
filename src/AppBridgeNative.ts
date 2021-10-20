@@ -1,7 +1,7 @@
 import { Asset } from "./types";
 import Color from "./types/Color";
 import ColorPalette from "./types/ColorPalette";
-import { TerrificEvent } from "./types/TerrificEvent";
+import { AssetChooserAssetChosenCallback, TerrificEvent } from "./types/Terrific";
 import { getJqueryDataByElement, getJqueryDatasetByClassName } from "./utilities/jquery";
 
 export class AppBridgeNative {
@@ -54,7 +54,7 @@ export class AppBridgeNative {
 
     public async getBlockSettings<T = Record<string, unknown>>(): Promise<T> {
         if (!this.blockId) {
-            console.error("You need to instanciate the App Bridge with a block id.");
+            throw new Error("You need to instanciate the App Bridge with a block id.");
         }
 
         const translationLanguage = getJqueryDataByElement(document.body).translationLanguage;
@@ -80,7 +80,7 @@ export class AppBridgeNative {
 
     public async updateBlockSettings<T = Record<string, unknown>>(newSettings: T): Promise<void> {
         if (!this.blockId) {
-            console.error("You need to instanciate the App Bridge with a block id.");
+            throw new Error("You need to instanciate the App Bridge with a block id.");
         }
 
         const pageId = getJqueryDatasetByClassName("page").id;
@@ -117,7 +117,7 @@ export class AppBridgeNative {
         return window.application.config.context.project.id;
     }
 
-    public openAssetChooser(callback: (data: unknown) => void): void {
+    public openAssetChooser(callback: AssetChooserAssetChosenCallback): void {
         window.application.connectors.events.components.appBridge.component.onAssetChooserAssetChosen = callback;
 
         const $assetChooser = window.application.sandbox.config.tpl.render("c-assetchooser", {});

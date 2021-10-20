@@ -4,6 +4,10 @@ import { AppBridgeNative } from "../AppBridgeNative";
 export const useBlockSettings = <T = Record<string, unknown>>(
     appBridge: AppBridgeNative,
 ): [T, (newSettings: T) => void] => {
+    if (appBridge.blockId === undefined) {
+        throw new Error("You need to instanciate the App Bridge with a block id.");
+    }
+
     const [blockSettings, setBlockSettings] = useState<T>({ ...(window.blockSettings[appBridge.blockId] as T) });
 
     if (!window.blockSettings[appBridge.blockId].__isProxy) {
@@ -25,6 +29,10 @@ export const useBlockSettings = <T = Record<string, unknown>>(
     }
 
     const setBlockSettingsAndUpdate = async (newSettings: T): Promise<void> => {
+        if (appBridge.blockId === undefined) {
+            throw new Error("You need to instanciate the App Bridge with a block id.");
+        }
+
         for (const settingsIndex in newSettings) {
             window.blockSettings[appBridge.blockId][settingsIndex] = newSettings[settingsIndex];
         }
