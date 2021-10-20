@@ -1,4 +1,4 @@
-export { default as Asset } from "./Asset";
+export { Asset } from "./Asset";
 export { default as Color } from "./Color";
 export { default as ColorPalette } from "./ColorPalette";
 export { default as AppBridgeIframe } from "./AppBridgeIframe";

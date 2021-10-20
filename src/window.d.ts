@@ -1,8 +1,8 @@
-import { TerrificEvent } from "./types/TerrificEvent";
+import { TerrificEvent, AssetChooserAssetChosenCallback } from "./types/Terrific";
 
 export declare global {
     interface Window {
-        blockSettings: Record<string, Record<string, unknown>>;
+        blockSettings: Record<number, Record<string, unknown>>;
         application: {
             config: {
                 context: {
@@ -16,7 +16,7 @@ export declare global {
                     components: {
                         [key: string]: {
                             component: {
-                                onAssetChooserAssetChosen: (callback: (data: unknown) => void) => void;
+                                onAssetChooserAssetChosen: AssetChooserAssetChosenCallback;
                             };
                         };
                     };
