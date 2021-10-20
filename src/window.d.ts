@@ -2,6 +2,13 @@ import { TerrificEvent, AssetChooserAssetChosenCallback } from "./types/Terrific
 
 export declare global {
     interface Window {
+        APPLICATION_CONFIG: {
+            version: string;
+            bugsnagKey: string | null;
+            webworker: {
+                upload: string;
+            };
+        };
         blockSettings: Record<number, Record<string, unknown>>;
         application: {
             config: {
