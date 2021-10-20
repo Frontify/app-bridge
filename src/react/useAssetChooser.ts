@@ -5,7 +5,7 @@ type UseAssetChooserType = {
     closeAssetChooser: () => void;
 };
 
-const useAssetChooser = (): UseAssetChooserType => {
+export const useAssetChooser = (): UseAssetChooserType => {
     const openAssetChooser = (callback: AssetChooserAssetChosenCallback) => {
         window.application.connectors.events.components.appBridge.component.onAssetChooserAssetChosen = callback;
 
@@ -22,5 +22,3 @@ const useAssetChooser = (): UseAssetChooserType => {
 
     return { openAssetChooser, closeAssetChooser };
 };
-
-export default useAssetChooser;
