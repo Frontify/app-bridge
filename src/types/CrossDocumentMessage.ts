@@ -1,7 +1,7 @@
-import { Topic } from "./Topic";
+import { Topic } from ".";
 
-export default interface CrossDocumentMessage<T = Record<string, unknown>> {
+export type CrossDocumentMessage<T = Record<string, unknown>> = {
     topic: Topic;
     token: string;
     data?: T;
-}
+};

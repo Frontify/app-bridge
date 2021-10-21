@@ -1,5 +1,5 @@
-export default interface PostExternalAssetParams {
+export type PostExternalAssetParams = {
     title: string;
     url: string;
     previewUrl?: string;
-}
+};

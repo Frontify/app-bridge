@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-export interface UseFileInputInterface {
+export type UseFileInputInterface = {
     accept?: string;
     multiple?: boolean;
-}
+};
 export type UseFileInputReturnTypes = [() => void, { selectedFiles: FileList | null }];
 
 export const useFileInput = ({ accept, multiple }: UseFileInputInterface): UseFileInputReturnTypes => {

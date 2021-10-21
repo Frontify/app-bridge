@@ -1,9 +1,17 @@
 import { generateRandomString } from "./utilities/hash";
-import notify, { NotifyData } from "./utilities/notify";
-import subscribe from "./utilities/subscribe";
-import type { AppBridgeAppState, AppBridgeAssets, AppBridgeAuth, AppBridgeUtilities } from "./types/AppBridge";
-import type { PostExternalAssetParams, OauthTokens, Asset, AppBridgeIframe } from "./types";
-import { Topic } from "./types";
+import { notify, NotifyData } from "./utilities/notify";
+import { subscribe } from "./utilities/subscribe";
+import {
+    PostExternalAssetParams,
+    OauthTokens,
+    Asset,
+    Topic,
+    AppBridgeIframe,
+    AppBridgeAppState,
+    AppBridgeUtilities,
+    AppBridgeAssets,
+    AppBridgeAuth,
+} from "./types";
 
 const PUBSUB_TOKEN = generateRandomString();
 const DEFAULT_TIMEOUT = 3 * 1000;

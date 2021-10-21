@@ -5,6 +5,7 @@ const config = {
     entry: {
         index: "./src/index.ts",
         "react/index": "./src/react/index.ts",
+        "utilities/index": "./src/utilities/index.ts",
     },
     module: {
         rules: [

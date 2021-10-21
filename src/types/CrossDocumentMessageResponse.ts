@@ -1,8 +1,8 @@
-import { Topic } from "./Topic";
+import { Topic } from ".";
 
-export default interface CrossDocumentMessageResponse<T> {
+export type CrossDocumentMessageResponse<T> = {
     success: boolean;
     topic: Topic;
     token: string;
     data?: T;
-}
+};

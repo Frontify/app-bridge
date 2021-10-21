@@ -1,7 +1,7 @@
 import { Asset } from "../types";
 import { useEffect, useRef, useState } from "react";
 
-export interface UseFileUploadTypes {
+export type UseFileUploadTypes = {
     options?: UseFileUploadOptionsTypes;
     onUploadProgress?: (event: MessageEvent<Asset>) => void;
     onUploadProgressAll?: (event: MessageEvent<Asset>) => void;
@@ -9,14 +9,14 @@ export interface UseFileUploadTypes {
     onUploadDoneAll?: (event: MessageEvent<Asset[]>) => void;
     onUploadFail?: () => void;
     onUploadAssetFail?: (event: MessageEvent<Asset>) => void;
-}
+};
 
-export interface UseFileUploadOptionsTypes {
-    fileType: FileType;
+export type UseFileUploadOptionsTypes = {
+    fileType: UploadFileType;
     projectId?: number;
-}
+};
 
-export enum FileType {
+export enum UploadFileType {
     Asset = "ASSET",
     AssetPreview = "ASSET_PREVIEW",
 }
@@ -34,7 +34,7 @@ enum WorkerEvent {
 export type UseFileUploadReturnTypes = [(files: FileList | File) => void, { results: Asset[]; doneAll: boolean }];
 
 export const useFileUpload = ({
-    options = { fileType: FileType.Asset },
+    options = { fileType: UploadFileType.Asset },
     onUploadProgress,
     onUploadProgressAll,
     onUploadDone,

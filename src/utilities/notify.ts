@@ -4,7 +4,7 @@ export type NotifyOptions = {
 
 export type NotifyData<T = Record<string, unknown>> = T;
 
-export default function notify<T>(topic: string, token: string, data?: NotifyData<T>, options?: NotifyOptions): void {
+export function notify<T>(topic: string, token: string, data?: NotifyData<T>, options?: NotifyOptions): void {
     const parentWindow = window.top;
     parentWindow?.postMessage(
         {

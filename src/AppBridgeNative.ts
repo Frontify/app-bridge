@@ -1,7 +1,4 @@
-import { Asset } from "./types";
-import Color from "./types/Color";
-import ColorPalette from "./types/ColorPalette";
-import { AssetChooserAssetChosenCallback, TerrificEvent } from "./types/Terrific";
+import { Asset, Color, ColorPalette, AssetChooserAssetChosenCallback, TerrificEvent } from "./types";
 import { getJqueryDataByElement, getJqueryDatasetByClassName } from "./utilities/jquery";
 
 export class AppBridgeNative {

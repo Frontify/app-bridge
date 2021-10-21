@@ -1,4 +1,4 @@
-import { Asset } from "./Asset";
+import { Asset } from ".";
 
 export enum TerrificEvent {
     OpenModal = "onOpenModal",

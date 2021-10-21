@@ -15,6 +15,10 @@
         "./react": {
             "import": "./dist/react/index.js",
             "require": "./dist/react/index.js"
+        },
+        "./utilities": {
+            "import": "./dist/utilities/index.js",
+            "require": "./dist/utilities/index.js"
         }
     },
     "scripts": {

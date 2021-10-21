@@ -1,4 +1,4 @@
-export default interface Color {
+export type Color = {
     alpha?: string;
     b?: string;
     css_value_hex?: string;
@@ -13,4 +13,4 @@ export default interface Color {
     r?: string;
     saturation?: string;
     type: string;
-}
+};

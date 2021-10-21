@@ -8,7 +8,7 @@ export const useBlockSettings = <T = Record<string, unknown>>(
         throw new Error("You need to instanciate the App Bridge with a block id.");
     }
 
-    const [blockSettings, setBlockSettings] = useState<T>({ ...(window.blockSettings[appBridge.blockId] as T) });
+    const [blockSettings, setBlockSettings] = useState<T>(window.blockSettings[appBridge.blockId] as T);
 
     if (!window.blockSettings[appBridge.blockId].__isProxy) {
         window.blockSettings[appBridge.blockId] = new Proxy(window.blockSettings[appBridge.blockId], {

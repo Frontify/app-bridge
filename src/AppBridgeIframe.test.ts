@@ -3,8 +3,8 @@ const mockGenerateRandomString = jest.fn().mockImplementation(() => token);
 
 import appBridgeIframe from "./AppBridgeIframe";
 import { Topic } from "./types";
-import notify from "./utilities/notify";
-import subscribe from "./utilities/subscribe";
+import { notify } from "./utilities/notify";
+import { subscribe } from "./utilities/subscribe";
 import { generateRandomString } from "./utilities/hash";
 
 jest.mock("./utilities/notify");

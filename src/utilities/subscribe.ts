@@ -1,7 +1,6 @@
 import FetchError from "../errors/NotifyError";
 import TimeoutReachedError from "../errors/TimeoutReachedError";
-import { Topic } from "../types";
-import type CrossDocumentMessageResponse from "../types/CrossDocumentMessageResponse";
+import { Topic, CrossDocumentMessageResponse } from "../types";
 
 export type SubscribeOptions = {
     timeout?: number;
@@ -9,7 +8,7 @@ export type SubscribeOptions = {
 
 export const SUBSCRIBE_TIMEOUT = 3 * 1000;
 
-export default function subscribe<T>(topic: Topic, token: string, options?: SubscribeOptions): Promise<T> {
+export function subscribe<T>(topic: Topic, token: string, options?: SubscribeOptions): Promise<T> {
     return new Promise<T>((resolve, reject) => {
         const subscribeResponseCallback = (event: MessageEvent) => {
             const response: CrossDocumentMessageResponse<T> = event.data;

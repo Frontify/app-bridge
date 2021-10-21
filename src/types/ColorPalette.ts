@@ -1,7 +1,7 @@
-import Color from "./Color";
+import { Color } from ".";
 
-export default interface ColorPalette {
+export type ColorPalette = {
     id: number;
     name: string;
     colors: Color[];
-}
+};
