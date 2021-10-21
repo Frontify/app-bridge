@@ -1,7 +1,7 @@
 import { FileExtension, FileType } from ".";
 
 export const FileExtensionSets: Record<FileType, FileExtension[]> = {
-    [FileType.Audio]: [
+    audio: [
         FileExtension.Aac,
         FileExtension.Ac3,
         FileExtension.Aif,
@@ -14,7 +14,7 @@ export const FileExtensionSets: Record<FileType, FileExtension[]> = {
         FileExtension.Ogg,
         FileExtension.Wav,
     ],
-    [FileType.Documents]: [
+    documents: [
         FileExtension.Doc,
         FileExtension.Docx,
         FileExtension.Dotx,
@@ -26,7 +26,7 @@ export const FileExtensionSets: Record<FileType, FileExtension[]> = {
         FileExtension.Xlsx,
         FileExtension.Xltx,
     ],
-    [FileType.Images]: [
+    images: [
         FileExtension.Ai,
         FileExtension.Bmp,
         FileExtension.Dng,
@@ -43,7 +43,7 @@ export const FileExtensionSets: Record<FileType, FileExtension[]> = {
         FileExtension.Tiff,
         FileExtension.Webp,
     ],
-    [FileType.Videos]: [
+    videos: [
         FileExtension.Avi,
         FileExtension.Flv,
         FileExtension.M4v,
