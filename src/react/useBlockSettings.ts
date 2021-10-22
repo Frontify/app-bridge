@@ -12,17 +12,17 @@ export const useBlockSettings = <T = Record<string, unknown>>(
 
     if (!window.blockSettings[appBridge.blockId].__isProxy) {
         window.blockSettings[appBridge.blockId] = new Proxy(window.blockSettings[appBridge.blockId], {
-            get: (target: Record<string, unknown>, key: string) => {
-                if (key === "__isProxy") {
+            get: (target: Record<string, unknown>, property: string, receiver: unknown) => {
+                if (property === "__isProxy") {
                     return true;
-                } else if (key) {
-                    return target[key];
+                } else if (property) {
+                    return target[property];
                 }
-                return target;
+                return Reflect.get(target, property, receiver);
             },
-            set: (target: Record<string, unknown>, key: string, value: unknown) => {
-                target[key] = value;
-                setBlockSettings({ ...blockSettings, [key]: value });
+            set: (target: Record<string, unknown>, property: string, value: unknown) => {
+                target[property] = value;
+                setBlockSettings(target as T);
                 return true;
             },
         });
