@@ -22,7 +22,7 @@ export const useBlockSettings = <T = Record<string, unknown>>(
             },
             set: (target: Record<string, unknown>, property: string, value: unknown) => {
                 target[property] = value;
-                setBlockSettings(target as T);
+                setBlockSettings({ ...(target as T) });
                 return true;
             },
         });
