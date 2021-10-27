@@ -13,7 +13,6 @@ export type UseFileUploadTypes = {
 
 export type UseFileUploadOptionsTypes = {
     fileType: UploadFileType;
-    projectId?: number;
 };
 
 export enum UploadFileType {
@@ -142,10 +141,12 @@ export const useFileUpload = ({
             return;
         }
 
+        const projectId = window.application.sandbox.config.context.project.id;
+
         const message = {
             files: fileArray,
             fileType: options.fileType,
-            formData: options.projectId ? [{ project_id: options.projectId }] : null,
+            formData: projectId ? [{ project_id: projectId }] : null,
         };
 
         if (workerRef?.current) {

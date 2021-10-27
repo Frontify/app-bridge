@@ -40,6 +40,11 @@ export declare global {
                     tpl: {
                         render: (templateName: string, props: Record<string, unknown>) => string;
                     };
+                    context: {
+                        project: {
+                            id: number;
+                        };
+                    };
                 };
             };
         };
