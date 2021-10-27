@@ -12,8 +12,22 @@ export class AppBridgeNative {
         }
     }
 
-    public getAssetById(assetId: number): Promise<Asset> {
-        return Promise.resolve({ assetId } as unknown as Asset);
+    public async getAssetById(assetId: number): Promise<Asset> {
+        const response = await window.fetch(`/api/color/library/${window.application.config.context.project.id}`, {
+            method: "GET",
+            headers: {
+                "x-csrf-token": (document.getElementsByName("x-csrf-token")[0] as HTMLMetaElement).content,
+                "Content-Type": "application/json",
+            },
+        });
+
+        const responseJson: { success: boolean; data: Asset } = await response.json();
+
+        if (!responseJson.success) {
+            throw new Error(`Could not get the asset with id ${assetId}.`);
+        }
+
+        return responseJson.data;
     }
 
     public async getColorsByIds(colorIds: number[]): Promise<Color[]> {
