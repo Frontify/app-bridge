@@ -13,7 +13,7 @@ export class AppBridgeNative {
     }
 
     public async getAssetById(assetId: number): Promise<Asset> {
-        const response = await window.fetch(`/api/color/library/${window.application.config.context.project.id}`, {
+        const response = await window.fetch(`/api/screen/styleguide/${assetId}`, {
             method: "GET",
             headers: {
                 "x-csrf-token": (document.getElementsByName("x-csrf-token")[0] as HTMLMetaElement).content,
