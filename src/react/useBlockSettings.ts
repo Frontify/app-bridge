@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { AppBridgeNative } from "../AppBridgeNative";
 
+export type Immutable<T> = {
+    readonly [K in keyof T]: Immutable<T[K]>;
+};
+
 export const useBlockSettings = <T = Record<string, unknown>>(
     appBridge: AppBridgeNative,
-): [T, (newSettings: T) => void] => {
+): [Immutable<T>, (newSettings: T) => void] => {
     if (appBridge.blockId === undefined) {
         throw new Error("You need to instanciate the App Bridge with a block id.");
     }
