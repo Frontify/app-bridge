@@ -47,6 +47,11 @@ export class AppBridgeNative {
     }
 
     public async getAvailableColors(): Promise<Color[]> {
+        const palettes = await this.getAvailablePalettes();
+        return palettes.reduce((previous, current): Color[] => previous.concat(current.colors), <Color[]>[]);
+    }
+
+    public async getAvailablePalettes(): Promise<ColorPalette[]> {
         const response = await window.fetch(`/api/color/library/${window.application.config.context.project.id}`, {
             method: "GET",
             headers: {
@@ -55,12 +60,13 @@ export class AppBridgeNative {
             },
         });
 
-        const responseJson: { palettes: ColorPalette[] } = await response.json();
+        const responseJson = await response.json();
 
-        return responseJson.palettes.reduce(
-            (previous, current): Color[] => previous.concat(current.colors),
-            <Color[]>[],
-        );
+        if (!responseJson.success) {
+            throw new Error("Could not get the available palettes");
+        }
+
+        return responseJson.palettes;
     }
 
     public async getBlockSettings<T = Record<string, unknown>>(): Promise<T> {
