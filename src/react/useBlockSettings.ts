@@ -7,7 +7,7 @@ export type Immutable<T> = {
 
 export const useBlockSettings = <T = Record<string, unknown>>(
     appBridge: AppBridgeNative,
-): [Immutable<T>, (newSettings: T) => void] => {
+): [Immutable<T>, (newSettings: Partial<T>) => Promise<void>] => {
     if (appBridge.blockId === undefined) {
         throw new Error("You need to instanciate the App Bridge with a block id.");
     }
@@ -30,7 +30,7 @@ export const useBlockSettings = <T = Record<string, unknown>>(
 
     const [blockSettings, setBlockSettings] = useState<T>(window.blockSettings[appBridge.blockId] as T);
 
-    const setBlockSettingsAndUpdate = async (newSettings: T): Promise<void> => {
+    const setBlockSettingsAndUpdate = async (newSettings: Partial<T>): Promise<void> => {
         if (appBridge.blockId === undefined) {
             throw new Error("You need to instanciate the App Bridge with a block id.");
         }
