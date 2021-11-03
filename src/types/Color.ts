@@ -1,6 +1,7 @@
 export type Color = {
     alpha?: string;
     b?: string;
+    c?: string;
     css_value_hex?: string;
     css_value?: string;
     css?: string;
@@ -8,9 +9,16 @@ export type Color = {
     hex: string;
     hue?: string;
     id: number;
+    k?: string;
     lightness?: string;
+    m?: string;
     name: string;
+    name_css: string;
+    opacity_css: number;
+    opacity: number;
+    prefix: string;
     r?: string;
     saturation?: string;
     type: string;
+    y?: string;
 };
