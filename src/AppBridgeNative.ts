@@ -1,4 +1,4 @@
-import { Asset, Color, ColorPalette, AssetChooserAssetChosenCallback, TerrificEvent } from "./types";
+import { Asset, Color, ColorPalette, AssetChooserAssetChosenCallback, TerrificEvent, User } from "./types";
 import { getJqueryDataByElement, getJqueryDatasetByClassName } from "./utilities/jquery";
 
 export class AppBridgeNative {
@@ -147,5 +147,24 @@ export class AppBridgeNative {
 
     public closeAssetChooser(): void {
         window.application.connectors.events.notify(null, TerrificEvent.CloseModal, {});
+    }
+
+    public async getCurrentLoggedUser(): Promise<User> {
+        const response = await window.fetch("/api/user/info", {
+            headers: {
+                "x-csrf-token": (document.getElementsByName("x-csrf-token")[0] as HTMLMetaElement).content,
+                "Content-Type": "application/json",
+            },
+        });
+
+        const responseJson = await response.json();
+
+        if (!responseJson.success) {
+            throw new Error("Could not get the current logged user");
+        }
+
+        delete responseJson.success;
+
+        return responseJson;
     }
 }

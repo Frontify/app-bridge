@@ -13,3 +13,4 @@ export * from "./PostExternalAssetParams";
 export * from "./Terrific";
 export * from "./Template";
 export * from "./Topic";
+export * from "./User";
