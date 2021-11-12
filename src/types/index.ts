@@ -11,4 +11,5 @@ export * from "./FileTypes";
 export * from "./OauthTokens";
 export * from "./PostExternalAssetParams";
 export * from "./Terrific";
+export * from "./Template";
 export * from "./Topic";

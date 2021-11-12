@@ -24,6 +24,7 @@ export declare global {
                         [key: string]: {
                             component: {
                                 onAssetChooserAssetChosen: AssetChooserAssetChosenCallback;
+                                onTemplateChooserTemplateChosen: TemplateChooserTemplateChosenCallback;
                             };
                         };
                     };
