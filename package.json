@@ -39,7 +39,7 @@
         "@babel/preset-typescript": "7.16.0",
         "@frontify/eslint-config-typescript": "0.11.0",
         "@types/jest": "27.0.2",
-        "@types/react": "17.0.34",
+        "@types/react": "17.0.35",
         "babel-loader": "8.2.3",
         "husky": "7.0.4",
         "jest": "27.3.1",
