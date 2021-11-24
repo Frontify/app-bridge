@@ -3,4 +3,5 @@ export enum FileType {
     Documents = "documents",
     Images = "images",
     Videos = "videos",
+    Templates = "templates"
 }
