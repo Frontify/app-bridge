@@ -1,7 +1,8 @@
-import { Asset, Color, ColorPalette, AssetChooserAssetChosenCallback, TerrificEvent, User } from "./types";
+import { IAppBridgeNative } from "./IAppBridgeNative";
+import { Asset, AssetChooserAssetChosenCallback, Color, ColorPalette, TerrificEvent, User } from "./types";
 import { getJqueryDataByElement, getJqueryDatasetByClassName } from "./utilities/jquery";
 
-export class AppBridgeNative {
+export class AppBridgeNative implements IAppBridgeNative {
     constructor(public blockId?: number, public sectionId?: number) {
         this.registerAppBridgeSubscriberInTerrificContext();
     }
