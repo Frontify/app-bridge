@@ -27,6 +27,7 @@
         "start": "webpack --config webpack.config.dev.js",
         "typecheck": "tsc --noEmit",
         "lint": "eslint ./src",
+        "lint:fix": "eslint ./src --fix",
         "build": "npm run clean && npm run build:ts",
         "build:ts": "webpack --config webpack.config.prod.js",
         "prepare": "husky install"
