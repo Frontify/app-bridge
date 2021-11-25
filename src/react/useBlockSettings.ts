@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { AppBridgeNative } from "../AppBridgeNative";
+import { IAppBridgeNative } from "../IAppBridgeNative";
 
 export const useBlockSettings = <T = Record<string, unknown>>(
-    appBridge: AppBridgeNative,
+    appBridge: IAppBridgeNative,
 ): [T, (newSettings: Partial<T>) => Promise<void>] => {
     if (appBridge.blockId === undefined) {
         throw new Error("You need to instanciate the App Bridge with a block id.");

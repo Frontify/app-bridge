@@ -6,8 +6,8 @@ export type User = {
     preview_url_without_placeholder: string;
     gravatar_hash: string;
     image: {
-        image: "https://images.frontify.test/local/clarify/eyJwYXRoIjoiXC9wdWJsaWNcL3VwbG9hZFwvYXZhdGFyXC9jNFwvODkyZWViNjAzMzAxZTBjNjA0MDkxOThlNzlkMGVkOWUtMTU5NzM5NzY1OS5wbmcifQ:clarify:_LinHPsAO4qhk0T0nk8cLSo_JOA1Brh-3kScxIdZ6uk?width=400&rect=0,0,800,800&reference_width=800";
-        original: "https://images.frontify.test/local/clarify/eyJwYXRoIjoiXC9wdWJsaWNcL3VwbG9hZFwvYXZhdGFyXC9jNFwvODkyZWViNjAzMzAxZTBjNjA0MDkxOThlNzlkMGVkOWUtMTU5NzM5NzY1OS5wbmcifQ:clarify:_LinHPsAO4qhk0T0nk8cLSo_JOA1Brh-3kScxIdZ6uk?width={width}";
+        image: string;
+        original: string;
         x: string;
         y: string;
         width: string;
