@@ -67,9 +67,8 @@ export class AppBridgeNativeMock implements IAppBridgeNative {
                 preview_url_without_placeholder: "preview_url_without_placeholder",
                 gravatar_hash: "gravatar_hash",
                 image: {
-                    image: "https://images.frontify.test/local/clarify/eyJwYXRoIjoiXC9wdWJsaWNcL3VwbG9hZFwvYXZhdGFyXC9jNFwvODkyZWViNjAzMzAxZTBjNjA0MDkxOThlNzlkMGVkOWUtMTU5NzM5NzY1OS5wbmcifQ:clarify:_LinHPsAO4qhk0T0nk8cLSo_JOA1Brh-3kScxIdZ6uk?width=400&rect=0,0,800,800&reference_width=800",
-                    original:
-                        "https://images.frontify.test/local/clarify/eyJwYXRoIjoiXC9wdWJsaWNcL3VwbG9hZFwvYXZhdGFyXC9jNFwvODkyZWViNjAzMzAxZTBjNjA0MDkxOThlNzlkMGVkOWUtMTU5NzM5NzY1OS5wbmcifQ:clarify:_LinHPsAO4qhk0T0nk8cLSo_JOA1Brh-3kScxIdZ6uk?width={width}",
+                    image: "image",
+                    original: "original",
                     x: "x",
                     y: "y",
                     width: "width",
