@@ -1,6 +1,6 @@
 import { TerrificEvent, AssetChooserAssetChosenCallback } from "./types/Terrific";
 
-export declare global {
+declare global {
     interface Window {
         APPLICATION_CONFIG: {
             version: string;
@@ -51,3 +51,5 @@ export declare global {
         };
     }
 }
+
+export {};

@@ -2,7 +2,7 @@
     "name": "@frontify/app-bridge",
     "version": "2.10.0",
     "description": "Package to establish communication between Frontify and marketplace apps",
-    "main": "dist/index.js",
+    "module": "dist/index.js",
     "files": [
         "dist"
     ],
@@ -28,8 +28,9 @@
         "typecheck": "tsc --noEmit",
         "lint": "eslint ./src",
         "lint:fix": "eslint ./src --fix",
-        "build": "npm run clean && npm run build:ts",
-        "build:ts": "webpack --config webpack.config.prod.js",
+        "build": "npm run clean && npm run build:ts && npm run build:types",
+        "build:ts": "npx babel --extensions .ts src/ -d dist",
+        "build:types": "tsc --emitDeclarationOnly",
         "prepare": "husky install"
     },
     "author": "Frontify Developers <developers@frontify.com>",
@@ -37,25 +38,25 @@
         "@babel/cli": "7.16.0",
         "@babel/core": "7.16.0",
         "@babel/preset-env": "7.16.4",
+        "@babel/preset-react": "^7.16.0",
         "@babel/preset-typescript": "7.16.0",
-        "@frontify/eslint-config-typescript": "0.11.0",
+        "@frontify/eslint-config-react": "0.13.2",
         "@types/jest": "27.0.3",
         "@types/react": "17.0.37",
-        "babel-loader": "8.2.3",
         "husky": "7.0.4",
         "jest": "27.4.3",
         "prettier": "2.5.1",
         "rimraf": "3.0.2",
         "ts-jest": "27.1.0",
-        "ts-loader": "9.2.6",
-        "typescript": "4.5.2",
-        "webpack": "5.64.4",
-        "webpack-cli": "4.9.1"
+        "typescript": "4.5.2"
     },
     "peerDependencies": {
         "react": "^17.0.2"
     },
     "engines": {
         "node": ">=16"
+    },
+    "dependencies": {
+        "core-js": "^3.19.3"
     }
 }

@@ -4,6 +4,5 @@ export interface AppBridgeIframe extends AppBridge {
     appState: AppBridgeAppState;
     assets: AppBridgeAssets;
     auth: AppBridgeAuth;
-    context: AppBridgeContext;
     utilities: AppBridgeUtilities;
 }

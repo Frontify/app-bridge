@@ -34,5 +34,4 @@ export type AppBridgeUtilities = {
 
 export type AppBridge = {
     assets: AppBridgeAssets;
-    context: AppBridgeContext;
 };

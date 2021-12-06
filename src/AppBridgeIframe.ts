@@ -6,7 +6,7 @@ import {
     OauthTokens,
     Asset,
     Topic,
-    AppBridgeIframe,
+    AppBridgeIframe as AppBridgeIframeType,
     AppBridgeAppState,
     AppBridgeUtilities,
     AppBridgeAssets,
@@ -75,7 +75,7 @@ const utilities: AppBridgeUtilities = {
     },
 };
 
-export default <AppBridgeIframe>{
+export const AppBridgeIframe: AppBridgeIframeType = {
     appState,
     assets,
     auth,

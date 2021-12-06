@@ -1,10 +1,10 @@
 {
     "compilerOptions": {
-        "target": "ES2020",
-        "module": "es2015",
+        "target": "es5",
+        "module": "es2020",
         "moduleResolution": "node",
         "resolveJsonModule": true,
-        "lib": ["es5", "es2015.promise", "dom", "es2015"],
+        "lib": ["es2020", "dom"],
         "sourceMap": true,
         "outDir": "./dist",
         "rootDir": "./src",
@@ -13,6 +13,7 @@
         "strictNullChecks": true,
         "strictFunctionTypes": true,
         "noImplicitThis": true,
+        "declarationDir": "dist",
         "alwaysStrict": true,
         "noImplicitReturns": true,
         "esModuleInterop": true,
@@ -20,5 +21,7 @@
         "declaration": true,
         "skipLibCheck": true,
         "allowSyntheticDefaultImports": true
-    }
+    },
+    "include": ["./src/**/*"],
+    "exclude": ["**/*.spec.ts"]
 }
