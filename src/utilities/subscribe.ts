@@ -1,5 +1,5 @@
-import FetchError from "../errors/NotifyError";
-import TimeoutReachedError from "../errors/TimeoutReachedError";
+import { FetchError } from "../errors/NotifyError";
+import { TimeoutReachedError } from "../errors/TimeoutReachedError";
 import { Topic, CrossDocumentMessageResponse } from "../types";
 
 export type SubscribeOptions = {

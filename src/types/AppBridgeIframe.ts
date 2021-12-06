@@ -1,4 +1,4 @@
-import { AppBridge, AppBridgeAppState, AppBridgeAssets, AppBridgeAuth, AppBridgeContext, AppBridgeUtilities } from ".";
+import { AppBridge, AppBridgeAppState, AppBridgeAssets, AppBridgeAuth, AppBridgeUtilities } from ".";
 
 export interface AppBridgeIframe extends AppBridge {
     appState: AppBridgeAppState;
