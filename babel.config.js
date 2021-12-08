@@ -4,8 +4,6 @@ module.exports = (api) => ({
             "@babel/preset-env",
             {
                 forceAllTransforms: api.env("production"),
-                corejs: 3,
-                useBuiltIns: "usage",
             },
         ],
         ["@babel/preset-react", { runtime: "automatic" }],
