@@ -1,5 +1,5 @@
 import { IAppBridgeNative } from "./IAppBridgeNative";
-import { Asset, AssetChooserAssetChosenCallback, Color, ColorPalette, TerrificEvent, User } from "./types";
+import { Asset, AssetChooserAssetChosenCallback, Color, ColorPalette, Template, TerrificEvent, User } from "./types";
 import { getJqueryDataByElement, getJqueryDatasetByClassName } from "./utilities/jquery";
 
 export class AppBridgeNative implements IAppBridgeNative {
@@ -30,6 +30,25 @@ export class AppBridgeNative implements IAppBridgeNative {
         }
 
         return responseJson.data;
+    }
+
+    public async getTemplateById(templateId: number): Promise<Template> {
+        const brandId = window.application.sandbox.config.context.brand.id;
+        const response = await window.fetch(`/api/publishing/template/${brandId}?template_id=${templateId}`, {
+            method: "GET",
+            headers: {
+                "x-csrf-token": (document.getElementsByName("x-csrf-token")[0] as HTMLMetaElement).content,
+                "Content-Type": "application/json",
+            },
+        });
+
+        const responseJson: { success: boolean; templates: Template[] } = await response.json();
+
+        if (!responseJson.success) {
+            throw new Error(`Could not get the template with id ${templateId}.`);
+        }
+
+        return responseJson.templates[0];
     }
 
     public async getColorsByIds(colorIds: number[]): Promise<Color[]> {
