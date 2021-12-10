@@ -45,6 +45,9 @@ declare global {
                         project: {
                             id: number;
                         };
+                        brand: {
+                            id: number;
+                        };
                     };
                 };
             };
