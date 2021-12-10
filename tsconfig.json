@@ -13,7 +13,7 @@
         "strictNullChecks": true,
         "strictFunctionTypes": true,
         "noImplicitThis": true,
-        "declarationDir": "dist",
+        "declarationDir": "./dist",
         "alwaysStrict": true,
         "noImplicitReturns": true,
         "esModuleInterop": true,
