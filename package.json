@@ -38,7 +38,7 @@
         "@types/jest": "27.0.3",
         "@types/react": "17.0.37",
         "husky": "7.0.4",
-        "jest": "27.4.4",
+        "jest": "27.4.5",
         "prettier": "2.5.1",
         "rimraf": "3.0.2",
         "ts-jest": "27.1.1",
