@@ -34,7 +34,7 @@
     },
     "author": "Frontify Developers <developers@frontify.com>",
     "devDependencies": {
-        "@frontify/eslint-config-react": "0.13.2",
+        "@frontify/eslint-config-react": "0.14.0",
         "@types/jest": "27.0.3",
         "@types/react": "17.0.37",
         "husky": "7.0.4",
