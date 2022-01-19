@@ -1,4 +1,7 @@
-import { TemplateChooserTemplateChosenCallback, TerrificEvent } from "../types/Terrific";
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
+import { AppBridgeNative } from "../AppBridgeNative";
+import { TemplateChooserTemplateChosenCallback } from "../types/Terrific";
 
 type UseTemplateChooserType = {
     openTemplateChooser: (callback: TemplateChooserTemplateChosenCallback) => void;
@@ -6,19 +9,6 @@ type UseTemplateChooserType = {
 };
 
 export const useTemplateChooser = (): UseTemplateChooserType => {
-    const openTemplateChooser = (callback: TemplateChooserTemplateChosenCallback) => {
-        window.application.connectors.events.components.appBridge.component.onTemplateChooserTemplateChosen = callback;
-
-        const $templateChooser = window.application.sandbox.config.tpl.render("c-templatechooser", {});
-        window.application.connectors.events.notify(null, TerrificEvent.OpenModal, {
-            modifier: "flex",
-            $content: $templateChooser,
-        });
-    };
-
-    const closeTemplateChooser = () => {
-        window.application.connectors.events.notify(null, TerrificEvent.CloseModal, {});
-    };
-
-    return { openTemplateChooser, closeTemplateChooser };
+    const appBridge = new AppBridgeNative();
+    return { openTemplateChooser: appBridge.openTemplateChooser, closeTemplateChooser: appBridge.closeTemplateChooser };
 };

@@ -3,24 +3,11 @@
     "version": "2.11.0-beta.3",
     "description": "Package to establish communication between Frontify and marketplace apps",
     "module": "dist/index.js",
+    "main": "dist/index.js",
     "files": [
         "dist"
     ],
     "types": "dist/index.d.ts",
-    "exports": {
-        ".": {
-            "import": "./dist/index.js",
-            "require": "./dist/index.js"
-        },
-        "./react": {
-            "import": "./dist/react/index.js",
-            "require": "./dist/react/index.js"
-        },
-        "./utilities": {
-            "import": "./dist/utilities/index.js",
-            "require": "./dist/utilities/index.js"
-        }
-    },
     "scripts": {
         "clean": "rimraf dist",
         "test": "jest",
