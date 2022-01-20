@@ -9,6 +9,6 @@ type UseTemplateChooserType = {
 };
 
 export const useTemplateChooser = (): UseTemplateChooserType => {
-    const appBridge = new AppBridgeNative();
-    return { openTemplateChooser: appBridge.openTemplateChooser, closeTemplateChooser: appBridge.closeTemplateChooser };
+    const { openTemplateChooser, closeTemplateChooser } = new AppBridgeNative();
+    return { openTemplateChooser, closeTemplateChooser };
 };

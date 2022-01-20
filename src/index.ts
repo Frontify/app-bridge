@@ -1,3 +1,5 @@
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
 export { AppBridgeIframe } from "./AppBridgeIframe";
 export { AppBridgeNative } from "./AppBridgeNative";
 export { AppBridgeNativeMock } from "./AppBridgeNativeMock";

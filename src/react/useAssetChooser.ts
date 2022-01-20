@@ -9,6 +9,6 @@ type UseAssetChooserType = {
 };
 
 export const useAssetChooser = (): UseAssetChooserType => {
-    const appBridge = new AppBridgeNative();
-    return { openAssetChooser: appBridge.openAssetChooser, closeAssetChooser: appBridge.closeAssetChooser };
+    const { openAssetChooser, closeAssetChooser } = new AppBridgeNative();
+    return { openAssetChooser, closeAssetChooser };
 };

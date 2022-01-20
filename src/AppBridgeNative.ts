@@ -1,8 +1,11 @@
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
 import { IAppBridgeNative } from "./IAppBridgeNative";
 import {
     Asset,
     AssetChooserAssetChosenCallback,
     AssetChooserOptions,
+    AssetChooserProjectType,
     Color,
     ColorPalette,
     Template,
@@ -165,21 +168,35 @@ export class AppBridgeNative implements IAppBridgeNative {
         return window.application.config.context.project.id;
     }
 
-    public openAssetChooser(callback: AssetChooserAssetChosenCallback, options: AssetChooserOptions = {}): void {
+    public openAssetChooser(callback: AssetChooserAssetChosenCallback, options?: AssetChooserOptions): void {
         window.application.connectors.events.components.appBridge.component.onAssetChooserAssetChosen = callback;
 
-        const $assetChooser = window.application.sandbox.config.tpl.render("c-assetchooser", {
-            brandId: window.application.sandbox.config.context.brand.id,
-            projectTypes: options.projectTypes,
-            multiSelectionAllowed: options.multiSelection,
-            filters: [
-                ...(options.selectedValueId !== undefined
-                    ? [{ key: "id", values: [options.selectedValueId], inverted: true }]
-                    : []),
-                ...(options.extensions ? [{ key: "ext", values: options.extensions }] : []),
-                ...(options.objectTypes ? [{ key: "object_type", values: options.objectTypes }] : []),
-            ],
-        });
+        const projectTypesMap: Record<AssetChooserProjectType, string> = {
+            [AssetChooserProjectType.MediaLibrary]: "MEDIALIBRARY",
+            [AssetChooserProjectType.LogoLibrary]: "LOGOLIBRARY",
+            [AssetChooserProjectType.IconLibrary]: "ICONLIBRARY",
+            [AssetChooserProjectType.DocumentLibrary]: "DOCUMENTLIBRARY",
+            [AssetChooserProjectType.TemplateLibrary]: "TEMPLATELIBRARY",
+            [AssetChooserProjectType.PatternLibrary]: "PATTERNLIBRARY",
+            [AssetChooserProjectType.Styleguide]: "STYLEGUIDE",
+            [AssetChooserProjectType.Workspace]: "WORKSPACE",
+        };
+
+        const assetChooserOptions = options
+            ? {
+                  brandId: window.application.sandbox.config.context.brand.id,
+                  projectTypes: options.projectTypes?.map((value) => projectTypesMap[value]),
+                  multiSelectionAllowed: options.multiSelection,
+                  filters: [
+                      ...(options.selectedValueId !== undefined
+                          ? [{ key: "id", values: [options.selectedValueId], inverted: true }]
+                          : []),
+                      ...(options.extensions ? [{ key: "ext", values: options.extensions }] : []),
+                      ...(options.objectTypes ? [{ key: "object_type", values: options.objectTypes }] : []),
+                  ],
+              }
+            : {};
+        const $assetChooser = window.application.sandbox.config.tpl.render("c-assetchooser", assetChooserOptions);
 
         window.application.connectors.events.notify(null, TerrificEvent.OpenModal, {
             modifier: "flex",

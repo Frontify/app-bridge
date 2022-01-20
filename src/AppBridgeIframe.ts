@@ -1,3 +1,5 @@
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
 import { generateRandomString } from "./utilities/hash";
 import { notify, NotifyData } from "./utilities/notify";
 import { subscribe } from "./utilities/subscribe";

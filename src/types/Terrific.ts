@@ -14,14 +14,14 @@ export type AssetChooserAssetChosenCallback = (assetChooserResult: AssetChooserR
 export type TemplateChooserTemplateChosenCallback = (templateChooserResult: TemplateChooserResult) => void;
 
 export enum AssetChooserProjectType {
-    MediaLibrary = "MEDIALIBRARY",
-    LogoLibrary = "LOGOLIBRARY",
-    IconLibrary = "ICONLIBRARY",
-    DocumentLibrary = "DOCUMENTLIBRARY",
-    TemplateLibrary = "TEMPLATELIBRARY",
-    PatternLibrary = "PATTERNLIBRARY",
-    Styleguide = "STYLEGUIDE",
-    Workspace = "WORKSPACE",
+    MediaLibrary = "MediaLibrary",
+    LogoLibrary = "LogoLibrary",
+    IconLibrary = "IconLibrary",
+    DocumentLibrary = "DocumentLibrary",
+    TemplateLibrary = "TemplateLibrary",
+    PatternLibrary = "PatternLibrary",
+    Styleguide = "Styleguide",
+    Workspace = "Workspace",
 }
 
 export enum AssetChooserObjectType {

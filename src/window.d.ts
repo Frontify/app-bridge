@@ -1,3 +1,5 @@
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
 import { TerrificEvent, AssetChooserAssetChosenCallback } from "./types/Terrific";
 
 declare global {

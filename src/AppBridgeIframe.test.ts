@@ -1,3 +1,5 @@
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
 const token = "AjY34F87Dsat^J";
 const mockGenerateRandomString = jest.fn().mockImplementation(() => token);
 
