@@ -1,7 +1,9 @@
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
 import { FileExtension, FileType } from ".";
 
-export const FileExtensionSets: Record<FileType, FileExtension[]> = {
-    audio: [
+export const FileExtensionSets: Record<keyof typeof FileType, FileExtension[]> = {
+    Audio: [
         FileExtension.Aac,
         FileExtension.Ac3,
         FileExtension.Aif,
@@ -14,7 +16,7 @@ export const FileExtensionSets: Record<FileType, FileExtension[]> = {
         FileExtension.Ogg,
         FileExtension.Wav,
     ],
-    documents: [
+    Documents: [
         FileExtension.Doc,
         FileExtension.Docx,
         FileExtension.Dotx,
@@ -26,7 +28,7 @@ export const FileExtensionSets: Record<FileType, FileExtension[]> = {
         FileExtension.Xlsx,
         FileExtension.Xltx,
     ],
-    images: [
+    Images: [
         FileExtension.Ai,
         FileExtension.Bmp,
         FileExtension.Dng,
@@ -43,7 +45,7 @@ export const FileExtensionSets: Record<FileType, FileExtension[]> = {
         FileExtension.Tiff,
         FileExtension.Webp,
     ],
-    videos: [
+    Videos: [
         FileExtension.Avi,
         FileExtension.Flv,
         FileExtension.M4v,
@@ -55,5 +57,5 @@ export const FileExtensionSets: Record<FileType, FileExtension[]> = {
         FileExtension.Webm,
         FileExtension.Wmv,
     ],
-    templates: [FileExtension.Indd, FileExtension.Indt, FileExtension.Sketch],
+    Templates: [FileExtension.Indd, FileExtension.Indt, FileExtension.Sketch],
 };

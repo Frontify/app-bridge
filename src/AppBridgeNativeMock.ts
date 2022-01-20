@@ -1,3 +1,5 @@
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
 import { IAppBridgeNative } from "./IAppBridgeNative";
 import { Asset, Color, ColorPalette, User } from "./types";
 
@@ -56,6 +58,12 @@ export class AppBridgeNativeMock implements IAppBridgeNative {
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     closeAssetChooser(): void {}
+
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    openTemplateChooser(): void {}
+
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    closeTemplateChooser(): void {}
 
     getCurrentLoggedUser(): Promise<User> {
         return new Promise((resolve) =>
