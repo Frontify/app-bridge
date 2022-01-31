@@ -27,8 +27,7 @@ export class AppBridgeNative implements IAppBridgeNative {
     }
 
     public async getAssetById(assetId: number): Promise<Asset> {
-        const projectId = window.application.sandbox.config.context.project.id;
-        const response = await window.fetch(`/api/screen/styleguide/${assetId}${projectId ? `/${projectId}` : ""}`, {
+        const response = await window.fetch(`/api/asset/${assetId}?include_urls=true&block_id=${this.blockId}`, {
             method: "GET",
             headers: {
                 "x-csrf-token": (document.getElementsByName("x-csrf-token")[0] as HTMLMetaElement).content,
@@ -42,7 +41,26 @@ export class AppBridgeNative implements IAppBridgeNative {
             throw new Error(`Could not get the asset with id ${assetId}.`);
         }
 
-        return responseJson.data;
+        return {
+            id: responseJson.data.id,
+            creator_name: responseJson.data.creator_name,
+            ext: responseJson.data.ext,
+            file_id: responseJson.data.file_id,
+            generic_url: responseJson.data.generic_url,
+            preview_url: responseJson.data.preview_url,
+            height: responseJson.data.height,
+            name: responseJson.data.name,
+            filename: responseJson.data.filename,
+            object_type: responseJson.data.object_type,
+            project_id: responseJson.data.project_id,
+            revision: responseJson.data.revision,
+            revision_id: responseJson.data.revision_id,
+            project_type: responseJson.data.project_type,
+            project_name: responseJson.data.project_name,
+            width: responseJson.data.width,
+            size: responseJson.data.size,
+            title: responseJson.data.title,
+        };
     }
 
     public async getTemplateById(templateId: number): Promise<Template> {
