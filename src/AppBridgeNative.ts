@@ -222,6 +222,53 @@ export class AppBridgeNative implements IAppBridgeNative {
         });
     }
 
+    public async setAssets(settingName: string, assets: number[]): Promise<void> {
+        if (!this.blockId) {
+            // throw new Error("You need to instanciate the App Bridge with a block id.");
+            // TODO: Replace id in url below
+        }
+
+        const response = await window.fetch(`/api/styleguide-block/175/asset/${settingName}`, {
+            method: "PUT",
+            headers: {
+                "x-csrf-token": (document.getElementsByName("x-csrf-token")[0] as HTMLMetaElement).content,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                assets: assets,
+            }),
+        });
+
+        const responseJson = await response.json();
+
+        if (!responseJson.success) {
+            throw new Error("Could not update the block assets");
+        }
+    }
+
+    public async getAssets(): Promise<any> {
+        if (!this.blockId) {
+            // throw new Error("You need to instanciate the App Bridge with a block id.");
+            // TODO: Replace id in url below
+        }
+
+        const response = await window.fetch(`/api/styleguide-block/175/asset`, {
+            method: "GET",
+            headers: {
+                "x-csrf-token": (document.getElementsByName("x-csrf-token")[0] as HTMLMetaElement).content,
+                "Content-Type": "application/json",
+            },
+        });
+
+        const responseJson = await response.json();
+
+        if (!responseJson.success) {
+            throw new Error("Could not fetch block images");
+        }
+
+        return responseJson;
+    }
+
     public closeAssetChooser(): void {
         window.application.connectors.events.notify(null, TerrificEvent.CloseModal, {});
     }

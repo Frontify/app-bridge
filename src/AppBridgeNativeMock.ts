@@ -4,6 +4,12 @@ import { IAppBridgeNative } from "./IAppBridgeNative";
 import { Asset, Color, ColorPalette, User } from "./types";
 
 export class AppBridgeNativeMock implements IAppBridgeNative {
+    getAssets(): Promise<void> {
+        return Promise.resolve(undefined);
+    }
+    setAssets(settingName: string, assets: number[]): Promise<void> {
+        return Promise.resolve(undefined);
+    }
     constructor(public blockId?: number, public sectionId?: number) {}
 
     getAssetById(assetId: number): Promise<Asset> {

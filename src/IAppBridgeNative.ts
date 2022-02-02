@@ -22,6 +22,8 @@ export interface IAppBridgeNative {
     getEditorState(): boolean;
     getProjectId(): number;
     openAssetChooser(callback: AssetChooserAssetChosenCallback, options?: AssetChooserOptions): void;
+    setAssets(settingName: string, assets: number[]): Promise<void>;
+    getAssets(): Promise<void>;
     closeAssetChooser(): void;
     openTemplateChooser(callback: TemplateChooserTemplateChosenCallback): void;
     closeTemplateChooser(): void;
