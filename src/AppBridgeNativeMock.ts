@@ -1,7 +1,7 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
 import { IAppBridgeNative } from "./IAppBridgeNative";
-import { Asset, Color, ColorPalette, User } from "./types";
+import { Asset, Color, ColorPalette, Template, User } from "./types";
 
 export class AppBridgeNativeMock implements IAppBridgeNative {
     constructor(public blockId?: number, public sectionId?: number) {}
@@ -93,6 +93,29 @@ export class AppBridgeNativeMock implements IAppBridgeNative {
                 organization: "organization",
                 two_factor_forced: false,
                 success: true,
+            }),
+        );
+    }
+
+    getTemplateById(templateId: number): Promise<Template> {
+        return new Promise((resolve) =>
+            resolve({
+                asset_created: "asset_created",
+                asset_modified: "asset_modified",
+                categories: [],
+                description: "description",
+                height: 0,
+                id: 1,
+                name: "name",
+                preview: "preview",
+                project: 1,
+                project_name: "project_name",
+                project_type: "project_type",
+                screen_id: 1,
+                sector: "sector",
+                token: "token",
+                unit: "unit",
+                width: 0,
             }),
         );
     }

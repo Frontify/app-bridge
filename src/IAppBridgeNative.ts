@@ -2,18 +2,20 @@
 
 import {
     Asset,
+    AssetChooserAssetChosenCallback,
+    AssetChooserOptions,
     Color,
     ColorPalette,
-    AssetChooserAssetChosenCallback,
-    User,
+    Template,
     TemplateChooserTemplateChosenCallback,
-    AssetChooserOptions,
+    User,
 } from "./types";
 
 export interface IAppBridgeNative {
     blockId?: number;
     sectionId?: number;
     getAssetById(assetId: number): Promise<Asset>;
+    getTemplateById(templateId: number): Promise<Template>;
     getColorsByIds(colorIds: number[]): Promise<Color[]>;
     getAvailableColors(): Promise<Color[]>;
     getAvailablePalettes(): Promise<ColorPalette[]>;
