@@ -97,7 +97,7 @@ export class AppBridgeNativeMock implements IAppBridgeNative {
         );
     }
 
-    getTemplateById(templateId: number): Promise<Template> {
+    getTemplateById(): Promise<Template> {
         return new Promise((resolve) =>
             resolve({
                 asset_created: "asset_created",
