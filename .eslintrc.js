@@ -1,8 +1,8 @@
 module.exports = {
-    extends: ["@frontify/eslint-config-react"],
+    extends: ['@frontify/eslint-config-react'],
     settings: {
         react: {
-            version: "detect",
+            version: 'detect',
         },
     },
 };

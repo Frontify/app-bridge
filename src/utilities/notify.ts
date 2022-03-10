@@ -12,6 +12,6 @@ export function notify<T>(topic: string, token: string, data?: NotifyData<T>, op
             token,
             data,
         },
-        options?.origin || "*",
+        options?.origin || '*',
     );
 }

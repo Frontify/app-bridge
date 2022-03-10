@@ -1,4 +1,4 @@
-import { Topic } from ".";
+import { Topic } from '.';
 
 export type CrossDocumentMessageResponse<T> = {
     success: boolean;

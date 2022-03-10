@@ -34,20 +34,20 @@ function upload(data, chunk) {
 
             // Calculate loaded bytes of single file considering chunks
             let loaded = 0;
-            progress[data.index].forEach((chunkProgress) => {
+            for (const chunkProgress of progress[data.index]) {
                 loaded += chunkProgress.loaded;
-            });
+            }
 
             self.postMessage({
-                event: "onProgress",
-                loaded: loaded,
+                event: 'onProgress',
+                loaded,
                 total: data.total,
                 lengthComputable: e.lengthComputable,
                 index: data.index,
             });
 
             self.postMessage({
-                event: "onProgressAll",
+                event: 'onProgressAll',
                 loaded: progressAll.loaded,
                 total: progressAll.total,
             });
@@ -57,15 +57,15 @@ function upload(data, chunk) {
         // Omit file progress and just send overall progress
         xhr.onprogress = function (e) {
             self.postMessage({
-                event: "onProgressAll",
+                event: 'onProgressAll',
                 loaded: e.loaded,
                 total: e.total,
             });
         };
     }
 
-    xhr.open("PUT", data.url, true);
-    xhr.onload = function (e) {
+    xhr.open('PUT', data.url, true);
+    xhr.onload = function () {
         progress[data.index][data.chunk].finished = true;
         let finished = true;
         for (let p = 1; p < progress[data.index].length; p++) {
@@ -77,8 +77,8 @@ function upload(data, chunk) {
         if (finished) {
             files[data.index].finished = true;
             const xhr2 = new XMLHttpRequest();
-            xhr2.open("POST", `${self.location.origin}/api/file/progress`, true);
-            xhr2.onload = function (e) {
+            xhr2.open('POST', `${self.location.origin}/api/file/progress`, true);
+            xhr2.onload = function () {
                 let response;
 
                 try {
@@ -87,7 +87,7 @@ function upload(data, chunk) {
                     response = {};
                 }
 
-                response.event = "onDone";
+                response.event = 'onDone';
                 response.index = data.index;
 
                 self.postMessage(response);
@@ -103,7 +103,7 @@ function upload(data, chunk) {
     };
 
     return {
-        start: function () {
+        start() {
             xhr.send(chunk);
         },
     };
@@ -111,9 +111,9 @@ function upload(data, chunk) {
 
 function init(data) {
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", `${self.location.origin}/api/file/init`, true);
-    xhr.setRequestHeader("content-type", "application/json");
-    xhr.onload = function (e) {
+    xhr.open('POST', `${self.location.origin}/api/file/init`, true);
+    xhr.setRequestHeader('content-type', 'application/json');
+    xhr.onload = function () {
         let response;
 
         try {
@@ -122,8 +122,8 @@ function init(data) {
             response = { success: false };
         }
 
-        if (!response.success || !(response.files && response.files.length)) {
-            self.postMessage({ event: "onFail" });
+        if (!response.success || !(response.files && response.files.length > 0)) {
+            self.postMessage({ event: 'onFail' });
             return;
         }
 
@@ -162,7 +162,7 @@ function process() {
 }
 
 function processFile(index, file, file_metadata) {
-    if (typeof file_metadata !== "object") {
+    if (typeof file_metadata !== 'object') {
         error(index, file, {});
         return;
     }
@@ -211,10 +211,10 @@ function processFile(index, file, file_metadata) {
 }
 
 function error(index, file, file_metadata) {
-    const error = file_metadata && file_metadata.error ? file_metadata.error : "Unable to process file.";
+    const error = file_metadata && file_metadata.error ? file_metadata.error : 'Unable to process file.';
 
     self.postMessage({
-        event: "onAssetFail",
+        event: 'onAssetFail',
         index,
         file,
         file_metadata,
@@ -240,7 +240,7 @@ function reset() {
     is_uploading = false;
 
     self.postMessage({
-        event: "onDoneAll",
+        event: 'onDoneAll',
     });
 }
 
@@ -256,13 +256,13 @@ self.onmessage = function (e) {
             type: file.type,
         };
 
-        if (typeof String.prototype.normalize === "function") {
-            metadata.name = metadata.name.normalize("NFC");
+        if (typeof String.prototype.normalize === 'function') {
+            metadata.name = metadata.name.normalize('NFC');
         }
 
         if (file.async) {
             // Force async processing
-            metadata["async"] = file.async;
+            metadata['async'] = file.async;
         }
 
         progressAll.total += file.size;
@@ -271,8 +271,8 @@ self.onmessage = function (e) {
             metadata = { ...metadata, ...e.data.formData[index] };
         }
 
-        if (Array.isArray(e.data.formData) && e.data.fileType === "ASSET_PREVIEW") {
-            metadata["screen_id"] = e.data.formData[index].screen_id;
+        if (Array.isArray(e.data.formData) && e.data.fileType === 'ASSET_PREVIEW') {
+            metadata['screen_id'] = e.data.formData[index].screen_id;
         }
 
         files.push(file);

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 export type UseFileInputInterface = {
     accept?: string;
@@ -17,14 +17,14 @@ export const useFileInput = ({ accept, multiple }: UseFileInputInterface): UseFi
     };
 
     const openFileDialog = () => {
-        const inputElement = document.createElement("input");
-        inputElement.type = "file";
+        const inputElement = document.createElement('input');
+        inputElement.type = 'file';
         if (accept) {
             inputElement.accept = accept;
         }
         inputElement.multiple = !!multiple;
-        inputElement.addEventListener("change", onFileChange);
-        inputElement.dispatchEvent(new MouseEvent("click"));
+        inputElement.addEventListener('change', onFileChange);
+        inputElement.dispatchEvent(new MouseEvent('click'));
     };
 
     return [openFileDialog, { selectedFiles }];

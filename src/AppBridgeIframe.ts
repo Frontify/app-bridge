@@ -1,19 +1,19 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { generateRandomString } from "./utilities/hash";
-import { notify, NotifyData } from "./utilities/notify";
-import { subscribe } from "./utilities/subscribe";
+import { generateRandomString } from './utilities/hash';
+import { NotifyData, notify } from './utilities/notify';
+import { subscribe } from './utilities/subscribe';
 import {
-    PostExternalAssetParams,
-    OauthTokens,
-    Asset,
-    Topic,
-    IAppBridgeIframe as AppBridgeIframeType,
     AppBridgeAppState,
-    AppBridgeUtilities,
     AppBridgeAssets,
     AppBridgeAuth,
-} from "./types";
+    IAppBridgeIframe as AppBridgeIframeType,
+    AppBridgeUtilities,
+    Asset,
+    OauthTokens,
+    PostExternalAssetParams,
+    Topic,
+} from './types';
 
 const PUBSUB_TOKEN = generateRandomString();
 const DEFAULT_TIMEOUT = 3 * 1000;
@@ -44,7 +44,7 @@ const assets: AppBridgeAssets = {
 
     async postExternalAssets(assets: PostExternalAssetParams[]): Promise<Asset[]> {
         const assetsWithPreview = assets.filter((asset) => asset.previewUrl);
-        const timeout = assetsWithPreview.length ? LONG_TIMEOUT : DEFAULT_TIMEOUT;
+        const timeout = assetsWithPreview.length > 0 ? LONG_TIMEOUT : DEFAULT_TIMEOUT;
 
         notify<PostExternalAssetParams[]>(Topic.PostExternalAssets, PUBSUB_TOKEN, assets);
         return subscribe<Asset[]>(Topic.PostExternalAssets, PUBSUB_TOKEN, {

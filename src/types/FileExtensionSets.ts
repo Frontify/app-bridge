@@ -1,6 +1,6 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { FileExtension, FileType } from ".";
+import { FileExtension, FileType } from '.';
 
 export const FileExtensionSets: Record<keyof typeof FileType, FileExtension[]> = {
     Audio: [

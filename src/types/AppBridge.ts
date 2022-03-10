@@ -1,5 +1,5 @@
-import { Asset, OauthTokens, PostExternalAssetParams, Color } from ".";
-import { NotifyData } from "../utilities/notify";
+import { Asset, Color, OauthTokens, PostExternalAssetParams } from '.';
+import { NotifyData } from '../utilities/notify';
 
 export type AppBridgeAppState = {
     getAppState: <T = Record<string, unknown>>() => Promise<T>;

@@ -3,5 +3,5 @@ export type OauthTokens = {
     refresh_token: string;
     expires_in: number;
     name: string;
-    token_type: "Bearer";
+    token_type: 'Bearer';
 };

@@ -1,7 +1,7 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { AppBridgeNative } from "../AppBridgeNative";
-import { TemplateChooserTemplateChosenCallback } from "../types/Terrific";
+import { AppBridgeNative } from '../AppBridgeNative';
+import { TemplateChooserTemplateChosenCallback } from '../types/Terrific';
 
 type UseTemplateChooserType = {
     openTemplateChooser: (callback: TemplateChooserTemplateChosenCallback) => void;

@@ -1,4 +1,4 @@
-import { Color } from ".";
+import { Color } from '.';
 
 export type ColorPalette = {
     id: number;

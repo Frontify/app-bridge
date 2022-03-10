@@ -1,7 +1,7 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { IAppBridgeNative } from "./IAppBridgeNative";
-import { Asset, Color, ColorPalette, Template, User } from "./types";
+import { IAppBridgeNative } from './IAppBridgeNative';
+import { Asset, Color, ColorPalette, Template, User } from './types';
 
 export class AppBridgeNativeMock implements IAppBridgeNative {
     constructor(public blockId?: number, public sectionId?: number) {}
@@ -10,13 +10,13 @@ export class AppBridgeNativeMock implements IAppBridgeNative {
         return new Promise((resolve) =>
             resolve({
                 id: assetId,
-                creator_name: "creataorr",
-                ext: "ext",
-                file_id: "file_id",
-                generic_url: "generic_url",
-                preview_url: "preview_url",
+                creator_name: 'creataorr',
+                ext: 'ext',
+                file_id: 'file_id',
+                generic_url: 'generic_url',
+                preview_url: 'preview_url',
                 height: null,
-                object_type: "object_type",
+                object_type: 'object_type',
                 project_id: this.getProjectId(),
                 revision: 1,
                 revision_id: 1,
@@ -70,27 +70,27 @@ export class AppBridgeNativeMock implements IAppBridgeNative {
             resolve({
                 id: 1,
                 account_id: 1,
-                name: "name",
-                email: "email",
-                preview_url_without_placeholder: "preview_url_without_placeholder",
-                gravatar_hash: "gravatar_hash",
+                name: 'name',
+                email: 'email',
+                preview_url_without_placeholder: 'preview_url_without_placeholder',
+                gravatar_hash: 'gravatar_hash',
                 image: {
-                    image: "image",
-                    original: "original",
-                    x: "x",
-                    y: "y",
-                    width: "width",
-                    height: "height",
+                    image: 'image',
+                    original: 'original',
+                    x: 'x',
+                    y: 'y',
+                    width: 'width',
+                    height: 'height',
                 },
-                original: "original",
-                created: "created",
-                created_localized: "created_localized",
+                original: 'original',
+                created: 'created',
+                created_localized: 'created_localized',
                 role: null,
-                language: "language",
+                language: 'language',
                 localization_options: [],
-                timezone: "timezone",
-                signup_mode: "signup_mode",
-                organization: "organization",
+                timezone: 'timezone',
+                signup_mode: 'signup_mode',
+                organization: 'organization',
                 two_factor_forced: false,
                 success: true,
             }),
@@ -100,21 +100,21 @@ export class AppBridgeNativeMock implements IAppBridgeNative {
     getTemplateById(): Promise<Template> {
         return new Promise((resolve) =>
             resolve({
-                asset_created: "asset_created",
-                asset_modified: "asset_modified",
+                asset_created: 'asset_created',
+                asset_modified: 'asset_modified',
                 categories: [],
-                description: "description",
+                description: 'description',
                 height: 0,
                 id: 1,
-                name: "name",
-                preview: "preview",
+                name: 'name',
+                preview: 'preview',
                 project: 1,
-                project_name: "project_name",
-                project_type: "project_type",
+                project_name: 'project_name',
+                project_type: 'project_type',
                 screen_id: 1,
-                sector: "sector",
-                token: "token",
-                unit: "unit",
+                sector: 'sector',
+                token: 'token',
+                unit: 'unit',
                 width: 0,
             }),
         );

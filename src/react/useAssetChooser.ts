@@ -1,7 +1,7 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { AssetChooserAssetChosenCallback, AssetChooserOptions } from "../types/Terrific";
-import { AppBridgeNative } from "../AppBridgeNative";
+import { AssetChooserAssetChosenCallback, AssetChooserOptions } from '../types/Terrific';
+import { AppBridgeNative } from '../AppBridgeNative';
 
 type UseAssetChooserType = {
     openAssetChooser: (callback: AssetChooserAssetChosenCallback, options: AssetChooserOptions) => void;

@@ -1,6 +1,6 @@
-import { Asset } from "../types";
-import { useEffect, useRef, useState } from "react";
-import Worker from "../workers/upload.worker.js?worker&inline";
+import { Asset } from '../types';
+import { useEffect, useRef, useState } from 'react';
+import Worker from '../workers/upload.worker.js?worker&inline';
 
 export type UseFileUploadTypes = {
     options?: UseFileUploadOptionsTypes;
@@ -17,18 +17,18 @@ export type UseFileUploadOptionsTypes = {
 };
 
 export enum UploadFileType {
-    Asset = "ASSET",
-    AssetPreview = "ASSET_PREVIEW",
+    Asset = 'ASSET',
+    AssetPreview = 'ASSET_PREVIEW',
 }
 
 enum WorkerEvent {
-    OnProgress = "onProgress",
-    OnProgressAll = "onProgressAll",
-    OnDone = "onDone",
-    OnDoneAll = "onDoneAll",
-    OnFail = "onFail",
-    OnAssetFail = "onAssetFail",
-    OnLog = "onLog",
+    OnProgress = 'onProgress',
+    OnProgressAll = 'onProgressAll',
+    OnDone = 'onDone',
+    OnDoneAll = 'onDoneAll',
+    OnFail = 'onFail',
+    OnAssetFail = 'onAssetFail',
+    OnLog = 'onLog',
 }
 
 export type UseFileUploadReturnTypes = [(files: FileList | File) => void, { results: Asset[]; doneAll: boolean }];
@@ -51,7 +51,7 @@ export const useFileUpload = ({
         const worker = new Worker();
         workerRef.current = worker;
 
-        worker.addEventListener("message", (workerEvent) => {
+        worker.addEventListener('message', (workerEvent) => {
             switch (workerEvent.data.event) {
                 case WorkerEvent.OnProgress:
                     onProgress(workerEvent);
@@ -104,7 +104,7 @@ export const useFileUpload = ({
 
     const onFail = () => {
         onUploadFail && onUploadFail();
-        throw new Error("Asset upload failed");
+        throw new Error('Asset upload failed');
     };
 
     const onAssetFail = (workerEvent: MessageEvent<Asset>) => {
@@ -138,7 +138,7 @@ export const useFileUpload = ({
         resetState();
         const fileArray = getFilesAsArray(files);
 
-        if (!fileArray.length) {
+        if (fileArray.length === 0) {
             return;
         }
 

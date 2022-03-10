@@ -9,7 +9,7 @@ import {
     Template,
     TemplateChooserTemplateChosenCallback,
     User,
-} from "./types";
+} from './types';
 
 export interface IAppBridgeNative {
     blockId?: number;

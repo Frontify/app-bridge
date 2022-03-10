@@ -1,6 +1,6 @@
-import { FetchError } from "../errors/NotifyError";
-import { TimeoutReachedError } from "../errors/TimeoutReachedError";
-import { Topic, CrossDocumentMessageResponse } from "../types";
+import { FetchError } from '../errors/NotifyError';
+import { TimeoutReachedError } from '../errors/TimeoutReachedError';
+import { CrossDocumentMessageResponse, Topic } from '../types';
 
 export type SubscribeOptions = {
     timeout?: number;
@@ -19,10 +19,10 @@ export function subscribe<T>(topic: Topic, token: string, options?: SubscribeOpt
                 reject(new FetchError(topic));
             }
 
-            window.removeEventListener("message", subscribeResponseCallback);
+            window.removeEventListener('message', subscribeResponseCallback);
         };
 
-        window.addEventListener("message", subscribeResponseCallback);
+        window.addEventListener('message', subscribeResponseCallback);
 
         setTimeout(() => {
             reject(new TimeoutReachedError(topic));

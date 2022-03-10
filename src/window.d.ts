@@ -1,6 +1,6 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { TerrificEvent, AssetChooserAssetChosenCallback } from "./types/Terrific";
+import { AssetChooserAssetChosenCallback, TerrificEvent } from './types/Terrific';
 
 declare global {
     interface Window {

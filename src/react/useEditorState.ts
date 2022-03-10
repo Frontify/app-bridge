@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { IAppBridgeNative } from "../IAppBridgeNative";
-import { AppBridgeNative } from "../AppBridgeNative";
+import { useEffect, useState } from 'react';
+import { IAppBridgeNative } from '../IAppBridgeNative';
+import { AppBridgeNative } from '../AppBridgeNative';
 
 export const useEditorState = (appBridge?: IAppBridgeNative): boolean => {
     const appBridgeInstance = appBridge ?? new AppBridgeNative(0, 0);
@@ -10,11 +10,11 @@ export const useEditorState = (appBridge?: IAppBridgeNative): boolean => {
         const setFromEvent = () => setEditorState(appBridgeInstance.getEditorState());
 
         const mutationObserver = new MutationObserver((mutationsList) => {
-            mutationsList.forEach((mutation) => {
-                if (mutation.attributeName === "class") {
+            for (const mutation of mutationsList) {
+                if (mutation.attributeName === 'class') {
                     setFromEvent();
                 }
-            });
+            }
         });
 
         mutationObserver.observe(document.body, { attributes: true });

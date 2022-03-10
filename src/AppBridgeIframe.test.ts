@@ -1,24 +1,24 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-const token = "AjY34F87Dsat^J";
+const token = 'AjY34F87Dsat^J';
 const mockGenerateRandomString = jest.fn().mockImplementation(() => token);
 
-import { AppBridgeIframe } from "./AppBridgeIframe";
-import { Topic } from "./types";
-import { notify } from "./utilities/notify";
-import { subscribe } from "./utilities/subscribe";
-import { generateRandomString } from "./utilities/hash";
+import { AppBridgeIframe } from './AppBridgeIframe';
+import { Topic } from './types';
+import { notify } from './utilities/notify';
+import { subscribe } from './utilities/subscribe';
+import { generateRandomString } from './utilities/hash';
 
-jest.mock("./utilities/notify");
-jest.mock("./utilities/subscribe");
-jest.mock("./utilities/hash", () => ({
+jest.mock('./utilities/notify');
+jest.mock('./utilities/subscribe');
+jest.mock('./utilities/hash', () => ({
     generateRandomString: mockGenerateRandomString,
 }));
 
 const mockNotify = notify as jest.MockedFunction<typeof notify>;
 const mockSubscribe = subscribe as jest.MockedFunction<typeof subscribe>;
 const mockGenerate = generateRandomString as jest.MockedFunction<typeof generateRandomString>;
-const expectedResult = { test: "passed" };
+const expectedResult = { test: 'passed' };
 
 const DEFAULT_TIMEOUT = 3 * 1000;
 const LONG_TIMEOUT = 5 * 60 * 1000;
@@ -32,8 +32,8 @@ beforeEach(() => {
     expect(mockGenerate).toHaveReturnedWith(token);
 });
 
-describe("AppState", () => {
-    test("getAppState", () => {
+describe('AppState', () => {
+    test('getAppState', () => {
         const result = AppBridgeIframe.appState.getAppState();
 
         expect(mockNotify).toHaveBeenCalledTimes(1);
@@ -44,8 +44,8 @@ describe("AppState", () => {
         expect(result).resolves.toEqual(expectedResult);
     });
 
-    test("putAppState", () => {
-        const newState = { new: "state" };
+    test('putAppState', () => {
+        const newState = { new: 'state' };
         const result = AppBridgeIframe.appState.putAppState(newState);
 
         expect(mockNotify).toHaveBeenCalledTimes(1);
@@ -56,7 +56,7 @@ describe("AppState", () => {
         expect(result).resolves.toEqual(expectedResult);
     });
 
-    test("deleteAppState", () => {
+    test('deleteAppState', () => {
         const result = AppBridgeIframe.appState.deleteAppState();
 
         expect(mockNotify).toHaveBeenCalledTimes(1);
@@ -68,8 +68,8 @@ describe("AppState", () => {
     });
 });
 
-describe("AppBridgeAssets", () => {
-    test("getAssetByd", () => {
+describe('AppBridgeAssets', () => {
+    test('getAssetByd', () => {
         const assetId = 4076;
         const result = AppBridgeIframe.assets.getAssetById(assetId);
 
@@ -81,17 +81,17 @@ describe("AppBridgeAssets", () => {
         expect(result).resolves.toEqual(expectedResult);
     });
 
-    test("postExternalAssetWithPreview", () => {
+    test('postExternalAssetWithPreview', () => {
         const assets = [
             {
-                title: "My external asset",
-                url: "https://www.post-external-asset.test",
-                previewUrl: "https://www.preview-url.test",
+                title: 'My external asset',
+                url: 'https://www.post-external-asset.test',
+                previewUrl: 'https://www.preview-url.test',
             },
             {
-                title: "My external asset",
-                url: "https://www.post-external-asset.test",
-                previewUrl: "https://www.preview-url.test",
+                title: 'My external asset',
+                url: 'https://www.post-external-asset.test',
+                previewUrl: 'https://www.preview-url.test',
             },
         ];
         const result = AppBridgeIframe.assets.postExternalAssets(assets);
@@ -104,15 +104,15 @@ describe("AppBridgeAssets", () => {
         expect(result).resolves.toEqual(expectedResult);
     });
 
-    test("postExternalAssetWithoutPreview", () => {
+    test('postExternalAssetWithoutPreview', () => {
         const assets = [
             {
-                title: "My external asset",
-                url: "https://www.post-external-asset.test",
+                title: 'My external asset',
+                url: 'https://www.post-external-asset.test',
             },
             {
-                title: "My external asset",
-                url: "https://www.post-external-asset.test",
+                title: 'My external asset',
+                url: 'https://www.post-external-asset.test',
             },
         ];
         const result = AppBridgeIframe.assets.postExternalAssets(assets);
@@ -125,8 +125,8 @@ describe("AppBridgeAssets", () => {
         expect(result).resolves.toEqual(expectedResult);
     });
 });
-describe("AppBridgeAuth", () => {
-    test("getThirdPartyOauth2Tokens", async () => {
+describe('AppBridgeAuth', () => {
+    test('getThirdPartyOauth2Tokens', async () => {
         const result = AppBridgeIframe.auth.getThirdPartyOauth2Tokens();
 
         expect(mockNotify).toHaveBeenCalledTimes(1);
@@ -139,8 +139,8 @@ describe("AppBridgeAuth", () => {
         expect(result).resolves.toEqual(expectedResult);
     });
 
-    test("getRefreshedThirdpartyOauth2Tokens", () => {
-        const refreshToken = "8raSsn0nG5v4";
+    test('getRefreshedThirdpartyOauth2Tokens', () => {
+        const refreshToken = '8raSsn0nG5v4';
         const result = AppBridgeIframe.auth.getRefreshedThirdpartyOauth2Tokens(refreshToken);
         expect(mockNotify).toHaveBeenCalledTimes(1);
         expect(mockNotify).toHaveBeenCalledWith(Topic.GetRefreshedThirdpartyOauth2Token, token, { refreshToken });
@@ -151,15 +151,15 @@ describe("AppBridgeAuth", () => {
     });
 });
 
-describe("Utilities", () => {
-    test("closeApp", () => {
+describe('Utilities', () => {
+    test('closeApp', () => {
         AppBridgeIframe.utilities.closeApp();
 
         expect(mockNotify).toHaveBeenCalledTimes(1);
         expect(mockNotify).toHaveBeenCalledWith(Topic.CloseApp, token);
     });
 
-    test("openAssetChooser", () => {
+    test('openAssetChooser', () => {
         AppBridgeIframe.utilities.openAssetChooser(() => null);
 
         expect(mockNotify).toHaveBeenCalledTimes(1);
