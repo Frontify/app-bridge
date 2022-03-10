@@ -1,5 +1,6 @@
 import { Asset } from "../types";
 import { useEffect, useRef, useState } from "react";
+import Worker from "../workers/upload.worker.js?worker&inline";
 
 export type UseFileUploadTypes = {
     options?: UseFileUploadOptionsTypes;
@@ -47,7 +48,7 @@ export const useFileUpload = ({
     const workerRef = useRef<Worker>();
 
     useEffect(() => {
-        const worker = new Worker(window.APPLICATION_CONFIG.webworker.upload);
+        const worker = new Worker();
         workerRef.current = worker;
 
         worker.addEventListener("message", (workerEvent) => {

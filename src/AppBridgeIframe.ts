@@ -8,7 +8,7 @@ import {
     OauthTokens,
     Asset,
     Topic,
-    AppBridgeIframe as AppBridgeIframeType,
+    IAppBridgeIframe as AppBridgeIframeType,
     AppBridgeAppState,
     AppBridgeUtilities,
     AppBridgeAssets,
