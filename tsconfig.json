@@ -20,7 +20,8 @@
         "forceConsistentCasingInFileNames": true,
         "declaration": true,
         "skipLibCheck": true,
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "types": ["vite/client", "jest"]
     },
     "include": ["./src/**/*"],
     "exclude": ["**/*.spec.ts"]
