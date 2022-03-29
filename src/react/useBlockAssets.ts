@@ -5,7 +5,6 @@ import { IAppBridgeNative } from '../IAppBridgeNative';
 import { Asset } from '../types/Asset';
 
 const mapDocumentBlockAssetsToBlockAssets = (documentBlockAssets: any) => {
-    console.log('mapDocumentBlockAssetsToBlockAssets', documentBlockAssets);
     return documentBlockAssets.reduce((stack: Record<string, Asset[]>, documentBlockAsset: any) => {
         if (!stack[documentBlockAsset.setting_id]) {
             stack[documentBlockAsset.setting_id] = [];
@@ -70,13 +69,6 @@ export const useBlockAssets = (appBridge: IAppBridgeNative) => {
             const assetsToDelete = oldAssetIds.filter((oldAssetId) => !newAssetIds.includes(oldAssetId));
             const assetsToAdd = newAssetIds.filter((newAssetId) => !oldAssetIds.includes(newAssetId));
 
-            console.log(`
-                newAssetId: ${JSON.stringify(newAssetIds)}
-                oldAssetId: ${JSON.stringify(oldAssetIds)}
-                assetsToDelete: ${JSON.stringify(assetsToDelete)}
-                assetsToAdd: ${JSON.stringify(assetsToAdd)}
-            `);
-
             let assets = blockAssets[settingId];
             if (assetsToDelete.length > 0) {
                 await deleteAssetsFromSetting(appBridge, settingId, assetsToDelete);
@@ -87,8 +79,6 @@ export const useBlockAssets = (appBridge: IAppBridgeNative) => {
                 const documentBlockAssets = await addAssetsToSetting(appBridge, settingId, assetsToAdd);
                 assets.push(...documentBlockAssets[settingId]);
             }
-
-            console.log('Final assets', assets);
 
             setBlockAssets({ [settingId]: assets });
         }
@@ -131,7 +121,6 @@ const addAssetsToSetting = async (appBridge: IAppBridgeNative, settingId: string
     }
 
     const responseJson = await response.json();
-    console.log('addAssetsToSetting', responseJson);
 
     return mapDocumentBlockAssetsToBlockAssets(responseJson.data);
 };
