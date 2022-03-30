@@ -12,17 +12,18 @@ export class AppBridgeNativeMock implements IAppBridgeNative {
                 id: assetId,
                 creator_name: 'creataorr',
                 ext: 'ext',
-                file_id: 'file_id',
                 generic_url: 'generic_url',
                 preview_url: 'preview_url',
                 height: null,
                 object_type: 'object_type',
                 project_id: this.getProjectId(),
-                revision: 1,
-                revision_id: 1,
                 width: null,
             }),
         );
+    }
+
+    getBlockId(): number | undefined {
+        return 9345;
     }
 
     getColorsByIds(): Promise<Color[]> {

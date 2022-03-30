@@ -20,6 +20,10 @@ export class AppBridgeNative implements IAppBridgeNative {
         this.registerAppBridgeSubscriberInTerrificContext();
     }
 
+    public getBlockId(): number | undefined {
+        return this.blockId;
+    }
+
     private registerAppBridgeSubscriberInTerrificContext() {
         if (!window.application.connectors.events.components.appBridge) {
             window.application.connectors.events.registerComponent({ id: 'appBridge' });
@@ -45,7 +49,6 @@ export class AppBridgeNative implements IAppBridgeNative {
             id: responseJson.data.id,
             creator_name: responseJson.data.creator_name,
             ext: responseJson.data.ext,
-            file_id: responseJson.data.file_id,
             generic_url: responseJson.data.generic_url,
             preview_url: responseJson.data.preview_url,
             height: responseJson.data.height,
@@ -53,8 +56,6 @@ export class AppBridgeNative implements IAppBridgeNative {
             filename: responseJson.data.filename,
             object_type: responseJson.data.object_type,
             project_id: responseJson.data.project_id,
-            revision: responseJson.data.revision,
-            revision_id: responseJson.data.revision_id,
             project_type: responseJson.data.project_type,
             project_name: responseJson.data.project_name,
             width: responseJson.data.width,
