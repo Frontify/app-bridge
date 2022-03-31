@@ -14,4 +14,5 @@ export type Asset = {
     width: number | null;
     size?: number;
     title?: string;
+    status: string;
 };
