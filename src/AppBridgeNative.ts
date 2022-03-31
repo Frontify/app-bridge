@@ -61,6 +61,7 @@ export class AppBridgeNative implements IAppBridgeNative {
             width: responseJson.data.width,
             size: responseJson.data.size,
             title: responseJson.data.title,
+            status: responseJson.data.status,
         };
     }
 
