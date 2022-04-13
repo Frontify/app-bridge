@@ -62,65 +62,62 @@ export const useBlockAssets = (appBridge: IAppBridgeNative) => {
         })();
     }, [appBridge]);
 
-    const updateBlockAssets = async (newBlockAssets: Record<string, Asset[]>) => {
-        for (const settingId in newBlockAssets) {
-            const newAssetIds = newBlockAssets[settingId].map((asset) => asset.id);
-            const oldAssetIds = blockAssets[settingId].map((asset) => asset.id);
-            const assetsToDelete = oldAssetIds.filter((oldAssetId) => !newAssetIds.includes(oldAssetId));
-            const assetsToAdd = newAssetIds.filter((newAssetId) => !oldAssetIds.includes(newAssetId));
+    const deleteAssetIdsFromLabel = async (label: string, assetIds: number[]) => {
+        const blockId = appBridge.getBlockId();
 
-            let assets = blockAssets[settingId];
-            if (assetsToDelete.length > 0) {
-                await deleteAssetsFromSetting(appBridge, settingId, assetsToDelete);
-                assets = assets.filter((asset) => !assetsToDelete.includes(asset.id));
-            }
+        const response = await fetch(`/api/document-block/${blockId}/asset/${label}`, {
+            method: 'DELETE',
+            headers: {
+                'x-csrf-token': (document.getElementsByName('x-csrf-token')[0] as HTMLMetaElement).content,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ asset_ids: assetIds }),
+        });
 
-            if (assetsToAdd.length > 0) {
-                const documentBlockAssets = await addAssetsToSetting(appBridge, settingId, assetsToAdd);
-                assets.push(...documentBlockAssets[settingId]);
-            }
-
-            setBlockAssets({ [settingId]: assets });
+        if (!response.ok) {
+            throw new Error(`Couldn't delete assets: ${response.statusText}`);
         }
     };
 
-    return [blockAssets, updateBlockAssets];
-};
+    const addAssetIdsToLabel = async (label: string, assetIds: number[]) => {
+        const blockId = appBridge.getBlockId();
 
-const deleteAssetsFromSetting = async (appBridge: IAppBridgeNative, settingId: string, assetIds: number[]) => {
-    const blockId = appBridge.getBlockId();
+        const response = await fetch(`/api/document-block/${blockId}/asset/${label}`, {
+            method: 'POST',
+            headers: {
+                'x-csrf-token': (document.getElementsByName('x-csrf-token')[0] as HTMLMetaElement).content,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ asset_ids: assetIds }),
+        });
 
-    const response = await fetch(`/api/document-block/${blockId}/asset/${settingId}`, {
-        method: 'DELETE',
-        headers: {
-            'x-csrf-token': (document.getElementsByName('x-csrf-token')[0] as HTMLMetaElement).content,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ asset_ids: assetIds }),
-    });
+        if (!response.ok) {
+            throw new Error(`Couldn't add assets: ${response.statusText}`);
+        }
 
-    if (!response.ok) {
-        throw new Error(`Couldn't delete assets: ${response.statusText}`);
-    }
-};
+        const responseJson = await response.json();
 
-const addAssetsToSetting = async (appBridge: IAppBridgeNative, settingId: string, assetIds: number[]) => {
-    const blockId = appBridge.getBlockId();
+        return mapDocumentBlockAssetsToBlockAssets(responseJson.data);
+    };
 
-    const response = await fetch(`/api/document-block/${blockId}/asset/${settingId}`, {
-        method: 'POST',
-        headers: {
-            'x-csrf-token': (document.getElementsByName('x-csrf-token')[0] as HTMLMetaElement).content,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ asset_ids: assetIds }),
-    });
+    const updateAssetIdsFromLabel = async (label: string, newAssetIds: number[]) => {
+        const oldAssetIds = blockAssets[label].map((asset) => asset.id);
+        const assetIdsToDelete = oldAssetIds.filter((oldAssetId) => !newAssetIds.includes(oldAssetId));
+        const assetIdsToAdd = newAssetIds.filter((newAssetId) => !oldAssetIds.includes(newAssetId));
 
-    if (!response.ok) {
-        throw new Error(`Couldn't add assets: ${response.statusText}`);
-    }
+        let assets = [...blockAssets[label]];
+        if (assetIdsToDelete.length > 0) {
+            await deleteAssetIdsFromLabel(label, assetIdsToDelete);
+            assets = assets.filter((asset) => !assetIdsToDelete.includes(asset.id));
+        }
 
-    const responseJson = await response.json();
+        if (assetIdsToAdd.length > 0) {
+            const documentBlockAssets = await addAssetIdsToLabel(label, assetIdsToAdd);
+            assets.push(...documentBlockAssets[label]);
+        }
 
-    return mapDocumentBlockAssetsToBlockAssets(responseJson.data);
+        setBlockAssets({ [label]: assets });
+    };
+
+    return { blockAssets, updateAssetIdsFromLabel, addAssetIdsToLabel, deleteAssetIdsFromLabel };
 };
