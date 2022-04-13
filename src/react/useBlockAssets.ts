@@ -62,10 +62,10 @@ export const useBlockAssets = (appBridge: IAppBridgeNative) => {
         })();
     }, [appBridge]);
 
-    const deleteAssetIdsFromLabel = async (label: string, assetIds: number[]) => {
+    const deleteAssetIdsFromKey = async (key: string, assetIds: number[]) => {
         const blockId = appBridge.getBlockId();
 
-        const response = await fetch(`/api/document-block/${blockId}/asset/${label}`, {
+        const response = await fetch(`/api/document-block/${blockId}/asset/${key}`, {
             method: 'DELETE',
             headers: {
                 'x-csrf-token': (document.getElementsByName('x-csrf-token')[0] as HTMLMetaElement).content,
@@ -79,10 +79,10 @@ export const useBlockAssets = (appBridge: IAppBridgeNative) => {
         }
     };
 
-    const addAssetIdsToLabel = async (label: string, assetIds: number[]) => {
+    const addAssetIdsToKey = async (key: string, assetIds: number[]) => {
         const blockId = appBridge.getBlockId();
 
-        const response = await fetch(`/api/document-block/${blockId}/asset/${label}`, {
+        const response = await fetch(`/api/document-block/${blockId}/asset/${key}`, {
             method: 'POST',
             headers: {
                 'x-csrf-token': (document.getElementsByName('x-csrf-token')[0] as HTMLMetaElement).content,
@@ -100,24 +100,29 @@ export const useBlockAssets = (appBridge: IAppBridgeNative) => {
         return mapDocumentBlockAssetsToBlockAssets(responseJson.data);
     };
 
-    const updateAssetIdsFromLabel = async (label: string, newAssetIds: number[]) => {
-        const oldAssetIds = blockAssets[label].map((asset) => asset.id);
+    const updateAssetIdsFromKey = async (key: string, newAssetIds: number[]) => {
+        const oldAssetIds = blockAssets[key].map((asset) => asset.id);
         const assetIdsToDelete = oldAssetIds.filter((oldAssetId) => !newAssetIds.includes(oldAssetId));
         const assetIdsToAdd = newAssetIds.filter((newAssetId) => !oldAssetIds.includes(newAssetId));
 
-        let assets = [...blockAssets[label]];
+        let assets = [...blockAssets[key]];
         if (assetIdsToDelete.length > 0) {
-            await deleteAssetIdsFromLabel(label, assetIdsToDelete);
+            await deleteAssetIdsFromKey(key, assetIdsToDelete);
             assets = assets.filter((asset) => !assetIdsToDelete.includes(asset.id));
         }
 
         if (assetIdsToAdd.length > 0) {
-            const documentBlockAssets = await addAssetIdsToLabel(label, assetIdsToAdd);
-            assets.push(...documentBlockAssets[label]);
+            const documentBlockAssets = await addAssetIdsToKey(key, assetIdsToAdd);
+            assets.push(...documentBlockAssets[key]);
         }
 
-        setBlockAssets({ [label]: assets });
+        setBlockAssets({ [key]: assets });
     };
 
-    return { blockAssets, updateAssetIdsFromLabel, addAssetIdsToLabel, deleteAssetIdsFromLabel };
+    return {
+        blockAssets,
+        updateAssetIdsFromKey,
+        addAssetIdsToKey,
+        deleteAssetIdsFromKey,
+    };
 };
