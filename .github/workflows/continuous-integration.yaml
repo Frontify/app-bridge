@@ -3,7 +3,7 @@ name: Continuous Integration
 on:
     push:
         branches:
-            - master
+            - main
 
 env:
     CI: 1
@@ -20,13 +20,7 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: 16
-
-            - name: Cache NPM dependencies
-              id: npm_cache
-              uses: actions/cache@v3
-              with:
-                  path: ~/.npm
-                  key: node16-${{ hashFiles('package-lock.json') }}
+                  cache: 'npm'
 
             - name: Install NPM dependencies
               run: npm ci

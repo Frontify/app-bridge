@@ -16,13 +16,7 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: 16
-
-            - name: Cache dependencies
-              id: npm_cache
-              uses: actions/cache@v3
-              with:
-                  path: ~/.npm
-                  key: node16-${{ hashFiles('package-lock.json') }}
+                  cache: 'npm'
 
             - name: Install dependencies
               run: npm ci
@@ -51,13 +45,7 @@ jobs:
               with:
                   node-version: 16
                   registry-url: 'https://registry.npmjs.org'
-
-            - name: Cache dependencies
-              id: npm_cache
-              uses: actions/cache@v3
-              with:
-                  path: ~/.npm
-                  key: node16-${{ hashFiles('package-lock.json') }}
+                  cache: 'npm'
 
             - name: Install dependencies
               run: npm ci
@@ -73,7 +61,7 @@ jobs:
             - name: Use Node.js 16 (GitHub repository)
               uses: actions/setup-node@v3
               with:
-                  registry-url: "https://npm.pkg.github.com"
+                  registry-url: 'https://npm.pkg.github.com'
                   node-version: 16
 
             - name: Publish to GitHub Packages
