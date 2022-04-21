@@ -2,6 +2,7 @@ export type Asset = {
     id: number;
     creator_name: string;
     ext: string;
+    external_url?: string;
     generic_url: string;
     preview_url: string;
     height: number | null;
