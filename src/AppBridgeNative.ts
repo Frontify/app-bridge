@@ -49,6 +49,7 @@ export class AppBridgeNative implements IAppBridgeNative {
             id: responseJson.data.id,
             creator_name: responseJson.data.creator_name,
             ext: responseJson.data.ext,
+            external_url: responseJson.data.external_url,
             generic_url: responseJson.data.generic_url,
             preview_url: responseJson.data.preview_url,
             height: responseJson.data.height,
@@ -213,6 +214,7 @@ export class AppBridgeNative implements IAppBridgeNative {
                           : []),
                       ...(options.extensions ? [{ key: 'ext', values: options.extensions }] : []),
                       ...(options.objectTypes ? [{ key: 'object_type', values: options.objectTypes }] : []),
+                      ...(options.urlContains ? [{ key: 'external_url', containsText: options.urlContains }] : []),
                   ],
               }
             : {};
