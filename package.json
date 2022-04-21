@@ -1,5 +1,6 @@
 {
     "name": "@frontify/app-bridge",
+    "author": "Frontify Developers <developers@frontify.com>",
     "version": "2.13.0-beta.0",
     "description": "Package to establish communication between Frontify and marketplace apps",
     "main": "dist/index.umd.js",
@@ -16,34 +17,28 @@
             "require": "./dist/index.umd.js"
         }
     },
-    "scripts": {
-        "clean": "rimraf dist",
-        "test": "jest",
-        "typecheck": "tsc --noEmit",
-        "lint": "eslint ./src",
-        "lint:fix": "eslint ./src --fix",
-        "build": "npm run clean && npm run build:ts",
-        "build:ts": "vite build",
-        "prepare": "husky install"
-    },
-    "author": "Frontify Developers <developers@frontify.com>",
-    "devDependencies": {
-        "@frontify/eslint-config-react": "0.15.2",
-        "@types/jest": "27.4.1",
-        "@types/react": "17.0.44",
-        "husky": "7.0.4",
-        "jest": "27.5.1",
-        "prettier": "2.6.2",
-        "rimraf": "3.0.2",
-        "ts-jest": "27.1.4",
-        "typescript": "4.6.3",
-        "vite": "2.9.5",
-        "vite-plugin-dts": "0.9.10"
-    },
-    "peerDependencies": {
-        "react": "^17.0.2"
-    },
     "engines": {
         "node": ">=16"
+    },
+    "scripts": {
+        "build": "vite build",
+        "lint:fix": "eslint ./src --fix",
+        "lint": "eslint ./src",
+        "test:watch": "vitest",
+        "test": "vitest run",
+        "typecheck": "tsc --noEmit"
+    },
+    "devDependencies": {
+        "@frontify/eslint-config-react": "0.15.2",
+        "@types/react": "17.0.44",
+        "prettier": "2.6.2",
+        "typescript": "4.6.3",
+        "vite": "2.9.5",
+        "vite-plugin-dts": "0.9.10",
+        "vitest": "^0.9.4"
+    },
+    "peerDependencies": {
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2"
     }
 }

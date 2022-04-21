@@ -1,46 +1,54 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
 const token = 'AjY34F87Dsat^J';
-const mockGenerateRandomString = jest.fn().mockImplementation(() => token);
 
 import { AppBridgeIframe } from './AppBridgeIframe';
 import { Topic } from './types';
 import { notify } from './utilities/notify';
 import { subscribe } from './utilities/subscribe';
 import { generateRandomString } from './utilities/hash';
+import { afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 
-jest.mock('./utilities/notify');
-jest.mock('./utilities/subscribe');
-jest.mock('./utilities/hash', () => ({
-    generateRandomString: mockGenerateRandomString,
-}));
+vi.mock('./utilities/subscribe', () => {
+    return {
+        subscribe: vi.fn(() => Promise.resolve(expectedResult)),
+    };
+});
+vi.mock('./utilities/hash', () => {
+    return {
+        generateRandomString: vi.fn(() => token),
+    };
+});
 
-const mockNotify = notify as jest.MockedFunction<typeof notify>;
-const mockSubscribe = subscribe as jest.MockedFunction<typeof subscribe>;
-const mockGenerate = generateRandomString as jest.MockedFunction<typeof generateRandomString>;
+vi.mock('./utilities/notify', () => {
+    return {
+        notify: vi.fn(),
+    };
+});
+
 const expectedResult = { test: 'passed' };
 
 const DEFAULT_TIMEOUT = 3 * 1000;
 const LONG_TIMEOUT = 5 * 60 * 1000;
 
-beforeEach(() => {
-    mockNotify.mockClear();
-    mockSubscribe.mockClear();
-    mockSubscribe.mockImplementationOnce((): Promise<Record<string, unknown>> => Promise.resolve(expectedResult));
+beforeAll(() => {
+    expect(generateRandomString).toHaveBeenCalledTimes(1);
+    expect(generateRandomString).toHaveReturnedWith(token);
+});
 
-    expect(mockGenerate).toHaveBeenCalledTimes(1);
-    expect(mockGenerate).toHaveReturnedWith(token);
+afterEach(() => {
+    vi.clearAllMocks();
 });
 
 describe('AppState', () => {
     test('getAppState', () => {
         const result = AppBridgeIframe.appState.getAppState();
 
-        expect(mockNotify).toHaveBeenCalledTimes(1);
-        expect(mockNotify).toHaveBeenCalledWith(Topic.GetAppState, token);
+        expect(notify).toHaveBeenCalledTimes(1);
+        expect(notify).toHaveBeenCalledWith(Topic.GetAppState, token);
 
-        expect(mockSubscribe).toHaveBeenCalledTimes(1);
-        expect(mockSubscribe).toHaveBeenCalledWith(Topic.GetAppState, token);
+        expect(subscribe).toHaveBeenCalledTimes(1);
+        expect(subscribe).toHaveBeenCalledWith(Topic.GetAppState, token);
         expect(result).resolves.toEqual(expectedResult);
     });
 
@@ -48,22 +56,22 @@ describe('AppState', () => {
         const newState = { new: 'state' };
         const result = AppBridgeIframe.appState.putAppState(newState);
 
-        expect(mockNotify).toHaveBeenCalledTimes(1);
-        expect(mockNotify).toHaveBeenCalledWith(Topic.PutAppState, token, newState);
+        expect(notify).toHaveBeenCalledTimes(1);
+        expect(notify).toHaveBeenCalledWith(Topic.PutAppState, token, newState);
 
-        expect(mockSubscribe).toHaveBeenCalledTimes(1);
-        expect(mockSubscribe).toHaveBeenCalledWith(Topic.PutAppState, token);
+        expect(subscribe).toHaveBeenCalledTimes(1);
+        expect(subscribe).toHaveBeenCalledWith(Topic.PutAppState, token);
         expect(result).resolves.toEqual(expectedResult);
     });
 
     test('deleteAppState', () => {
         const result = AppBridgeIframe.appState.deleteAppState();
 
-        expect(mockNotify).toHaveBeenCalledTimes(1);
-        expect(mockNotify).toHaveBeenCalledWith(Topic.DeleteAppState, token);
+        expect(notify).toHaveBeenCalledTimes(1);
+        expect(notify).toHaveBeenCalledWith(Topic.DeleteAppState, token);
 
-        expect(mockSubscribe).toHaveBeenCalledTimes(1);
-        expect(mockSubscribe).toHaveBeenCalledWith(Topic.DeleteAppState, token);
+        expect(subscribe).toHaveBeenCalledTimes(1);
+        expect(subscribe).toHaveBeenCalledWith(Topic.DeleteAppState, token);
         expect(result).resolves.toEqual(expectedResult);
     });
 });
@@ -73,11 +81,11 @@ describe('AppBridgeAssets', () => {
         const assetId = 4076;
         const result = AppBridgeIframe.assets.getAssetById(assetId);
 
-        expect(mockNotify).toHaveBeenCalledTimes(1);
-        expect(mockNotify).toHaveBeenCalledWith(Topic.GetAssetById, token, { assetId });
+        expect(notify).toHaveBeenCalledTimes(1);
+        expect(notify).toHaveBeenCalledWith(Topic.GetAssetById, token, { assetId });
 
-        expect(mockSubscribe).toHaveBeenCalledTimes(1);
-        expect(mockSubscribe).toHaveBeenCalledWith(Topic.GetAssetById, token);
+        expect(subscribe).toHaveBeenCalledTimes(1);
+        expect(subscribe).toHaveBeenCalledWith(Topic.GetAssetById, token);
         expect(result).resolves.toEqual(expectedResult);
     });
 
@@ -96,11 +104,11 @@ describe('AppBridgeAssets', () => {
         ];
         const result = AppBridgeIframe.assets.postExternalAssets(assets);
 
-        expect(mockNotify).toHaveBeenCalledTimes(1);
-        expect(mockNotify).toHaveBeenCalledWith(Topic.PostExternalAssets, token, assets);
+        expect(notify).toHaveBeenCalledTimes(1);
+        expect(notify).toHaveBeenCalledWith(Topic.PostExternalAssets, token, assets);
 
-        expect(mockSubscribe).toHaveBeenCalledTimes(1);
-        expect(mockSubscribe).toHaveBeenCalledWith(Topic.PostExternalAssets, token, { timeout: LONG_TIMEOUT });
+        expect(subscribe).toHaveBeenCalledTimes(1);
+        expect(subscribe).toHaveBeenCalledWith(Topic.PostExternalAssets, token, { timeout: LONG_TIMEOUT });
         expect(result).resolves.toEqual(expectedResult);
     });
 
@@ -117,11 +125,11 @@ describe('AppBridgeAssets', () => {
         ];
         const result = AppBridgeIframe.assets.postExternalAssets(assets);
 
-        expect(mockNotify).toHaveBeenCalledTimes(1);
-        expect(mockNotify).toHaveBeenCalledWith(Topic.PostExternalAssets, token, assets);
+        expect(notify).toHaveBeenCalledTimes(1);
+        expect(notify).toHaveBeenCalledWith(Topic.PostExternalAssets, token, assets);
 
-        expect(mockSubscribe).toHaveBeenCalledTimes(1);
-        expect(mockSubscribe).toHaveBeenCalledWith(Topic.PostExternalAssets, token, { timeout: DEFAULT_TIMEOUT });
+        expect(subscribe).toHaveBeenCalledTimes(1);
+        expect(subscribe).toHaveBeenCalledWith(Topic.PostExternalAssets, token, { timeout: DEFAULT_TIMEOUT });
         expect(result).resolves.toEqual(expectedResult);
     });
 });
@@ -129,11 +137,11 @@ describe('AppBridgeAuth', () => {
     test('getThirdPartyOauth2Tokens', async () => {
         const result = AppBridgeIframe.auth.getThirdPartyOauth2Tokens();
 
-        expect(mockNotify).toHaveBeenCalledTimes(1);
-        expect(mockNotify).toHaveBeenCalledWith(Topic.GetThirdPartyOauth2Tokens, token);
+        expect(notify).toHaveBeenCalledTimes(1);
+        expect(notify).toHaveBeenCalledWith(Topic.GetThirdPartyOauth2Tokens, token);
 
-        expect(mockSubscribe).toHaveBeenCalledTimes(1);
-        expect(mockSubscribe).toHaveBeenCalledWith(Topic.GetThirdPartyOauth2Tokens, token, {
+        expect(subscribe).toHaveBeenCalledTimes(1);
+        expect(subscribe).toHaveBeenCalledWith(Topic.GetThirdPartyOauth2Tokens, token, {
             timeout: LONG_TIMEOUT,
         });
         expect(result).resolves.toEqual(expectedResult);
@@ -142,11 +150,11 @@ describe('AppBridgeAuth', () => {
     test('getRefreshedThirdpartyOauth2Tokens', () => {
         const refreshToken = '8raSsn0nG5v4';
         const result = AppBridgeIframe.auth.getRefreshedThirdpartyOauth2Tokens(refreshToken);
-        expect(mockNotify).toHaveBeenCalledTimes(1);
-        expect(mockNotify).toHaveBeenCalledWith(Topic.GetRefreshedThirdpartyOauth2Token, token, { refreshToken });
+        expect(notify).toHaveBeenCalledTimes(1);
+        expect(notify).toHaveBeenCalledWith(Topic.GetRefreshedThirdpartyOauth2Token, token, { refreshToken });
 
-        expect(mockSubscribe).toHaveBeenCalledTimes(1);
-        expect(mockSubscribe).toHaveBeenCalledWith(Topic.GetRefreshedThirdpartyOauth2Token, token);
+        expect(subscribe).toHaveBeenCalledTimes(1);
+        expect(subscribe).toHaveBeenCalledWith(Topic.GetRefreshedThirdpartyOauth2Token, token);
         expect(result).resolves.toEqual(expectedResult);
     });
 });
@@ -155,14 +163,14 @@ describe('Utilities', () => {
     test('closeApp', () => {
         AppBridgeIframe.utilities.closeApp();
 
-        expect(mockNotify).toHaveBeenCalledTimes(1);
-        expect(mockNotify).toHaveBeenCalledWith(Topic.CloseApp, token);
+        expect(notify).toHaveBeenCalledTimes(1);
+        expect(notify).toHaveBeenCalledWith(Topic.CloseApp, token);
     });
 
     test('openAssetChooser', () => {
         AppBridgeIframe.utilities.openAssetChooser(() => null);
 
-        expect(mockNotify).toHaveBeenCalledTimes(1);
-        expect(mockNotify).toHaveBeenCalledWith(Topic.OpenAssetChooser, token);
+        expect(notify).toHaveBeenCalledTimes(1);
+        expect(notify).toHaveBeenCalledWith(Topic.OpenAssetChooser, token);
     });
 });

@@ -21,7 +21,7 @@
         "declaration": true,
         "skipLibCheck": true,
         "allowSyntheticDefaultImports": true,
-        "types": ["vite/client", "jest"]
+        "types": ["vite/client"]
     },
     "include": ["./src/**/*"],
     "exclude": ["**/*.spec.ts"]
