@@ -3,8 +3,9 @@
 import { useEffect, useState } from 'react';
 import { IAppBridgeNative } from '../IAppBridgeNative';
 import { Asset } from '../types/Asset';
+import { compareObjects } from '../utilities/object';
 
-const mapDocumentBlockAssetsToBlockAssets = (documentBlockAssets: any) => {
+const mapDocumentBlockAssetsToBlockAssets = (documentBlockAssets: any): Record<string, Asset[]> => {
     return documentBlockAssets.reduce((stack: Record<string, Asset[]>, documentBlockAsset: any) => {
         if (!stack[documentBlockAsset.setting_id]) {
             stack[documentBlockAsset.setting_id] = [];
@@ -25,13 +26,14 @@ const mapDocumentBlockAssetsToBlockAssets = (documentBlockAssets: any) => {
             filename: documentBlockAsset.asset.file_name,
             size: documentBlockAsset.asset.file_size,
             title: documentBlockAsset.asset.title,
+            status: documentBlockAsset.asset.status,
         });
 
         return stack;
     }, {});
 };
 
-const fetchAllBlockAssets = async (blockId: number) => {
+const fetchAllBlockAssetsByBlockId = async (blockId: number) => {
     const response = await fetch(`/api/document-block/${blockId}/asset`, {
         method: 'GET',
         headers: {
@@ -50,20 +52,43 @@ const fetchAllBlockAssets = async (blockId: number) => {
 };
 
 export const useBlockAssets = (appBridge: IAppBridgeNative) => {
+    const blockId = appBridge.blockId;
+
+    if (blockId === undefined) {
+        throw new Error('You need to instanciate the App Bridge with a block id.');
+    }
+
     const [blockAssets, setBlockAssets] = useState<Record<string, Asset[]>>({});
 
+    // Fetch the block assets on mount.
+    // And add listener for block assets updates.
     useEffect(() => {
-        (async () => {
-            const blockId = appBridge.getBlockId();
-            if (blockId) {
-                const blockAssets = await fetchAllBlockAssets(blockId);
-                setBlockAssets(blockAssets);
+        const blockId = appBridge.getBlockId();
+        const updateBlockAssetsFromEvent = (event: { blockId: number; blockAssets: Record<string, Asset[]> }) => {
+            if (event.blockId === blockId && !compareObjects(event.blockAssets, blockAssets)) {
+                setBlockAssets(event.blockAssets);
             }
-        })();
+        };
+
+        if (blockId) {
+            const mountingFetch = async () => {
+                const allBlockAssets = await fetchAllBlockAssetsByBlockId(blockId);
+                setBlockAssets(allBlockAssets);
+            };
+            mountingFetch();
+
+            window.emitter.on('StyleguideBlockAssetsUpdated', updateBlockAssetsFromEvent);
+        }
+
+        return () => {
+            window.emitter.off('StyleguideBlockAssetsUpdated', updateBlockAssetsFromEvent);
+        };
     }, [appBridge]);
 
     const deleteAssetIdsFromKey = async (key: string, assetIds: number[]) => {
-        const blockId = appBridge.getBlockId();
+        if (blockId === undefined) {
+            throw new Error('You need to instanciate the App Bridge with a block id.');
+        }
 
         const response = await fetch(`/api/document-block/${blockId}/asset/${key}`, {
             method: 'DELETE',
@@ -80,7 +105,9 @@ export const useBlockAssets = (appBridge: IAppBridgeNative) => {
     };
 
     const addAssetIdsToKey = async (key: string, assetIds: number[]) => {
-        const blockId = appBridge.getBlockId();
+        if (blockId === undefined) {
+            throw new Error('You need to instanciate the App Bridge with a block id.');
+        }
 
         const response = await fetch(`/api/document-block/${blockId}/asset/${key}`, {
             method: 'POST',
@@ -97,26 +124,47 @@ export const useBlockAssets = (appBridge: IAppBridgeNative) => {
 
         const responseJson = await response.json();
 
-        return mapDocumentBlockAssetsToBlockAssets(responseJson.data);
+        await waitForFinishedProcessing(key);
+
+        const newAssets = mapDocumentBlockAssetsToBlockAssets(responseJson.data)[key];
+        return newAssets;
+    };
+
+    const waitForFinishedProcessing = async (key: string): Promise<void> => {
+        return new Promise((resolve) => {
+            const intervalId = window.setInterval(async () => {
+                const currentBlockAssets = await fetchAllBlockAssetsByBlockId(blockId);
+
+                if (currentBlockAssets[key] && currentBlockAssets[key].every((asset) => asset.status === 'FINISHED')) {
+                    clearInterval(intervalId);
+                    resolve();
+                }
+            }, 1000);
+        });
     };
 
     const updateAssetIdsFromKey = async (key: string, newAssetIds: number[]) => {
-        const oldAssetIds = blockAssets[key].map((asset) => asset.id);
+        if (blockId === undefined) {
+            throw new Error('You need to instanciate the App Bridge with a block id.');
+        }
+        const currentBlockAssets = await fetchAllBlockAssetsByBlockId(blockId);
+
+        const oldAssetIds = currentBlockAssets[key]?.map((asset) => asset.id) ?? [];
         const assetIdsToDelete = oldAssetIds.filter((oldAssetId) => !newAssetIds.includes(oldAssetId));
         const assetIdsToAdd = newAssetIds.filter((newAssetId) => !oldAssetIds.includes(newAssetId));
 
-        let assets = [...blockAssets[key]];
         if (assetIdsToDelete.length > 0) {
             await deleteAssetIdsFromKey(key, assetIdsToDelete);
-            assets = assets.filter((asset) => !assetIdsToDelete.includes(asset.id));
         }
 
         if (assetIdsToAdd.length > 0) {
-            const documentBlockAssets = await addAssetIdsToKey(key, assetIdsToAdd);
-            assets.push(...documentBlockAssets[key]);
+            await addAssetIdsToKey(key, assetIdsToAdd);
         }
 
-        setBlockAssets({ [key]: assets });
+        window.emitter.emit('StyleguideBlockAssetsUpdated', {
+            blockId,
+            blockAssets: await fetchAllBlockAssetsByBlockId(blockId),
+        });
     };
 
     return {

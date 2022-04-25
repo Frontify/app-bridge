@@ -1,6 +1,7 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
 import { AssetChooserAssetChosenCallback, TerrificEvent } from './types/Terrific';
+import type { Emitter } from 'mitt';
 
 declare global {
     interface Window {
@@ -54,6 +55,12 @@ declare global {
                 };
             };
         };
+        emitter: Emitter<{
+            StyleguideBlockAssetsUpdated: {
+                blockId: number;
+                blockAssets: Record<string, Asset[]>;
+            };
+        }>;
     }
 }
 
