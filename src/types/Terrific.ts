@@ -37,6 +37,6 @@ export type AssetChooserOptions = {
     projectTypes?: AssetChooserProjectType[];
     objectTypes?: AssetChooserObjectType[];
     multiSelection?: boolean;
-    extensions?: FileExtension[];
+    extensions?: (FileExtension | string)[];
     urlContains?: string;
 };
