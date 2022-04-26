@@ -52,7 +52,7 @@ const fetchAllBlockAssetsByBlockId = async (blockId: number) => {
 };
 
 export const useBlockAssets = (appBridge: IAppBridgeNative) => {
-    const blockId = appBridge.blockId;
+    const blockId = appBridge.getBlockId();
 
     if (blockId === undefined) {
         throw new Error('You need to instanciate the App Bridge with a block id.');
