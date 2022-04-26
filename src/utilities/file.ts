@@ -7,6 +7,7 @@ export const mimeTypes: Record<FileExtension, string> = {
     [FileExtension.Aif]: 'audio/x-aiff',
     [FileExtension.Aifc]: 'audio/x-aiff',
     [FileExtension.Aiff]: 'audio/x-aiff',
+    [FileExtension.Artboard]: 'application/octet-stream',
     [FileExtension.Asc]: 'text/plain',
     [FileExtension.Atom]: 'application/atom+xml',
     [FileExtension.Au]: 'audio/basic',
