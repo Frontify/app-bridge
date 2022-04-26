@@ -1,6 +1,6 @@
 import { FileExtension } from '../types/FileExtensions';
 
-export const mimeTypes: Record<FileExtension, string> = {
+export const mimeTypes: Record<string, string> = {
     [FileExtension.Aac]: 'audio/aac',
     [FileExtension.Ac3]: 'audio/ac3',
     [FileExtension.Ai]: 'application/postscript',
@@ -209,6 +209,6 @@ export const mimeTypes: Record<FileExtension, string> = {
     [FileExtension.Zip]: 'application/zip',
 };
 
-export const getMimeType = (filetypes: FileExtension[]): string[] => {
+export const getMimeType = (filetypes: string[]): string[] => {
     return filetypes.map((filetype) => mimeTypes[filetype]).filter((mimeType) => mimeType !== undefined);
 };
