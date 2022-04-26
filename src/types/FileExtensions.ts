@@ -5,6 +5,7 @@ export enum FileExtension {
     Aif = 'aif',
     Aifc = 'aifc',
     Aiff = 'aiff',
+    Artboard = 'artboard',
     Asc = 'asc',
     Atom = 'atom',
     Au = 'au',
