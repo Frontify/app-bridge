@@ -279,5 +279,5 @@ self.onmessage = function (e) {
         files_metadata_add.push(metadata);
     }
 
-    init({ project: e.data.formData.project, fileType: e.data.fileType });
+    init({ project: e.data.formData?.project, fileType: e.data.fileType });
 };
