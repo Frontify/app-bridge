@@ -17,6 +17,7 @@ export type UseFileUploadOptionsTypes = {
 };
 
 export enum UploadFileType {
+    Agnostic = 'AGNOSTIC',
     Asset = 'ASSET',
     AssetPreview = 'ASSET_PREVIEW',
 }
@@ -142,7 +143,7 @@ export const useFileUpload = ({
             return;
         }
 
-        const projectId = window.application.sandbox.config.context.project.id;
+        const projectId = window.application?.sandbox?.config?.context?.project?.id;
 
         const message = {
             files: fileArray,
