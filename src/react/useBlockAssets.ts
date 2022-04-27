@@ -12,21 +12,22 @@ const mapDocumentBlockAssetsToBlockAssets = (documentBlockAssets: any): Record<s
         }
 
         stack[documentBlockAsset.setting_id].push({
-            id: documentBlockAsset.asset.id,
-            name: documentBlockAsset.asset.name,
-            width: documentBlockAsset.asset.width,
-            height: documentBlockAsset.asset.height,
             creator_name: '', // TODO: implement enriching of the data (https://app.clickup.com/t/29ad2bj)
             ext: documentBlockAsset.asset.ext,
+            file_id: documentBlockAsset.asset.file_id,
+            filename: documentBlockAsset.asset.file_name,
             generic_url: documentBlockAsset.asset.generic_url,
-            preview_url: documentBlockAsset.asset.preview_url,
+            height: documentBlockAsset.asset.height,
+            id: documentBlockAsset.asset.id,
+            name: documentBlockAsset.asset.name,
             object_type: documentBlockAsset.asset.object_type,
+            preview_url: documentBlockAsset.asset.preview_url,
             project_id: documentBlockAsset.asset.project_id,
             project_name: '', // TODO: implement enriching of the data (https://app.clickup.com/t/29ad2bj)
-            filename: documentBlockAsset.asset.file_name,
             size: documentBlockAsset.asset.file_size,
-            title: documentBlockAsset.asset.title,
             status: documentBlockAsset.asset.status,
+            title: documentBlockAsset.asset.title,
+            width: documentBlockAsset.asset.width,
         });
 
         return stack;

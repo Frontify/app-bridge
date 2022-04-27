@@ -12,6 +12,7 @@ export class AppBridgeNativeMock implements IAppBridgeNative {
                 id: assetId,
                 creator_name: 'creataorr',
                 ext: 'ext',
+                file_id: 'an_random_file_id',
                 generic_url: 'generic_url',
                 preview_url: 'preview_url',
                 height: null,

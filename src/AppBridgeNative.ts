@@ -55,6 +55,7 @@ export class AppBridgeNative implements IAppBridgeNative {
             height: responseJson.data.height,
             name: responseJson.data.name,
             filename: responseJson.data.filename,
+            file_id: responseJson.data.file_id,
             object_type: responseJson.data.object_type,
             project_id: responseJson.data.project_id,
             project_type: responseJson.data.project_type,
