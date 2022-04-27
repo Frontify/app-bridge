@@ -3,6 +3,7 @@ export type Asset = {
     creator_name: string;
     ext: string;
     external_url?: string;
+    file_id: string;
     generic_url: string;
     preview_url: string;
     height: number | null;
