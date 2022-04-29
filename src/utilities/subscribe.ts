@@ -1,3 +1,5 @@
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
 import { FetchError } from '../errors/NotifyError';
 import { TimeoutReachedError } from '../errors/TimeoutReachedError';
 import { CrossDocumentMessageResponse, Topic } from '../types';

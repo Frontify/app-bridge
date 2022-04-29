@@ -1,3 +1,5 @@
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
 import { FileExtension } from '../types/FileExtensions';
 
 export const mimeTypes: Record<string, string> = {

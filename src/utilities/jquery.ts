@@ -1,3 +1,5 @@
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
 export const getJqueryDataByElement = (element: Element): Record<string, unknown> => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
