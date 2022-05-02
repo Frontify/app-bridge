@@ -4,34 +4,45 @@ on:
     release:
         types: [published]
 
+env:
+    NODE_VERSION: 16
+    CI: true
+
 jobs:
     tests:
         runs-on: ubuntu-latest
+        timeout-minutes: 10
 
         steps:
             - name: Checkout default branch
               uses: actions/checkout@v3
 
-            - name: Use Node.js 16
+            - name: Use pnpm
+              uses: pnpm/action-setup@v2
+              with:
+                  version: latest
+
+            - name: Use Node.js ${{ env.NODE_VERSION }}
               uses: actions/setup-node@v3
               with:
-                  node-version: 16
-                  cache: 'npm'
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: 'pnpm'
 
-            - name: Install dependencies
-              run: npm ci
+            - name: Install npm dependencies
+              run: pnpm i --frozen-lockfile
 
             - name: Lint and fix code
-              run: npm run lint
+              run: pnpm lint
 
             - name: Typecheck files
-              run: npm run typecheck
+              run: pnpm typecheck
 
             - name: Test code
-              run: npm test
+              run: pnpm test
 
     publish:
         runs-on: ubuntu-latest
+        timeout-minutes: 10
 
         needs: tests
 
@@ -43,31 +54,37 @@ jobs:
             - name: Checkout default branch
               uses: actions/checkout@v3
 
-            - name: Use Node.js 16 (npm repository)
+            - name: Use pnpm
+              uses: pnpm/action-setup@v2
+              with:
+                  version: latest
+
+            - name: Use Node.js ${{ env.NODE_VERSION }} (npm registry)
               uses: actions/setup-node@v3
               with:
-                  node-version: 16
+                  node-version: ${{ env.NODE_VERSION }}
                   registry-url: 'https://registry.npmjs.org'
-                  cache: 'npm'
+                  cache: 'pnpm'
 
-            - name: Install dependencies
-              run: npm ci
+            - name: Install npm dependencies
+              run: pnpm i --frozen-lockfile
 
             - name: Build the CLI
-              run: npm run build
+              run: pnpm build
 
             - name: Publish to npm
-              run: npm publish --access public
+              run: pnpm publish --access public
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-            - name: Use Node.js 16 (GitHub repository)
+            - name: Use Node.js ${{ env.NODE_VERSION }} (GitHub registry)
               uses: actions/setup-node@v3
               with:
+                  node-version: ${{ env.NODE_VERSION }}
                   registry-url: 'https://npm.pkg.github.com'
-                  node-version: 16
+                  cache: 'pnpm'
 
             - name: Publish to GitHub Packages
-              run: npm publish --access public
+              run: pnpm publish --access public
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
