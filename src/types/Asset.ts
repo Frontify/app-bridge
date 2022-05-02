@@ -5,6 +5,7 @@ export type Asset = {
     external_url?: string;
     file_id: string;
     generic_url: string;
+    origin_url: string;
     preview_url: string;
     height: number | null;
     name?: string;

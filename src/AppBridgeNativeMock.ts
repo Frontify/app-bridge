@@ -14,6 +14,7 @@ export class AppBridgeNativeMock implements IAppBridgeNative {
                 ext: 'ext',
                 file_id: 'an_random_file_id',
                 generic_url: 'generic_url',
+                origin_url: 'origin_url',
                 preview_url: 'preview_url',
                 height: null,
                 object_type: 'object_type',
@@ -21,6 +22,70 @@ export class AppBridgeNativeMock implements IAppBridgeNative {
                 width: null,
             }),
         );
+    }
+
+    getBlockAssets(): Promise<Record<string, Asset[]>> {
+        return new Promise((resolve) =>
+            resolve({
+                images: [
+                    {
+                        creator_name: 'creataorr',
+                        ext: 'png',
+                        file_id: 'an_random_file_id_1',
+                        filename: 'file 1',
+                        height: 3450,
+                        id: 534,
+                        object_type: 'ASSET',
+                        generic_url: 'generic_url_1',
+                        origin_url: 'origin_url_1',
+                        preview_url: 'preview_url_1',
+                        project_id: this.getProjectId(),
+                        width: 3542,
+                    },
+                    {
+                        creator_name: 'creataorr',
+                        ext: 'jpg',
+                        file_id: 'an_random_file_id_2',
+                        filename: 'file 2',
+                        height: 3213,
+                        id: 567,
+                        object_type: 'ASSET',
+                        generic_url: 'generic_url_2',
+                        origin_url: 'origin_url_2',
+                        preview_url: 'preview_url_2',
+                        project_id: this.getProjectId(),
+                        width: 965,
+                    },
+                ],
+            }),
+        );
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async deleteAssetIdsFromBlockAssetKey(key: string, assetIds: number[]): Promise<void> {
+        return new Promise((resolve) => resolve());
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async addAssetIdsToBlockAssetKey(key: string, assetIds: number[]): Promise<Asset[]> {
+        return new Promise((resolve) => {
+            resolve([
+                {
+                    creator_name: 'creataorr',
+                    ext: 'jpg',
+                    file_id: 'an_random_file_id_2',
+                    filename: 'file 2',
+                    height: 3213,
+                    id: 567,
+                    object_type: 'ASSET',
+                    generic_url: 'generic_url_2',
+                    origin_url: 'origin_url_2',
+                    preview_url: 'preview_url_2',
+                    project_id: this.getProjectId(),
+                    width: 965,
+                },
+            ]);
+        });
     }
 
     getBlockId(): number | undefined {

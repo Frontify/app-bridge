@@ -5,53 +5,6 @@ import { IAppBridgeNative } from '../IAppBridgeNative';
 import { Asset } from '../types/Asset';
 import { compareObjects } from '../utilities/object';
 
-const mapDocumentBlockAssetsToBlockAssets = (documentBlockAssets: any): Record<string, Asset[]> => {
-    return documentBlockAssets.reduce((stack: Record<string, Asset[]>, documentBlockAsset: any) => {
-        if (!stack[documentBlockAsset.setting_id]) {
-            stack[documentBlockAsset.setting_id] = [];
-        }
-
-        stack[documentBlockAsset.setting_id].push({
-            creator_name: '', // TODO: implement enriching of the data (https://app.clickup.com/t/29ad2bj)
-            ext: documentBlockAsset.asset.ext,
-            file_id: documentBlockAsset.asset.file_id,
-            filename: documentBlockAsset.asset.file_name,
-            generic_url: documentBlockAsset.asset.generic_url,
-            height: documentBlockAsset.asset.height,
-            id: documentBlockAsset.asset.id,
-            name: documentBlockAsset.asset.name,
-            object_type: documentBlockAsset.asset.object_type,
-            preview_url: documentBlockAsset.asset.preview_url,
-            project_id: documentBlockAsset.asset.project_id,
-            project_name: '', // TODO: implement enriching of the data (https://app.clickup.com/t/29ad2bj)
-            size: documentBlockAsset.asset.file_size,
-            status: documentBlockAsset.asset.status,
-            title: documentBlockAsset.asset.title,
-            width: documentBlockAsset.asset.width,
-        });
-
-        return stack;
-    }, {});
-};
-
-const fetchAllBlockAssetsByBlockId = async (blockId: number) => {
-    const response = await fetch(`/api/document-block/${blockId}/asset`, {
-        method: 'GET',
-        headers: {
-            'x-csrf-token': (document.getElementsByName('x-csrf-token')[0] as HTMLMetaElement).content,
-            'Content-Type': 'application/json',
-        },
-    });
-
-    if (!response.ok) {
-        throw new Error(`Couldn't fetch block assets: ${response.statusText}`);
-    }
-
-    const responseJson = await response.json();
-
-    return mapDocumentBlockAssetsToBlockAssets(responseJson.data);
-};
-
 export const useBlockAssets = (appBridge: IAppBridgeNative) => {
     const blockId = appBridge.getBlockId();
 
@@ -73,7 +26,7 @@ export const useBlockAssets = (appBridge: IAppBridgeNative) => {
 
         if (blockId) {
             const mountingFetch = async () => {
-                const allBlockAssets = await fetchAllBlockAssetsByBlockId(blockId);
+                const allBlockAssets = await appBridge.getBlockAssets();
                 setBlockAssets(allBlockAssets);
             };
             mountingFetch();
@@ -86,92 +39,34 @@ export const useBlockAssets = (appBridge: IAppBridgeNative) => {
         };
     }, [appBridge]);
 
-    const deleteAssetIdsFromKey = async (key: string, assetIds: number[]) => {
-        if (blockId === undefined) {
-            throw new Error('You need to instanciate the App Bridge with a block id.');
-        }
-
-        const response = await fetch(`/api/document-block/${blockId}/asset/${key}`, {
-            method: 'DELETE',
-            headers: {
-                'x-csrf-token': (document.getElementsByName('x-csrf-token')[0] as HTMLMetaElement).content,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ asset_ids: assetIds }),
-        });
-
-        if (!response.ok) {
-            throw new Error(`Couldn't delete assets: ${response.statusText}`);
-        }
-    };
-
-    const addAssetIdsToKey = async (key: string, assetIds: number[]) => {
-        if (blockId === undefined) {
-            throw new Error('You need to instanciate the App Bridge with a block id.');
-        }
-
-        const response = await fetch(`/api/document-block/${blockId}/asset/${key}`, {
-            method: 'POST',
-            headers: {
-                'x-csrf-token': (document.getElementsByName('x-csrf-token')[0] as HTMLMetaElement).content,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ asset_ids: assetIds }),
-        });
-
-        if (!response.ok) {
-            throw new Error(`Couldn't add assets: ${response.statusText}`);
-        }
-
-        const responseJson = await response.json();
-
-        await waitForFinishedProcessing(key);
-
-        const newAssets = mapDocumentBlockAssetsToBlockAssets(responseJson.data)[key];
-        return newAssets;
-    };
-
-    const waitForFinishedProcessing = async (key: string): Promise<void> => {
-        return new Promise((resolve) => {
-            const intervalId = window.setInterval(async () => {
-                const currentBlockAssets = await fetchAllBlockAssetsByBlockId(blockId);
-
-                if (currentBlockAssets[key] && currentBlockAssets[key].every((asset) => asset.status === 'FINISHED')) {
-                    clearInterval(intervalId);
-                    resolve();
-                }
-            }, 1000);
-        });
-    };
-
     const updateAssetIdsFromKey = async (key: string, newAssetIds: number[]) => {
         if (blockId === undefined) {
             throw new Error('You need to instanciate the App Bridge with a block id.');
         }
-        const currentBlockAssets = await fetchAllBlockAssetsByBlockId(blockId);
+        const currentBlockAssets = await appBridge.getBlockAssets();
 
         const oldAssetIds = currentBlockAssets[key]?.map((asset) => asset.id) ?? [];
         const assetIdsToDelete = oldAssetIds.filter((oldAssetId) => !newAssetIds.includes(oldAssetId));
         const assetIdsToAdd = newAssetIds.filter((newAssetId) => !oldAssetIds.includes(newAssetId));
 
         if (assetIdsToDelete.length > 0) {
-            await deleteAssetIdsFromKey(key, assetIdsToDelete);
+            await appBridge.deleteAssetIdsFromBlockAssetKey(key, assetIdsToDelete);
         }
 
         if (assetIdsToAdd.length > 0) {
-            await addAssetIdsToKey(key, assetIdsToAdd);
+            await appBridge.addAssetIdsToBlockAssetKey(key, assetIdsToAdd);
         }
 
         window.emitter.emit('StyleguideBlockAssetsUpdated', {
             blockId,
-            blockAssets: await fetchAllBlockAssetsByBlockId(blockId),
+            blockAssets: await appBridge.getBlockAssets(),
         });
     };
 
     return {
         blockAssets,
         updateAssetIdsFromKey,
-        addAssetIdsToKey,
-        deleteAssetIdsFromKey,
+        addAssetIdsToKey: appBridge.addAssetIdsToBlockAssetKey,
+        deleteAssetIdsFromKey: appBridge.deleteAssetIdsFromBlockAssetKey,
     };
 };

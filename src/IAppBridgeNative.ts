@@ -16,6 +16,9 @@ export interface IAppBridgeNative {
     sectionId?: number;
     getBlockId(): number | undefined;
     getAssetById(assetId: number): Promise<Asset>;
+    getBlockAssets(): Promise<Record<string, Asset[]>>;
+    addAssetIdsToBlockAssetKey(key: string, assetIds: number[]): Promise<Asset[]>;
+    deleteAssetIdsFromBlockAssetKey(key: string, assetIds: number[]): Promise<void>;
     getTemplateById(templateId: number): Promise<Template>;
     getColorsByIds(colorIds: number[]): Promise<Color[]>;
     getAvailableColors(): Promise<Color[]>;

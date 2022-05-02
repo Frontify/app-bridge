@@ -14,6 +14,7 @@ import {
     User,
 } from './types';
 import { getJqueryDataByElement, getJqueryDatasetByClassName } from './utilities/jquery';
+import { HttpClient } from './utilities/httpClient';
 
 export class AppBridgeNative implements IAppBridgeNative {
     constructor(public blockId?: number, public sectionId?: number) {
@@ -51,6 +52,7 @@ export class AppBridgeNative implements IAppBridgeNative {
             ext: responseJson.data.ext,
             external_url: responseJson.data.external_url,
             generic_url: responseJson.data.generic_url,
+            origin_url: responseJson.data.origin_url,
             preview_url: responseJson.data.preview_url,
             height: responseJson.data.height,
             name: responseJson.data.name,
@@ -65,6 +67,62 @@ export class AppBridgeNative implements IAppBridgeNative {
             title: responseJson.data.title,
             status: responseJson.data.status,
         };
+    }
+
+    public async getBlockAssets(): Promise<Record<string, Asset[]>> {
+        const { result } = await HttpClient.get<Record<string, Asset[]>>(`/api/document-block/${this.blockId}/asset`);
+
+        if (!result.success) {
+            throw new Error("Couldn't fetch block assets");
+        }
+
+        return this.mapDocumentBlockAssetsToBlockAssets(result.data);
+    }
+
+    public async deleteAssetIdsFromBlockAssetKey(key: string, assetIds: number[]): Promise<void> {
+        if (this.blockId === undefined) {
+            throw new Error('You need to instanciate the App Bridge with a block id.');
+        }
+
+        const { result } = await HttpClient.delete<Record<string, Asset[]>>(
+            `/api/document-block/${this.blockId}/asset/${key}`,
+            { asset_ids: assetIds },
+        );
+
+        if (!result.success) {
+            throw new Error("Couldn't delete assets");
+        }
+    }
+
+    public async addAssetIdsToBlockAssetKey(key: string, assetIds: number[]): Promise<Asset[]> {
+        if (this.blockId === undefined) {
+            throw new Error('You need to instanciate the App Bridge with a block id.');
+        }
+
+        const { result } = await HttpClient.post<Record<string, Asset[]>>(
+            `/api/document-block/${this.blockId}/asset/${key}`,
+            { asset_ids: assetIds },
+        );
+
+        if (!result.success) {
+            throw new Error("Couldn't add assets");
+        }
+        await this.waitForFinishedProcessing(key);
+
+        return this.mapDocumentBlockAssetsToBlockAssets(result.data)[key];
+    }
+
+    private async waitForFinishedProcessing(key: string): Promise<void> {
+        return new Promise((resolve) => {
+            const intervalId = window.setInterval(async () => {
+                const currentBlockAssets = await this.getBlockAssets();
+
+                if (currentBlockAssets[key] && currentBlockAssets[key].every((asset) => asset.status === 'FINISHED')) {
+                    clearInterval(intervalId);
+                    resolve();
+                }
+            }, 1200);
+        });
     }
 
     public async getTemplateById(templateId: number): Promise<Template> {
@@ -163,21 +221,12 @@ export class AppBridgeNative implements IAppBridgeNative {
 
         const { translationLanguage } = getJqueryDataByElement(document.body);
 
-        const response = await window.fetch(`/api/document/block/${pageId}/${this.sectionId}/${this.blockId}`, {
-            method: 'POST',
-            headers: {
-                'x-csrf-token': (document.getElementsByName('x-csrf-token')[0] as HTMLMetaElement).content,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                settings: newSettings,
-                ...(translationLanguage ? { language: translationLanguage } : {}),
-            }),
+        const { result } = await HttpClient.post(`/api/document/block/${pageId}/${this.sectionId}/${this.blockId}`, {
+            settings: newSettings,
+            ...(translationLanguage ? { language: translationLanguage } : {}),
         });
 
-        const responseJson = await response.json();
-
-        if (!responseJson.success) {
+        if (!result.success) {
             throw new Error('Could not update the block settings');
         }
     }
@@ -262,5 +311,35 @@ export class AppBridgeNative implements IAppBridgeNative {
         delete responseJson.success;
 
         return responseJson;
+    }
+
+    private mapDocumentBlockAssetsToBlockAssets(documentBlockAssets: any): Record<string, Asset[]> {
+        return documentBlockAssets.reduce((stack: Record<string, Asset[]>, documentBlockAsset: any) => {
+            if (!stack[documentBlockAsset.setting_id]) {
+                stack[documentBlockAsset.setting_id] = [];
+            }
+
+            stack[documentBlockAsset.setting_id].push({
+                creator_name: '', // TODO: implement enriching of the data (https://app.clickup.com/t/29ad2bj)
+                ext: documentBlockAsset.asset.ext,
+                file_id: documentBlockAsset.asset.file_id,
+                filename: documentBlockAsset.asset.file_name,
+                generic_url: documentBlockAsset.asset.generic_url,
+                height: documentBlockAsset.asset.height,
+                id: documentBlockAsset.asset.id,
+                name: documentBlockAsset.asset.name,
+                object_type: documentBlockAsset.asset.object_type,
+                origin_url: documentBlockAsset.asset.file.origin_url,
+                preview_url: documentBlockAsset.asset.preview_url,
+                project_id: documentBlockAsset.asset.project_id,
+                project_name: '', // TODO: implement enriching of the data (https://app.clickup.com/t/29ad2bj)
+                size: documentBlockAsset.asset.file_size,
+                status: documentBlockAsset.asset.status,
+                title: documentBlockAsset.asset.title,
+                width: documentBlockAsset.asset.width,
+            });
+
+            return stack;
+        }, {});
     }
 }
