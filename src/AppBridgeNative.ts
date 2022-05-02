@@ -52,7 +52,6 @@ export class AppBridgeNative implements IAppBridgeNative {
             ext: responseJson.data.ext,
             external_url: responseJson.data.external_url,
             generic_url: responseJson.data.generic_url,
-            origin_url: responseJson.data.origin_url,
             preview_url: responseJson.data.preview_url,
             height: responseJson.data.height,
             name: responseJson.data.name,
@@ -329,7 +328,6 @@ export class AppBridgeNative implements IAppBridgeNative {
                 id: documentBlockAsset.asset.id,
                 name: documentBlockAsset.asset.name,
                 object_type: documentBlockAsset.asset.object_type,
-                origin_url: documentBlockAsset.asset.file.origin_url,
                 preview_url: documentBlockAsset.asset.preview_url,
                 project_id: documentBlockAsset.asset.project_id,
                 project_name: '', // TODO: implement enriching of the data (https://app.clickup.com/t/29ad2bj)
