@@ -1,7 +1,7 @@
 {
     "name": "@frontify/app-bridge",
     "author": "Frontify Developers <developers@frontify.com>",
-    "version": "2.13.0-beta.6",
+    "version": "2.13.0",
     "description": "Package to establish communication between Frontify and marketplace apps",
     "main": "dist/index.umd.js",
     "unpkg": "dist/index.umd.js",
