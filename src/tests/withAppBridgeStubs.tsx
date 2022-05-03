@@ -1,4 +1,8 @@
-import { AppBridgeNativeDummy, Asset, IAppBridgeNative } from '@frontify/app-bridge';
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
+import { AppBridgeNativeDummy } from './AppBridgeNativeDummy';
+import { Asset } from '../types/Asset';
+import { IAppBridgeNative } from '../types/IAppBridgeNative';
 import { ComponentType } from 'react';
 
 type useStubedAppBridgeProps = {
