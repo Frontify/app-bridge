@@ -16,20 +16,25 @@ jobs:
             - name: Checkout current commit
               uses: actions/checkout@v3
 
-            - name: Use Node.js 16
+            - name: Use pnpm
+              uses: pnpm/action-setup@v2
+              with:
+                  version: latest
+
+            - name: Use Node.js ${{ env.NODE_VERSION }}
               uses: actions/setup-node@v3
               with:
-                  node-version: 16
-                  cache: 'npm'
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: 'pnpm'
 
-            - name: Install NPM dependencies
-              run: npm ci
+            - name: Install npm dependencies
+              run: pnpm i --frozen-lockfile
 
             - name: Typecheck files
-              run: npm run typecheck
+              run: pnpm typecheck
 
             - name: Lint TypeScript files
-              run: npm run lint
+              run: pnpm lint
 
             - name: Test App Bridge
-              run: npm test
+              run: pnpm test
