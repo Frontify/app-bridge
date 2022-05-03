@@ -6,7 +6,7 @@ import { IAppBridgeNative } from '../types/IAppBridgeNative';
 import { ComponentType } from 'react';
 import { stub } from 'sinon';
 
-type useStubedAppBridgeProps = {
+type GetStubbedAppBridgeProps = {
     blockSettings?: Record<string, unknown>;
     blockAssets?: Record<string, Asset[]>;
     editorState?: boolean;
@@ -37,7 +37,7 @@ const getStubbedAppBridge = ({
     editorState = false,
     openAssetChooser = () => null,
     closeAssetChooser = () => null,
-}: useStubedAppBridgeProps): IAppBridgeNative => {
+}: GetStubbedAppBridgeProps): IAppBridgeNative => {
     const appBridge = new AppBridgeNativeDummy();
     const blockId = appBridge.getBlockId() ?? 0;
 
@@ -60,7 +60,7 @@ type withAppBridgeStubsProps = { appBridge: IAppBridgeNative };
 
 export function withAppBridgeStubs<T>(
     WrappedComponent: ComponentType<T>,
-    props?: useStubedAppBridgeProps,
+    props?: GetStubbedAppBridgeProps,
 ): [ComponentType<Omit<T, keyof withAppBridgeStubsProps>>, IAppBridgeNative] {
     const appBridge = getStubbedAppBridge(props ?? {});
     const ComponentWithAppBridgeStubs = (props: Omit<T, keyof withAppBridgeStubsProps>) => {
