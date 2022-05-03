@@ -324,6 +324,8 @@ export class AppBridgeNative implements IAppBridgeNative {
                 file_id: documentBlockAsset.asset.file_id,
                 filename: documentBlockAsset.asset.file_name,
                 generic_url: documentBlockAsset.asset.generic_url,
+                origin_url: documentBlockAsset.asset.file_origin_url,
+                external_url: documentBlockAsset.asset.external_url,
                 height: documentBlockAsset.asset.height,
                 id: documentBlockAsset.asset.id,
                 name: documentBlockAsset.asset.name,
