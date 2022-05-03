@@ -4,6 +4,7 @@ import { AppBridgeNativeDummy } from './AppBridgeNativeDummy';
 import { Asset } from '../types/Asset';
 import { IAppBridgeNative } from '../types/IAppBridgeNative';
 import { ComponentType } from 'react';
+import { stub } from 'sinon';
 
 type useStubedAppBridgeProps = {
     blockSettings?: Record<string, unknown>;
@@ -11,6 +12,23 @@ type useStubedAppBridgeProps = {
     editorState?: boolean;
     openAssetChooser?: () => void;
     closeAssetChooser?: () => void;
+};
+
+const stubWindowObject = (
+    windowObject: Window | Cypress.AUTWindow,
+    options: { blockId: number; blockSettings: Record<string, unknown> },
+) => {
+    windowObject.blockSettings = { [options.blockId]: options.blockSettings };
+    windowObject.emitter = {
+        emit: () => null,
+        off: () => null,
+        on: () => null,
+        // We don't mock the `all` for now
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any;
+    stub(windowObject.emitter, 'emit');
+    stub(windowObject.emitter, 'off');
+    stub(windowObject.emitter, 'on');
 };
 
 const getStubedAppBridge = ({
@@ -21,27 +39,19 @@ const getStubedAppBridge = ({
     closeAssetChooser = () => null,
 }: useStubedAppBridgeProps): IAppBridgeNative => {
     const appBridge = new AppBridgeNativeDummy();
-    const blockId = appBridge.getBlockId();
+    const blockId = appBridge.getBlockId() ?? 0;
 
-    cy.window().then((window: Cypress.AUTWindow) => {
-        window.blockSettings = { [blockId ?? 0]: blockSettings };
-        window.emitter = {
-            emit: () => null,
-            off: () => null,
-            on: () => null,
-            // We don't mock the `all` for now
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any;
-        cy.stub(window.emitter, 'emit');
-        cy.stub(window.emitter, 'off');
-        cy.stub(window.emitter, 'on');
-    });
+    if (cy) {
+        cy.window().then((window: Cypress.AUTWindow) => stubWindowObject(window, { blockId, blockSettings }));
+    } else {
+        stubWindowObject(window, { blockId, blockSettings });
+    }
 
-    cy.stub(appBridge, 'closeAssetChooser').callsFake(closeAssetChooser);
-    cy.stub(appBridge, 'getBlockAssets').callsFake(() => new Promise((resolve) => resolve(blockAssets)));
-    cy.stub(appBridge, 'getBlockSettings').returns(new Promise((resolve) => resolve(blockSettings)));
-    cy.stub(appBridge, 'getEditorState').returns(editorState);
-    cy.stub(appBridge, 'openAssetChooser').callsFake(openAssetChooser);
+    stub(appBridge, 'closeAssetChooser').callsFake(closeAssetChooser);
+    stub(appBridge, 'getBlockAssets').callsFake(() => new Promise((resolve) => resolve(blockAssets)));
+    stub(appBridge, 'getBlockSettings').returns(new Promise((resolve) => resolve(blockSettings)));
+    stub(appBridge, 'getEditorState').returns(editorState);
+    stub(appBridge, 'openAssetChooser').callsFake(openAssetChooser);
 
     return appBridge;
 };
