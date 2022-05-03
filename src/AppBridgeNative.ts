@@ -335,6 +335,7 @@ export class AppBridgeNative implements IAppBridgeNative {
                 status: documentBlockAsset.asset.status,
                 title: documentBlockAsset.asset.title,
                 width: documentBlockAsset.asset.width,
+                external_url: documentBlockAsset.asset.external_url,
             });
 
             return stack;
