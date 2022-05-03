@@ -31,7 +31,7 @@ const stubWindowObject = (
     stub(windowObject.emitter, 'on');
 };
 
-const getStubedAppBridge = ({
+const getStubbedAppBridge = ({
     blockSettings = {},
     blockAssets = {},
     editorState = false,
@@ -62,7 +62,7 @@ export function withAppBridgeStubs<T>(
     WrappedComponent: ComponentType<T>,
     props?: useStubedAppBridgeProps,
 ): [ComponentType<Omit<T, keyof withAppBridgeStubsProps>>, IAppBridgeNative] {
-    const appBridge = getStubedAppBridge(props ?? {});
+    const appBridge = getStubbedAppBridge(props ?? {});
     const ComponentWithAppBridgeStubs = (props: Omit<T, keyof withAppBridgeStubsProps>) => {
         return <WrappedComponent appBridge={appBridge} {...(props as T)} />;
     };
