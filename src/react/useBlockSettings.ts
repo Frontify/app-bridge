@@ -1,15 +1,17 @@
 import { useState } from 'react';
-import { IAppBridgeNative } from '../IAppBridgeNative';
+import { IAppBridgeNative } from '../types/IAppBridgeNative';
 
 export const useBlockSettings = <T = Record<string, unknown>>(
     appBridge: IAppBridgeNative,
 ): [T, (newSettings: Partial<T>) => Promise<void>] => {
-    if (appBridge.blockId === undefined) {
+    const blockId = appBridge.getBlockId();
+
+    if (blockId === undefined) {
         throw new Error('You need to instanciate the App Bridge with a block id.');
     }
 
-    if (!window.blockSettings[appBridge.blockId].__isProxy) {
-        window.blockSettings[appBridge.blockId] = new Proxy(window.blockSettings[appBridge.blockId], {
+    if (!window.blockSettings[blockId].__isProxy) {
+        window.blockSettings[blockId] = new Proxy(window.blockSettings[blockId], {
             get: (target: Record<string, unknown>, property: string, received: unknown) => {
                 if (property === '__isProxy') {
                     return true;
@@ -24,15 +26,11 @@ export const useBlockSettings = <T = Record<string, unknown>>(
         });
     }
 
-    const [blockSettings, setBlockSettings] = useState<T>(window.blockSettings[appBridge.blockId] as T);
+    const [blockSettings, setBlockSettings] = useState<T>(window.blockSettings[blockId] as T);
 
     const setBlockSettingsAndUpdate = async (newSettings: Partial<T>): Promise<void> => {
-        if (appBridge.blockId === undefined) {
-            throw new Error('You need to instanciate the App Bridge with a block id.');
-        }
-
         for (const settingsIndex in newSettings) {
-            window.blockSettings[appBridge.blockId][settingsIndex] = newSettings[settingsIndex];
+            window.blockSettings[blockId][settingsIndex] = newSettings[settingsIndex];
         }
         await appBridge.updateBlockSettings({ ...newSettings });
     };

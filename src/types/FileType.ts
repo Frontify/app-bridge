@@ -1,3 +1,5 @@
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
 export enum FileType {
     Audio = 'audio',
     Documents = 'documents',

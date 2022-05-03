@@ -133,6 +133,7 @@ describe('AppBridgeAssets', () => {
         expect(result).resolves.toEqual(expectedResult);
     });
 });
+
 describe('AppBridgeAuth', () => {
     test('getThirdPartyOauth2Tokens', async () => {
         const result = AppBridgeIframe.auth.getThirdPartyOauth2Tokens();

@@ -1,9 +1,10 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
 import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import dts from 'vite-plugin-dts';
 import { peerDependencies as peerDependenciesMap } from './package.json';
 import { resolve } from 'path';
-import dts from 'vite-plugin-dts';
 
 const peerDependencies = Object.keys(peerDependenciesMap);
 
@@ -13,7 +14,7 @@ export const globals = {
 };
 
 export default defineConfig({
-    plugins: [dts({ insertTypesEntry: true })],
+    plugins: [react(), dts({ insertTypesEntry: true })],
     build: {
         lib: {
             entry: resolve(__dirname, 'src/index.ts'),

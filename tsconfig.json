@@ -8,6 +8,7 @@
         "sourceMap": true,
         "outDir": "./dist",
         "rootDir": "./src",
+        "jsx": "react-jsx",
         "strict": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
@@ -21,8 +22,8 @@
         "declaration": true,
         "skipLibCheck": true,
         "allowSyntheticDefaultImports": true,
-        "types": ["vite/client"]
+        "types": ["vite/client", "cypress"]
     },
     "include": ["./src/**/*"],
-    "exclude": ["**/*.spec.ts"]
+    "exclude": ["./dist/**/*"]
 }

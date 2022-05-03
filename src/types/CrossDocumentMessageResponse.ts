@@ -1,4 +1,6 @@
-import { Topic } from '.';
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
+import { Topic } from './Topic';
 
 export type CrossDocumentMessageResponse<T> = {
     success: boolean;

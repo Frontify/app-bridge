@@ -64,4 +64,16 @@ declare global {
     }
 }
 
+declare namespace Cypress {
+    interface AUTWindow {
+        blockSettings: Record<number, Record<string, unknown>>;
+        emitter: Emitter<{
+            StyleguideBlockAssetsUpdated: {
+                blockId: number;
+                blockAssets: Record<string, Asset[]>;
+            };
+        }>;
+    }
+}
+
 export {};

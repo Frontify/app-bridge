@@ -1,6 +1,8 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { Asset, FileExtension, Template } from '.';
+import { Asset } from './Asset';
+import { FileExtension } from './FileExtension';
+import { Template } from './Template';
 
 export enum TerrificEvent {
     OpenModal = 'onOpenModal',

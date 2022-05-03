@@ -2,7 +2,7 @@
 
 import { AssetChooserAssetChosenCallback, AssetChooserOptions } from '../types/Terrific';
 import { AppBridgeNative } from '../AppBridgeNative';
-import { IAppBridgeNative } from '../IAppBridgeNative';
+import { IAppBridgeNative } from '../types/IAppBridgeNative';
 
 type UseAssetChooserType = {
     openAssetChooser: (callback: AssetChooserAssetChosenCallback, options: AssetChooserOptions) => void;

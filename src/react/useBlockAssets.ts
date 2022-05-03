@@ -1,7 +1,7 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
 import { useEffect, useState } from 'react';
-import { IAppBridgeNative } from '../IAppBridgeNative';
+import { IAppBridgeNative } from '../types/IAppBridgeNative';
 import { Asset } from '../types/Asset';
 import { compareObjects } from '../utilities/object';
 
@@ -17,7 +17,6 @@ export const useBlockAssets = (appBridge: IAppBridgeNative) => {
     // Fetch the block assets on mount.
     // And add listener for block assets updates.
     useEffect(() => {
-        const blockId = appBridge.getBlockId();
         const updateBlockAssetsFromEvent = (event: { blockId: number; blockAssets: Record<string, Asset[]> }) => {
             if (event.blockId === blockId && !compareObjects(event.blockAssets, blockAssets)) {
                 setBlockAssets(event.blockAssets);
@@ -40,9 +39,6 @@ export const useBlockAssets = (appBridge: IAppBridgeNative) => {
     }, [appBridge]);
 
     const updateAssetIdsFromKey = async (key: string, newAssetIds: number[]) => {
-        if (blockId === undefined) {
-            throw new Error('You need to instanciate the App Bridge with a block id.');
-        }
         const currentBlockAssets = await appBridge.getBlockAssets();
 
         const oldAssetIds = currentBlockAssets[key]?.map((asset) => asset.id) ?? [];

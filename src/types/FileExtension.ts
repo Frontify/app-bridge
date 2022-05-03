@@ -1,3 +1,5 @@
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
 export enum FileExtension {
     Aac = 'aac',
     Ac3 = 'ac3',

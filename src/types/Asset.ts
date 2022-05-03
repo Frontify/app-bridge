@@ -1,3 +1,5 @@
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
 export type Asset = {
     creator_name: string;
     ext: string;

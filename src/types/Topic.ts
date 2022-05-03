@@ -1,3 +1,5 @@
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
 export enum Topic {
     CloseApp = 'closeApp',
     DeleteAppState = 'deleteAppState',
