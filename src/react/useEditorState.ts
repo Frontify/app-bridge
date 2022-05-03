@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { IAppBridgeNative } from '../IAppBridgeNative';
+import { IAppBridgeNative } from '../types/IAppBridgeNative';
 import { AppBridgeNative } from '../AppBridgeNative';
 
 export const useEditorState = (appBridge?: IAppBridgeNative): boolean => {

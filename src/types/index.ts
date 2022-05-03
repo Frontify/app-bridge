@@ -1,16 +1,18 @@
-export * from './AppBridge';
-export * from './AppBridgeIframe';
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
 export * from './Asset';
 export * from './Color';
 export * from './ColorPalette';
 export * from './CrossDocumentMessage';
 export * from './CrossDocumentMessageResponse';
-export * from './FileExtensions';
+export * from './FileExtension';
 export * from './FileExtensionSets';
-export * from './FileTypes';
+export * from './FileType';
+export * from './IAppBridgeIframe';
+export * from './IAppBridgeNative';
 export * from './OauthTokens';
 export * from './PostExternalAssetParams';
-export * from './Terrific';
 export * from './Template';
+export * from './Terrific';
 export * from './Topic';
 export * from './User';

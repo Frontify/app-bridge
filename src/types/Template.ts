@@ -1,3 +1,5 @@
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
 export type Template = {
     asset_created: string;
     asset_modified: string;

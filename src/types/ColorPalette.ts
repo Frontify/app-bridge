@@ -1,4 +1,6 @@
-import { Color } from '.';
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
+import { Color } from './Color';
 
 export type ColorPalette = {
     id: number;

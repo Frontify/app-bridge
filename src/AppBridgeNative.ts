@@ -1,6 +1,6 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { IAppBridgeNative } from './IAppBridgeNative';
+import { IAppBridgeNative } from './types/IAppBridgeNative';
 import {
     Asset,
     AssetChooserAssetChosenCallback,

@@ -1,6 +1,6 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { FileExtension } from '../types/FileExtensions';
+import { FileExtension } from '../types/FileExtension';
 
 export const mimeTypes: Record<string, string> = {
     [FileExtension.Aac]: 'audio/aac',

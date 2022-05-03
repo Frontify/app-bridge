@@ -3,23 +3,13 @@
 import { generateRandomString } from './utilities/hash';
 import { NotifyData, notify } from './utilities/notify';
 import { subscribe } from './utilities/subscribe';
-import {
-    AppBridgeAppState,
-    AppBridgeAssets,
-    AppBridgeAuth,
-    IAppBridgeIframe as AppBridgeIframeType,
-    AppBridgeUtilities,
-    Asset,
-    OauthTokens,
-    PostExternalAssetParams,
-    Topic,
-} from './types';
+import { Asset, IAppBridgeIframe, OauthTokens, PostExternalAssetParams, Topic } from './types';
 
 const PUBSUB_TOKEN = generateRandomString();
 const DEFAULT_TIMEOUT = 3 * 1000;
 const LONG_TIMEOUT = 5 * 60 * 1000;
 
-const appState: AppBridgeAppState = {
+const appState: IAppBridgeIframe['appState'] = {
     getAppState<T = Record<string, unknown>>(): Promise<T> {
         notify(Topic.GetAppState, PUBSUB_TOKEN);
         return subscribe<T>(Topic.GetAppState, PUBSUB_TOKEN);
@@ -36,7 +26,7 @@ const appState: AppBridgeAppState = {
     },
 };
 
-const assets: AppBridgeAssets = {
+const assets: IAppBridgeIframe['assets'] = {
     getAssetById(assetId: number): Promise<Asset> {
         notify(Topic.GetAssetById, PUBSUB_TOKEN, { assetId });
         return subscribe<Asset>(Topic.GetAssetById, PUBSUB_TOKEN);
@@ -53,7 +43,7 @@ const assets: AppBridgeAssets = {
     },
 };
 
-const auth: AppBridgeAuth = {
+const auth: IAppBridgeIframe['auth'] = {
     getThirdPartyOauth2Tokens(): Promise<OauthTokens> {
         notify(Topic.GetThirdPartyOauth2Tokens, PUBSUB_TOKEN);
         return subscribe<OauthTokens>(Topic.GetThirdPartyOauth2Tokens, PUBSUB_TOKEN, {
@@ -67,7 +57,7 @@ const auth: AppBridgeAuth = {
     },
 };
 
-const utilities: AppBridgeUtilities = {
+const utilities: IAppBridgeIframe['utilities'] = {
     closeApp(): void {
         notify(Topic.CloseApp, PUBSUB_TOKEN);
     },
@@ -77,7 +67,7 @@ const utilities: AppBridgeUtilities = {
     },
 };
 
-export const AppBridgeIframe: AppBridgeIframeType = {
+export const AppBridgeIframe: IAppBridgeIframe = {
     appState,
     assets,
     auth,

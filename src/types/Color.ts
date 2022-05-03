@@ -1,3 +1,5 @@
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
 export type Color = {
     alpha?: number;
     b?: number;
