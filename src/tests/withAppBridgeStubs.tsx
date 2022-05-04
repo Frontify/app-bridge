@@ -42,7 +42,7 @@ const getStubbedAppBridge = ({
     const blockId = appBridge.getBlockId() ?? 0;
 
     if (cy) {
-        cy.window().then((window: Cypress.AUTWindow) => stubWindowObject(window, { blockId, blockSettings }));
+        cy.window().then((window) => stubWindowObject(window, { blockId, blockSettings }));
     } else {
         stubWindowObject(window, { blockId, blockSettings });
     }
