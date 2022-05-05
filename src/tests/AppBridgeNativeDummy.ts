@@ -3,7 +3,7 @@
 import { Asset, Color, ColorPalette, Template, User } from '../types';
 import { IAppBridgeNative } from '../types/IAppBridgeNative';
 import { AssetDummy } from './AssetDummy';
-import { PaletteDummy } from './PaletteDummy';
+import { ColorPaletteDummy } from './ColorPaletteDummy';
 import { UserDummy } from './UserDummy';
 
 export class AppBridgeNativeDummy implements IAppBridgeNative {
@@ -51,7 +51,7 @@ export class AppBridgeNativeDummy implements IAppBridgeNative {
     }
 
     getAvailablePalettes(): Promise<ColorPalette[]> {
-        return new Promise((resolve) => resolve(PaletteDummy.palette));
+        return new Promise((resolve) => resolve(ColorPaletteDummy.withDefaults()));
     }
 
     getBlockSettings<T = Record<string, unknown>>(): Promise<T> {
