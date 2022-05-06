@@ -1,9 +1,10 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { IAppBridgeNative } from '../types/IAppBridgeNative';
 import { Asset, Color, ColorPalette, Template, User } from '../types';
-import { UserDummy } from './UserDummy';
+import { IAppBridgeNative } from '../types/IAppBridgeNative';
 import { AssetDummy } from './AssetDummy';
+import { ColorPaletteDummy } from './ColorPaletteDummy';
+import { UserDummy } from './UserDummy';
 
 export class AppBridgeNativeDummy implements IAppBridgeNative {
     private readonly ASSET_ID_1 = 5934;
@@ -50,7 +51,13 @@ export class AppBridgeNativeDummy implements IAppBridgeNative {
     }
 
     getAvailablePalettes(): Promise<ColorPalette[]> {
-        return new Promise((resolve) => resolve([]));
+        return new Promise((resolve) =>
+            resolve([
+                ColorPaletteDummy.with(678, 'Palette 1'),
+                ColorPaletteDummy.with(427, 'Palette 2'),
+                ColorPaletteDummy.with(678, 'Palette 3'),
+            ]),
+        );
     }
 
     getBlockSettings<T = Record<string, unknown>>(): Promise<T> {
