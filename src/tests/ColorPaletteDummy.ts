@@ -4,13 +4,11 @@ import { ColorPalette } from '../types';
 import { ColorDummy } from './ColorDummy';
 
 export class ColorPaletteDummy {
-    static withDefaults(): ColorPalette[] {
-        return [
-            {
-                id: 331,
-                name: 'Example Colors',
-                colors: [ColorDummy.red, ColorDummy.yellow, ColorDummy.green],
-            },
-        ];
+    static with(id: number, name = 'Example Colors'): ColorPalette {
+        return {
+            id,
+            name,
+            colors: [ColorDummy.red(), ColorDummy.yellow(), ColorDummy.green()],
+        };
     }
 }

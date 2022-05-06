@@ -3,7 +3,7 @@
 import { Color } from '../types';
 
 export class ColorDummy {
-    static get red(): Color {
+    static red(): Color {
         return {
             id: 767,
             name: 'Red',
@@ -24,7 +24,7 @@ export class ColorDummy {
             prefix: '$',
         };
     }
-    static get yellow(): Color {
+    static yellow(): Color {
         return {
             id: 768,
             name: 'Yellow',
@@ -45,7 +45,7 @@ export class ColorDummy {
             prefix: '$',
         };
     }
-    static get green(): Color {
+    static green(): Color {
         return {
             id: 769,
             name: 'Green',

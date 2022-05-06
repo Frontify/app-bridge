@@ -51,7 +51,13 @@ export class AppBridgeNativeDummy implements IAppBridgeNative {
     }
 
     getAvailablePalettes(): Promise<ColorPalette[]> {
-        return new Promise((resolve) => resolve(ColorPaletteDummy.withDefaults()));
+        return new Promise((resolve) =>
+            resolve([
+                ColorPaletteDummy.with(678, 'Palette 1'),
+                ColorPaletteDummy.with(427, 'Palette 2'),
+                ColorPaletteDummy.with(678, 'Palette 3'),
+            ]),
+        );
     }
 
     getBlockSettings<T = Record<string, unknown>>(): Promise<T> {
