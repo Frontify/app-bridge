@@ -26,7 +26,6 @@ export interface IAppBridgeNative {
     getBlockSettings<T = Record<string, unknown>>(): Promise<T>;
     updateBlockSettings<T = Record<string, unknown>>(newSettings: T): Promise<void>;
     getEditorState(): boolean;
-    isReferencedBlock(): boolean;
     getProjectId(): number;
     openAssetChooser(callback: AssetChooserAssetChosenCallback, options?: AssetChooserOptions): void;
     closeAssetChooser(): void;
