@@ -234,6 +234,15 @@ export class AppBridgeNative implements IAppBridgeNative {
         return document.body.classList.contains('editor-enabled');
     }
 
+    public isReferencedBlock(): boolean {
+        if (!this.blockId) {
+            throw new Error('You need to instanciate the App Bridge with a block id.');
+        }
+
+        const blockElement = document.querySelector(`[data-block="${this.blockId}"]`) as HTMLElement;
+        return blockElement.dataset.referenceToken !== undefined ? true : false;
+    }
+
     public getProjectId(): number {
         return window.application.config.context.project.id;
     }

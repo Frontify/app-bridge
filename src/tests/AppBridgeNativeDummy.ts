@@ -72,6 +72,10 @@ export class AppBridgeNativeDummy implements IAppBridgeNative {
         return false;
     }
 
+    isReferencedBlock(): boolean {
+        return false;
+    }
+
     getProjectId(): number {
         return this.PROJECT_ID;
     }
