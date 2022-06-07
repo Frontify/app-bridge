@@ -10,7 +10,10 @@ export const compareObjects = (obj1: any, obj2: any) => {
     }
 
     for (const key of obj1Keys) {
-        if ((typeof obj1[key] === 'object' && !compareObjects(obj1[key], obj2[key])) || obj1[key] !== obj2[key]) {
+        if (
+            (typeof obj1[key] === 'object' && !compareObjects(obj1[key], obj2[key])) ||
+            (typeof obj1[key] !== 'object' && obj1[key] !== obj2[key])
+        ) {
             return false;
         }
     }
