@@ -1,6 +1,6 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import dts from 'vite-plugin-dts';
 import { dependencies as dependenciesMap, peerDependencies as peerDependenciesMap } from './package.json';
@@ -30,6 +30,11 @@ export default defineConfig({
             output: {
                 globals,
             },
+        },
+    },
+    test: {
+        coverage: {
+            reporter: ['text', 'json', 'html'],
         },
     },
 });
