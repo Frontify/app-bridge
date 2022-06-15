@@ -5,11 +5,11 @@ import { getStyleguideNavigations } from '../repositories/StyleguideNavigationRe
 import { getStyleguideNavigationItems } from '../repositories/StyleguideNavigationItemRepository';
 import { StyleguideNavigationItem } from '../types';
 
-type GuidelineNavigationArea = 'main' | 'footer' | 'trash' | 'hidden';
-export type GuidelineNavigation = Record<GuidelineNavigationArea, StyleguideNavigationItem[]>;
+export type StyleguideNavigationArea = 'main' | 'footer' | 'trash' | 'hidden';
+export type StyleguideNavigation = Record<StyleguideNavigationArea, StyleguideNavigationItem[]>;
 
-export const useNavigation = (styleguideId: number): { navigation: GuidelineNavigation } => {
-    const [navigation, setNavigation] = useState<GuidelineNavigation>({
+export const useNavigation = (styleguideId: number): { navigation: StyleguideNavigation } => {
+    const [navigation, setNavigation] = useState<StyleguideNavigation>({
         main: [],
         footer: [],
         hidden: [],
@@ -22,14 +22,18 @@ export const useNavigation = (styleguideId: number): { navigation: GuidelineNavi
                 if (styleguideId) {
                     const styleguideNavigations = await getStyleguideNavigations(styleguideId);
 
-                    await Promise.all(
-                        styleguideNavigations.map(async (styleguideNavigation) => {
-                            const navigationItems = await getStyleguideNavigationItems(styleguideNavigation.id);
-                            setNavigation((prevState) => ({
-                                ...prevState,
-                                [styleguideNavigation.usage.toLocaleLowerCase()]: navigationItems,
-                            }));
-                        }),
+                    const navigationItems = await Promise.all(
+                        styleguideNavigations.map((styleguideNavigation) =>
+                            getStyleguideNavigationItems(styleguideNavigation.id),
+                        ),
+                    );
+
+                    setNavigation(
+                        styleguideNavigations.reduce((stack, styleguideNavigation, index) => {
+                            stack[styleguideNavigation.usage.toLocaleLowerCase() as StyleguideNavigationArea] =
+                                navigationItems[index];
+                            return stack;
+                        }, {} as StyleguideNavigation),
                     );
                 }
             } catch (error) {

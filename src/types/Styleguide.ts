@@ -7,8 +7,9 @@ export type Styleguide = {
     modifier?: number;
     modified?: string;
     validTo?: string;
-    isValid: boolean;
     projectId: number;
+    brandId: number;
+    name: string;
     themeSettings?: string;
 };
 

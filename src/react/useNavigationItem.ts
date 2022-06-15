@@ -28,7 +28,7 @@ import { createNavigationPage, updateNavigationPage } from '../repositories/Styl
 import { StyleguideLibraryCreate } from '../types/Styleguide';
 
 export const useNavigationItem = () => {
-    const addFolderAction = async (folder: StyleguideFolderCreate, parentId: number) => {
+    const createFolder = async (folder: StyleguideFolderCreate, parentId: number) => {
         try {
             const createdFolder = await createNavigationFolder(folder);
 
@@ -42,7 +42,7 @@ export const useNavigationItem = () => {
         }
     };
 
-    const addPageAction = async (page: StyleguidePageCreate, parentId: number) => {
+    const createPage = async (page: StyleguidePageCreate, parentId: number) => {
         try {
             const createdPage = await createNavigationPage(page);
 
@@ -56,7 +56,7 @@ export const useNavigationItem = () => {
         }
     };
 
-    const addLinkAction = async (link: StyleguideLinkCreate, parentId: number) => {
+    const createLink = async (link: StyleguideLinkCreate, parentId: number) => {
         try {
             const createdLink = await createNavigationLink(link);
 
@@ -70,7 +70,7 @@ export const useNavigationItem = () => {
         }
     };
 
-    const addLibraryAction = async (library: StyleguideLibraryCreate, parentId: number) => {
+    const createLibrary = async (library: StyleguideLibraryCreate, parentId: number) => {
         try {
             const createdlibrary = await createNavigationLibrary(library);
 
@@ -84,19 +84,16 @@ export const useNavigationItem = () => {
         }
     };
 
-    const renameItem = async (
-        patchItem: StyleguidePagePatch | StyleguideFolderPatch | StyleguideLinkPatch | StyleguideLibraryPatch,
-        item: StyleguideNavigationItem,
-    ) => {
+    const renameItem = async (title: string, item: StyleguideNavigationItem) => {
         try {
             if (item.styleguideFolderId) {
-                await updateNavigationFolder(item.styleguideFolderId, patchItem);
+                await updateNavigationFolder(item.styleguideFolderId, { title });
             } else if (item.styleguidePageId) {
-                await updateNavigationPage(item.styleguidePageId, patchItem);
+                await updateNavigationPage(item.styleguidePageId, { title });
             } else if (item.styleguideLinkId) {
-                await updateNavigationLink(item.styleguideLinkId, patchItem);
+                await updateNavigationLink(item.styleguideLinkId, { title });
             } else if (item.styleguideLibraryId) {
-                await updateNavigationLibrary(item.styleguideLibraryId, patchItem);
+                await updateNavigationLibrary(item.styleguideLibraryId, { title });
             } else {
                 throw new Error('Invalid StyleguideNavigationItemType');
             }
@@ -196,19 +193,18 @@ export const useNavigationItem = () => {
     };
 
     return {
-        addFolderAction,
-        addLinkAction,
-        addLibraryAction,
-        addPageAction,
-        renameItem,
+        createLibrary,
+        createLink,
+        createPage,
+        createFolder,
+        deleteItemPermanently,
+        duplicateItem,
         moveItem,
         moveItemToTrash,
-        toggleItemVisibility,
-        duplicateItem,
-        createItem,
-        deleteItemPermanently,
+        renameItem,
         restoreItem,
-        toggleFolderDropdown,
         sortItems,
+        toggleFolderDropdown,
+        toggleItemVisibility,
     };
 };
