@@ -107,9 +107,14 @@ export const useNavigationItem = () => {
         }
     };
 
-    const moveItem = async (id: number, destinationNavigationId: number, targetParentId: Nullable<string>) => {
+    const moveItem = async (
+        id: number,
+        destinationNavigationId: Nullable<number>,
+        targetParentId: Nullable<number>,
+        positionBeforeId: Nullable<number>,
+    ) => {
         try {
-            await moveNavigationItem(id, destinationNavigationId, targetParentId);
+            await moveNavigationItem(id, destinationNavigationId, targetParentId, positionBeforeId);
             window.emitter.emit('StyleguideNavigationUpdated');
         } catch (event) {
             console.error('Error: ', event);
@@ -181,7 +186,7 @@ export const useNavigationItem = () => {
         }
     };
 
-    const sortItems = async (itemId: number, parentId: Nullable<string>, positionBeforeId: Nullable<string>) => {
+    const sortItems = async (itemId: number, parentId: Nullable<number>, positionBeforeId: Nullable<number>) => {
         try {
             await moveNavigationItem(itemId, null, parentId, positionBeforeId);
             window.emitter.emit('StyleguideNavigationUpdated');
