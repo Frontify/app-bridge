@@ -41,7 +41,7 @@ export type StyleguidePage = {
     id: number;
     styleguideNavigationId: number;
     title: string;
-    navigationTitle: string;
+    navigationTitle: Nullable<string>;
 };
 export type StyleguidePagePatch = Partial<StyleguidePage>;
 export type StyleguidePageCreate = Omit<StyleguidePage, 'id'>;
