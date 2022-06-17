@@ -7,7 +7,7 @@ export type StyleguidePageApi = {
     id: number;
     styleguide_navigation_id: number;
     title: string;
-    navigation_title: string;
+    navigation_title: Nullable<string>;
 };
 
 export const mapToStyleguidePageType = (object: StyleguidePageApi): StyleguidePage => ({
