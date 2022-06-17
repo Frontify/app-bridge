@@ -30,7 +30,7 @@
         "typecheck": "tsc --noEmit"
     },
     "dependencies": {
-        "sinon": "^13.0.2"
+        "sinon": "^14.0.0"
     },
     "devDependencies": {
         "@cypress/react": "^5.12.4",
