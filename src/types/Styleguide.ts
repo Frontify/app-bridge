@@ -90,3 +90,6 @@ export type StyleguideNavigation = {
 
 export type StyleguideNavigationItemCreate = Partial<StyleguideNavigationItem>;
 export type StyleguideNavigationItemPatch = Partial<StyleguideNavigationItem>;
+
+export type StyleguideNavigationArea = 'main' | 'footer' | 'trash' | 'hidden';
+export type StyleguideNavigations = Record<StyleguideNavigationArea, StyleguideNavigationItem[]>;

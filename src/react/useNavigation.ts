@@ -3,13 +3,10 @@
 import { useEffect, useState } from 'react';
 import { getStyleguideNavigations } from '../repositories/StyleguideNavigationRepository';
 import { getStyleguideNavigationItems } from '../repositories/StyleguideNavigationItemRepository';
-import { StyleguideNavigationItem } from '../types';
+import { StyleguideNavigations, StyleguideNavigationArea } from '../types/Styleguide';
 
-export type StyleguideNavigationArea = 'main' | 'footer' | 'trash' | 'hidden';
-export type StyleguideNavigation = Record<StyleguideNavigationArea, StyleguideNavigationItem[]>;
-
-export const useNavigation = (styleguideId: number): { navigation: StyleguideNavigation } => {
-    const [navigation, setNavigation] = useState<StyleguideNavigation>({
+export const useNavigation = (styleguideId: number): { navigation: StyleguideNavigations } => {
+    const [navigation, setNavigation] = useState<StyleguideNavigations>({
         main: [],
         footer: [],
         hidden: [],
@@ -33,11 +30,11 @@ export const useNavigation = (styleguideId: number): { navigation: StyleguideNav
                             stack[styleguideNavigation.usage.toLocaleLowerCase() as StyleguideNavigationArea] =
                                 navigationItems[index];
                             return stack;
-                        }, {} as StyleguideNavigation),
+                        }, {} as StyleguideNavigations),
                     );
                 }
             } catch (error) {
-                console.log("Couldn't fetch the styleguide navigation : ", error);
+                console.error("Couldn't fetch the styleguide navigation : ", error);
             }
         };
         fetchNavigation();
