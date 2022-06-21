@@ -20,6 +20,13 @@
     "engines": {
         "node": ">=16"
     },
+    "overrides": {
+        "@cypress/react": {
+            "react": "^18.0.0",
+            "react-dom": "^18.0.0",
+            "@types/react": "^18.0.0"
+        }
+    },
     "scripts": {
         "build": "vite build",
         "lint:fix": "eslint ./src --fix",
@@ -33,9 +40,9 @@
         "sinon": "^14.0.0"
     },
     "devDependencies": {
-        "@cypress/react": "^5.12.4",
+        "@cypress/react": "^6.0.0",
         "@frontify/eslint-config-react": "0.15.2",
-        "@types/react": "17.0.47",
+        "@types/react": "^18.0.12",
         "@types/sinon": "^10.0.11",
         "@vitejs/plugin-react": "^1.3.2",
         "c8": "^7.11.3",
@@ -44,15 +51,15 @@
         "husky": "8.0.1",
         "mitt": "^3.0.0",
         "prettier": "2.6.2",
-        "react": "^17.0.2",
-        "react-dom": "^17.0.2",
-        "typescript": "4.7.3",
-        "vite": "2.9.12",
-        "vite-plugin-dts": "1.2.0",
-        "vitest": "0.14.2"
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "typescript": "4.6.4",
+        "vite": "2.9.8",
+        "vite-plugin-dts": "1.1.1",
+        "vitest": "^0.10.2"
     },
     "peerDependencies": {
-        "react": "^17.0.2",
-        "react-dom": "^17.0.2"
+        "react": "^18.1.0",
+        "react-dom": "^18.1.0"
     }
 }
