@@ -1,20 +1,20 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { RefCallback, useCallback, useEffect, useRef, useState } from 'react';
 
 export const useReadyForPrint = <T extends HTMLElement>(): {
-    containerRef: MutableRefObject<T | null>;
+    containerRef: RefCallback<T>;
     isReadyForPrint: boolean;
     setIsReadyForPrint: (isReady: boolean) => void;
 } => {
     const [ready, setReady] = useState<boolean>(false);
-    const containerRef = useRef<T | null>(null);
+    const elementRef = useRef<T | null>(null);
 
     const getBlockWrapper = () => {
-        if (!containerRef || !containerRef.current) {
+        if (!elementRef || !elementRef.current) {
             return null;
         }
-        return containerRef.current.closest('.mod.block:not(.mod-block-section)');
+        return elementRef.current.closest('.mod.block:not(.mod-block-section)');
     };
 
     useEffect(() => {
@@ -38,5 +38,9 @@ export const useReadyForPrint = <T extends HTMLElement>(): {
         setReady(isReady);
     };
 
-    return { containerRef, isReadyForPrint: ready, setIsReadyForPrint };
+    const assignRef = useCallback((node: T | null) => {
+        elementRef.current = node;
+    }, []);
+
+    return { containerRef: assignRef, isReadyForPrint: ready, setIsReadyForPrint };
 };
