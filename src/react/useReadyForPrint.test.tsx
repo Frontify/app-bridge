@@ -1,3 +1,5 @@
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
 import { useReadyForPrint } from './useReadyForPrint';
