@@ -4,9 +4,9 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
 import { useReadyForPrint } from './useReadyForPrint';
 
-const IS_READY_CONTAINER = 'isReadyContainer';
-const SET_TO_FALSE_BUTTON = 'setToFalseButton';
-const SET_TO_TRUE_BUTTON = 'setToTrueButton';
+const IS_READY_CONTAINER = 'is-ready-container';
+const SET_TO_FALSE_BUTTON = 'set-to-false-button';
+const SET_TO_TRUE_BUTTON = 'set-to-true-button';
 const IS_READY_FOR_PRINT = 'is ready for print';
 const IS_NOT_READY_FOR_PRINT = 'is not ready for print';
 
