@@ -74,11 +74,11 @@ export const useNavigationItem = () => {
 
     const createLibrary = async (library: StyleguideLibraryCreate, parentId: number) => {
         try {
-            const createdlibrary = await createNavigationLibrary(library);
+            const createdLibrary = await createNavigationLibrary(library);
 
             await createItem({
                 styleguideNavigationId: library.styleguideNavigationId,
-                styleguideLibraryId: createdlibrary.id,
+                styleguideLibraryId: createdLibrary.id,
                 parentId,
             });
         } catch (event) {

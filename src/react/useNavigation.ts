@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { getStyleguideNavigations } from '../repositories/StyleguideNavigationRepository';
 import { getStyleguideNavigationItems } from '../repositories/StyleguideNavigationItemRepository';
-import { StyleguideNavigations, StyleguideNavigationArea } from '../types/Styleguide';
+import { StyleguideNavigationArea, StyleguideNavigations } from '../types/Styleguide';
 
 export const useNavigation = (styleguideId: number): { navigation: StyleguideNavigations } => {
     const [navigation, setNavigation] = useState<StyleguideNavigations>({
