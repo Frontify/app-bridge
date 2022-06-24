@@ -35,10 +35,8 @@ export default defineConfig({
     test: {
         environment: 'jsdom',
         coverage: {
-            all: true,
             reporter: ['text', 'lcov'],
             include: ['src/**/*.ts', 'src/**/*.tsx'],
-            exclude: ['**/*.test.ts', '**/*.test.tsx'],
         },
     },
 });
