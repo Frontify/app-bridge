@@ -18,9 +18,9 @@ import {
     StyleguideNavigationItemCreate,
     StyleguidePageCreate,
 } from '../types';
-import { createNavigationLibrary, updateNavigationLibrary } from '../repositories/StyleguideLibraryRepository';
-import { createNavigationFolder, updateNavigationFolder } from '../repositories/StyleguideFolderRepository';
 import { createNavigationPage, updateNavigationPage } from '../repositories/StyleguidePageRepository';
+import { createNavigationFolder, updateNavigationFolder } from '../repositories/StyleguideFolderRepository';
+import { createNavigationLibrary, updateNavigationLibrary } from '../repositories/StyleguideLibraryRepository';
 import {
     StyleguideFolderPatch,
     StyleguideLibraryCreate,
@@ -29,8 +29,8 @@ import {
     StyleguidePagePatch,
 } from '../types/Styleguide';
 
-export const useNavigationItem = () => {
-    const createFolder = async (folder: StyleguideFolderCreate, parentId: number) => {
+export const useNavigationActions = () => {
+    const createFolder = async (folder: StyleguideFolderCreate, parentId: Nullable<number>) => {
         try {
             const createdFolder = await createNavigationFolder(folder);
 
@@ -44,7 +44,7 @@ export const useNavigationItem = () => {
         }
     };
 
-    const createPage = async (page: StyleguidePageCreate, parentId: number) => {
+    const createPage = async (page: StyleguidePageCreate, parentId: Nullable<number>) => {
         try {
             const createdPage = await createNavigationPage(page);
 
@@ -58,7 +58,7 @@ export const useNavigationItem = () => {
         }
     };
 
-    const createLink = async (link: StyleguideLinkCreate, parentId: number) => {
+    const createLink = async (link: StyleguideLinkCreate, parentId: Nullable<number>) => {
         try {
             const createdLink = await createNavigationLink(link);
 
@@ -72,7 +72,7 @@ export const useNavigationItem = () => {
         }
     };
 
-    const createLibrary = async (library: StyleguideLibraryCreate, parentId: number) => {
+    const createLibrary = async (library: StyleguideLibraryCreate, parentId: Nullable<number>) => {
         try {
             const createdLibrary = await createNavigationLibrary(library);
 
@@ -248,5 +248,6 @@ export const useNavigationItem = () => {
         updateLink,
         updatePage,
         toggleItemVisibility,
+        createItem,
     };
 };

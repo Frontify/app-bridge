@@ -3,15 +3,28 @@
 import { useEffect, useState } from 'react';
 import { getStyleguideNavigations } from '../repositories/StyleguideNavigationRepository';
 import { getStyleguideNavigationItems } from '../repositories/StyleguideNavigationItemRepository';
-import { StyleguideNavigationArea, StyleguideNavigations } from '../types/Styleguide';
+import { StyleguideNavigationArea, StyleguideNavigations, StyleguideNavigationsId } from '../types/Styleguide';
 
-export const useNavigation = (styleguideId: number): { navigation: StyleguideNavigations } => {
+export const useNavigation = (
+    styleguideId: number,
+): { navigation: StyleguideNavigations; getNavigationId: (usage: StyleguideNavigationArea) => Nullable<number> } => {
     const [navigation, setNavigation] = useState<StyleguideNavigations>({
         main: [],
         footer: [],
         hidden: [],
         trash: [],
     });
+
+    const [navigationId, setNavigationId] = useState<StyleguideNavigationsId>({
+        main: null,
+        footer: null,
+        hidden: null,
+        trash: null,
+    });
+
+    const getNavigationId = (usage: StyleguideNavigationArea) => {
+        return navigationId[usage];
+    };
 
     useEffect(() => {
         const fetchNavigation = async () => {
@@ -23,6 +36,14 @@ export const useNavigation = (styleguideId: number): { navigation: StyleguideNav
                         styleguideNavigations.map((styleguideNavigation) =>
                             getStyleguideNavigationItems(styleguideNavigation.id),
                         ),
+                    );
+
+                    setNavigationId(
+                        styleguideNavigations.reduce((stack, styleguideNavigation) => {
+                            stack[styleguideNavigation.usage.toLocaleLowerCase() as StyleguideNavigationArea] =
+                                styleguideNavigation.id;
+                            return stack;
+                        }, {} as StyleguideNavigationsId),
                     );
 
                     setNavigation(
@@ -48,5 +69,6 @@ export const useNavigation = (styleguideId: number): { navigation: StyleguideNav
 
     return {
         navigation,
+        getNavigationId,
     };
 };

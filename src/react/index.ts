@@ -7,5 +7,5 @@ export * from './useEditorState';
 export * from './useFileInput';
 export * from './useFileUpload';
 export * from './useNavigation';
-export * from './useNavigationItem';
+export * from './useNavigationActions';
 export * from './useTemplateChooser';

@@ -69,7 +69,7 @@ export type StyleguideLibrary = {
     id: number;
     styleguideNavigationId: number;
     title: string;
-    //TODO: add missing fields if any are missing
+    // TODO: add missing fields if any are missing
 };
 export type StyleguideLibraryPatch = Partial<StyleguideLibrary>;
 export type StyleguideLibraryCreate = Omit<StyleguideLibrary, 'id'>;
@@ -93,3 +93,4 @@ export type StyleguideNavigationItemPatch = Partial<StyleguideNavigationItem>;
 
 export type StyleguideNavigationArea = 'main' | 'footer' | 'trash' | 'hidden';
 export type StyleguideNavigations = Record<StyleguideNavigationArea, StyleguideNavigationItem[]>;
+export type StyleguideNavigationsId = Record<StyleguideNavigationArea, Nullable<number>>;
