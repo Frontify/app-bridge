@@ -9,3 +9,4 @@ export * from './useFileUpload';
 export * from './useNavigation';
 export * from './useNavigationActions';
 export * from './useTemplateChooser';
+export * from './useNavigationManager';
