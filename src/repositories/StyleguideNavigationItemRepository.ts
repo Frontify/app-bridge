@@ -86,9 +86,9 @@ export const duplicateNavigationItem = async (itemId: number): Promise<Styleguid
 
 export const moveNavigationItem = async (
     itemId: number,
-    destinationNavigationId?: Nullable<number>,
-    destinationParentId?: Nullable<number>,
-    positionBeforeId?: Nullable<number>,
+    destinationNavigationId: Nullable<number>,
+    destinationParentId: Nullable<number>,
+    positionBeforeId: Nullable<number>,
 ): Promise<StyleguideNavigationItem> => {
     const { result } = await HttpClient.post<StyleguideNavigationItemApiEnriched>(
         `/api/styleguide-navigation-item/${itemId}/move`,
