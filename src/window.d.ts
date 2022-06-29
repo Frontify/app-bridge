@@ -60,6 +60,8 @@ declare global {
                 blockId: number;
                 blockAssets: Record<string, Asset[]>;
             };
+            StyleguideNavigationUpdated?: () => Promise<void>;
+            OpenNavigationManager;
         }>;
     }
 }
