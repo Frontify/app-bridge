@@ -17,7 +17,7 @@ import {
     StyleguideNavigationItem,
     StyleguideNavigationItemCreate,
     StyleguidePageCreate,
-} from '../types';
+} from '../types/Styleguide';
 import { createNavigationPage, updateNavigationPage } from '../repositories/StyleguidePageRepository';
 import { createNavigationFolder, updateNavigationFolder } from '../repositories/StyleguideFolderRepository';
 import { createNavigationLibrary, updateNavigationLibrary } from '../repositories/StyleguideLibraryRepository';
