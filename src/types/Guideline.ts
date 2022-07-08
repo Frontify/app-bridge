@@ -1,6 +1,6 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-export type Styleguide = {
+export type Guideline = {
     id: number;
     creator: number;
     created: string;

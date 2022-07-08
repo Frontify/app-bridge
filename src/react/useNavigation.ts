@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { getStyleguideNavigations } from '../repositories/StyleguideNavigationRepository';
 import { getStyleguideNavigationItems } from '../repositories/StyleguideNavigationItemRepository';
-import { StyleguideNavigationArea, StyleguideNavigations, StyleguideNavigationsId } from '../types/Styleguide';
+import { StyleguideNavigationArea, StyleguideNavigations, StyleguideNavigationsId } from '../types/Guideline';
 
 export const useNavigation = (
     styleguideId: number,

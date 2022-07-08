@@ -27,7 +27,7 @@ import {
     StyleguideLibraryPatch,
     StyleguideLinkPatch,
     StyleguidePagePatch,
-} from '../types/Styleguide';
+} from '../types/Guideline';
 
 export const useNavigationActions = () => {
     const createFolder = async (folder: StyleguideFolderCreate, parentId: Nullable<number>) => {
