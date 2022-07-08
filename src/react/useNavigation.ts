@@ -6,7 +6,7 @@ import { getGuidelineNavigationItems } from '../repositories/GuidelineNavigation
 import { GuidelineNavigationArea, GuidelineNavigations, GuidelineNavigationsId } from '../types/Guideline';
 
 export const useNavigation = (
-    styleguideId: number,
+    guidelineId: number,
 ): { navigation: GuidelineNavigations; getNavigationId: (usage: GuidelineNavigationArea) => Nullable<number> } => {
     const [navigation, setNavigation] = useState<GuidelineNavigations>({
         main: [],
@@ -29,33 +29,33 @@ export const useNavigation = (
     useEffect(() => {
         const fetchNavigation = async () => {
             try {
-                if (styleguideId) {
-                    const styleguideNavigations = await getGuidelineNavigations(styleguideId);
+                if (guidelineId) {
+                    const guidelineNavigations = await getGuidelineNavigations(guidelineId);
 
                     const navigationItems = await Promise.all(
-                        styleguideNavigations.map((styleguideNavigation) =>
-                            getGuidelineNavigationItems(styleguideNavigation.id),
+                        guidelineNavigations.map((guidelineNavigation) =>
+                            getGuidelineNavigationItems(guidelineNavigation.id),
                         ),
                     );
 
                     setNavigationId(
-                        styleguideNavigations.reduce((stack, styleguideNavigation) => {
-                            stack[styleguideNavigation.usage.toLocaleLowerCase() as GuidelineNavigationArea] =
-                                styleguideNavigation.id;
+                        guidelineNavigations.reduce((stack, guidelineNavigation) => {
+                            stack[guidelineNavigation.usage.toLocaleLowerCase() as GuidelineNavigationArea] =
+                                guidelineNavigation.id;
                             return stack;
                         }, {} as GuidelineNavigationsId),
                     );
 
                     setNavigation(
-                        styleguideNavigations.reduce((stack, styleguideNavigation, index) => {
-                            stack[styleguideNavigation.usage.toLocaleLowerCase() as GuidelineNavigationArea] =
+                        guidelineNavigations.reduce((stack, guidelineNavigation, index) => {
+                            stack[guidelineNavigation.usage.toLocaleLowerCase() as GuidelineNavigationArea] =
                                 navigationItems[index];
                             return stack;
                         }, {} as GuidelineNavigations),
                     );
                 }
             } catch (error) {
-                console.error("Couldn't fetch the styleguide navigation : ", error);
+                console.error("Couldn't fetch the guideline navigation : ", error);
             }
         };
         fetchNavigation();
@@ -65,7 +65,7 @@ export const useNavigation = (
         return () => {
             window.emitter.off('GuidelineNavigationUpdated', fetchNavigation);
         };
-    }, [styleguideId]);
+    }, [guidelineId]);
 
     return {
         navigation,
