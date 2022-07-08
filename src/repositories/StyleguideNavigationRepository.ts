@@ -1,7 +1,7 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
 import { HttpClient } from '../utilities/httpClient';
-import { StyleguideNavigation, StyleguideNavigationUsageType } from '../types';
+import { GuidelineNavigation, GuidelineNavigationUsageType } from '../types';
 
 type StyleguideNavigationApi = {
     id: number;
@@ -12,15 +12,15 @@ type StyleguideNavigationApi = {
     valid_to: Nullable<string>;
     project_id: number;
     styleguide_id: number;
-    usage: StyleguideNavigationUsageType;
+    usage: GuidelineNavigationUsageType;
 };
 
-export const getStyleguideNavigations = async (guidelineId: number): Promise<StyleguideNavigation[]> => {
+export const getStyleguideNavigations = async (guidelineId: number): Promise<GuidelineNavigation[]> => {
     const { result } = await HttpClient.get<StyleguideNavigationApi[]>(`/api/styleguide/${guidelineId}/navigation`);
     return result.data.map(mapToStyleguideNavigationType);
 };
 
-const mapToStyleguideNavigationType = (object: StyleguideNavigationApi): StyleguideNavigation => ({
+const mapToStyleguideNavigationType = (object: StyleguideNavigationApi): GuidelineNavigation => ({
     id: object.id,
     creator: object.creator,
     created: object.created,

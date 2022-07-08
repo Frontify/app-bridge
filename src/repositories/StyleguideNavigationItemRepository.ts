@@ -1,7 +1,7 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
 import { HttpClient } from '../utilities/httpClient';
-import { StyleguideNavigationItem, StyleguideNavigationItemCreate, StyleguideNavigationItemPatch } from '../types';
+import { GuidelineNavigationItem, GuidelineNavigationItemCreate, GuidelineNavigationItemPatch } from '../types';
 import { StyleguideLinkApi, mapToStyleguideLinkType } from './StyleguideLinkRepository';
 import { StyleguidePageApi, mapToStyleguidePageType } from './StyleguidePageRepository';
 import { StyleguideFolderApi, mapToStyleguideFolderType } from './StyleguideFolderRepository';
@@ -38,7 +38,7 @@ export type StyleguideNavigationItemApiEnriched = StyleguideNavigationItemApi & 
 export const getStyleguideNavigationItems = async (
     navigationId: number,
     ancestorId?: number,
-): Promise<StyleguideNavigationItem[]> => {
+): Promise<GuidelineNavigationItem[]> => {
     const queryParams = ancestorId ? `?ancestor_id=${ancestorId}` : '';
     const { result } = await HttpClient.get<StyleguideNavigationItemApi[]>(
         `/api/styleguide-navigation/${navigationId}/item${queryParams}`,
@@ -46,7 +46,7 @@ export const getStyleguideNavigationItems = async (
     return result.data.map(mapToStyleguideNavigationItemType);
 };
 
-export const createNavigationItem = async (item: StyleguideNavigationItemCreate): Promise<StyleguideNavigationItem> => {
+export const createNavigationItem = async (item: GuidelineNavigationItemCreate): Promise<GuidelineNavigationItem> => {
     const { result } = await HttpClient.post<StyleguideNavigationItemApiEnriched>(
         '/api/styleguide-navigation-item',
         mapToStyleguideNavigationItemApi(item),
@@ -57,8 +57,8 @@ export const createNavigationItem = async (item: StyleguideNavigationItemCreate)
 
 export const updateNavigationItem = async (
     itemId: number,
-    item: StyleguideNavigationItemPatch,
-): Promise<StyleguideNavigationItem> => {
+    item: GuidelineNavigationItemPatch,
+): Promise<GuidelineNavigationItem> => {
     const { result } = await HttpClient.patch<StyleguideNavigationItemApiEnriched>(
         `/api/styleguide-navigation-item/${itemId}`,
         item,
@@ -73,7 +73,7 @@ export const deleteNavigationItem = async (itemId: number): Promise<boolean> => 
     return result.success;
 };
 
-export const duplicateNavigationItem = async (itemId: number): Promise<StyleguideNavigationItem> => {
+export const duplicateNavigationItem = async (itemId: number): Promise<GuidelineNavigationItem> => {
     const { result } = await HttpClient.post<StyleguideNavigationItemApiEnriched>(
         `/api/styleguide-navigation-item/${itemId}/duplicate`,
         {
@@ -89,7 +89,7 @@ export const moveNavigationItem = async (
     destinationNavigationId: Nullable<number>,
     destinationParentId: Nullable<number>,
     positionBeforeId: Nullable<number>,
-): Promise<StyleguideNavigationItem> => {
+): Promise<GuidelineNavigationItem> => {
     const { result } = await HttpClient.post<StyleguideNavigationItemApiEnriched>(
         `/api/styleguide-navigation-item/${itemId}/move`,
         {
@@ -110,7 +110,7 @@ export const moveNavigationItemToTrash = async (itemId: number): Promise<boolean
     return result.success;
 };
 
-export const restoreNavigationItemFromTrash = async (itemId: number): Promise<StyleguideNavigationItem> => {
+export const restoreNavigationItemFromTrash = async (itemId: number): Promise<GuidelineNavigationItem> => {
     const { result } = await HttpClient.post<StyleguideNavigationItemApiEnriched>(
         `/api/styleguide-navigation-item/${itemId}/restore-from-trash`,
     );
@@ -118,7 +118,7 @@ export const restoreNavigationItemFromTrash = async (itemId: number): Promise<St
     return mapToStyleguideNavigationItemType(result.data);
 };
 
-const mapToStyleguideNavigationItemType = (object: StyleguideNavigationItemApiEnriched): StyleguideNavigationItem => ({
+const mapToStyleguideNavigationItemType = (object: StyleguideNavigationItemApiEnriched): GuidelineNavigationItem => ({
     id: object.id,
     creator: object.creator,
     created: object.created,
@@ -143,7 +143,7 @@ const mapToStyleguideNavigationItemType = (object: StyleguideNavigationItemApiEn
 });
 
 export const mapToStyleguideNavigationItemApi = (
-    object: Partial<StyleguideNavigationItem>,
+    object: Partial<GuidelineNavigationItem>,
 ): Partial<StyleguideNavigationItemApi> => ({
     id: object.id,
     creator: object.creator,

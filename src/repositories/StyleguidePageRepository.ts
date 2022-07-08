@@ -1,6 +1,6 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { StyleguidePage, StyleguidePageCreate, StyleguidePagePatch } from '../types';
+import { GuidelinePage, GuidelinePageCreate, GuidelinePagePatch } from '../types';
 import { HttpClient } from '../utilities/httpClient';
 
 export type StyleguidePageApi = {
@@ -10,27 +10,27 @@ export type StyleguidePageApi = {
     navigation_title: Nullable<string>;
 };
 
-export const mapToStyleguidePageType = (object: StyleguidePageApi): StyleguidePage => ({
+export const mapToStyleguidePageType = (object: StyleguidePageApi): GuidelinePage => ({
     id: object.id,
     styleguideNavigationId: object.styleguide_navigation_id,
     title: object.title,
     navigationTitle: object.navigation_title,
 });
 
-export const mapToStyleguidePageApi = (object: Partial<StyleguidePage>): Partial<StyleguidePageApi> => ({
+export const mapToStyleguidePageApi = (object: Partial<GuidelinePage>): Partial<StyleguidePageApi> => ({
     id: object.id,
     styleguide_navigation_id: object.styleguideNavigationId,
     title: object.title,
     navigation_title: object.navigationTitle,
 });
 
-export const createNavigationPage = async (item: StyleguidePageCreate): Promise<StyleguidePage> => {
+export const createNavigationPage = async (item: GuidelinePageCreate): Promise<GuidelinePage> => {
     const { result } = await HttpClient.post<StyleguidePageApi>('/api/styleguide-page', mapToStyleguidePageApi(item));
 
     return mapToStyleguidePageType(result.data);
 };
 
-export const updateNavigationPage = async (itemId: number, item: StyleguidePagePatch): Promise<StyleguidePage> => {
+export const updateNavigationPage = async (itemId: number, item: GuidelinePagePatch): Promise<GuidelinePage> => {
     const { result } = await HttpClient.patch<StyleguidePageApi>(
         `/api/styleguide-page/${itemId}`,
         mapToStyleguidePageApi(item),

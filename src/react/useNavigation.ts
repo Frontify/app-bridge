@@ -3,26 +3,26 @@
 import { useEffect, useState } from 'react';
 import { getStyleguideNavigations } from '../repositories/StyleguideNavigationRepository';
 import { getStyleguideNavigationItems } from '../repositories/StyleguideNavigationItemRepository';
-import { StyleguideNavigationArea, StyleguideNavigations, StyleguideNavigationsId } from '../types/Guideline';
+import { GuidelineNavigationArea, GuidelineNavigations, GuidelineNavigationsId } from '../types/Guideline';
 
 export const useNavigation = (
     styleguideId: number,
-): { navigation: StyleguideNavigations; getNavigationId: (usage: StyleguideNavigationArea) => Nullable<number> } => {
-    const [navigation, setNavigation] = useState<StyleguideNavigations>({
+): { navigation: GuidelineNavigations; getNavigationId: (usage: GuidelineNavigationArea) => Nullable<number> } => {
+    const [navigation, setNavigation] = useState<GuidelineNavigations>({
         main: [],
         footer: [],
         hidden: [],
         trash: [],
     });
 
-    const [navigationId, setNavigationId] = useState<StyleguideNavigationsId>({
+    const [navigationId, setNavigationId] = useState<GuidelineNavigationsId>({
         main: null,
         footer: null,
         hidden: null,
         trash: null,
     });
 
-    const getNavigationId = (usage: StyleguideNavigationArea) => {
+    const getNavigationId = (usage: GuidelineNavigationArea) => {
         return navigationId[usage];
     };
 
@@ -40,18 +40,18 @@ export const useNavigation = (
 
                     setNavigationId(
                         styleguideNavigations.reduce((stack, styleguideNavigation) => {
-                            stack[styleguideNavigation.usage.toLocaleLowerCase() as StyleguideNavigationArea] =
+                            stack[styleguideNavigation.usage.toLocaleLowerCase() as GuidelineNavigationArea] =
                                 styleguideNavigation.id;
                             return stack;
-                        }, {} as StyleguideNavigationsId),
+                        }, {} as GuidelineNavigationsId),
                     );
 
                     setNavigation(
                         styleguideNavigations.reduce((stack, styleguideNavigation, index) => {
-                            stack[styleguideNavigation.usage.toLocaleLowerCase() as StyleguideNavigationArea] =
+                            stack[styleguideNavigation.usage.toLocaleLowerCase() as GuidelineNavigationArea] =
                                 navigationItems[index];
                             return stack;
-                        }, {} as StyleguideNavigations),
+                        }, {} as GuidelineNavigations),
                     );
                 }
             } catch (error) {

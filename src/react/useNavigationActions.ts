@@ -12,25 +12,25 @@ import {
 } from '../repositories/StyleguideNavigationItemRepository';
 
 import {
-    StyleguideFolderCreate,
-    StyleguideLinkCreate,
-    StyleguideNavigationItem,
-    StyleguideNavigationItemCreate,
-    StyleguidePageCreate,
+    GuidelineFolderCreate,
+    GuidelineLinkCreate,
+    GuidelineNavigationItem,
+    GuidelineNavigationItemCreate,
+    GuidelinePageCreate,
 } from '../types';
 import { createNavigationPage, updateNavigationPage } from '../repositories/StyleguidePageRepository';
 import { createNavigationFolder, updateNavigationFolder } from '../repositories/StyleguideFolderRepository';
 import { createNavigationLibrary, updateNavigationLibrary } from '../repositories/StyleguideLibraryRepository';
 import {
-    StyleguideFolderPatch,
-    StyleguideLibraryCreate,
-    StyleguideLibraryPatch,
-    StyleguideLinkPatch,
-    StyleguidePagePatch,
+    GuidelineFolderPatch,
+    GuidelineLibraryCreate,
+    GuidelineLibraryPatch,
+    GuidelineLinkPatch,
+    GuidelinePagePatch,
 } from '../types/Guideline';
 
 export const useNavigationActions = () => {
-    const createFolder = async (folder: StyleguideFolderCreate, parentId: Nullable<number>) => {
+    const createFolder = async (folder: GuidelineFolderCreate, parentId: Nullable<number>) => {
         try {
             const createdFolder = await createNavigationFolder(folder);
 
@@ -44,7 +44,7 @@ export const useNavigationActions = () => {
         }
     };
 
-    const createPage = async (page: StyleguidePageCreate, parentId: Nullable<number>) => {
+    const createPage = async (page: GuidelinePageCreate, parentId: Nullable<number>) => {
         try {
             const createdPage = await createNavigationPage(page);
 
@@ -58,7 +58,7 @@ export const useNavigationActions = () => {
         }
     };
 
-    const createLink = async (link: StyleguideLinkCreate, parentId: Nullable<number>) => {
+    const createLink = async (link: GuidelineLinkCreate, parentId: Nullable<number>) => {
         try {
             const createdLink = await createNavigationLink(link);
 
@@ -72,7 +72,7 @@ export const useNavigationActions = () => {
         }
     };
 
-    const createLibrary = async (library: StyleguideLibraryCreate, parentId: Nullable<number>) => {
+    const createLibrary = async (library: GuidelineLibraryCreate, parentId: Nullable<number>) => {
         try {
             const createdLibrary = await createNavigationLibrary(library);
 
@@ -86,7 +86,7 @@ export const useNavigationActions = () => {
         }
     };
 
-    const renameItem = async (title: string, item: StyleguideNavigationItem) => {
+    const renameItem = async (title: string, item: GuidelineNavigationItem) => {
         try {
             if (item.styleguideFolderId) {
                 await updateFolder(item.styleguideFolderId, { title });
@@ -106,7 +106,7 @@ export const useNavigationActions = () => {
         }
     };
 
-    const updateFolder = async (id: number, patchItem: StyleguideFolderPatch) => {
+    const updateFolder = async (id: number, patchItem: GuidelineFolderPatch) => {
         try {
             await updateNavigationFolder(id, patchItem);
             window.emitter.emit('GuidelineNavigationUpdated');
@@ -115,7 +115,7 @@ export const useNavigationActions = () => {
         }
     };
 
-    const updatePage = async (id: number, patchItem: StyleguidePagePatch) => {
+    const updatePage = async (id: number, patchItem: GuidelinePagePatch) => {
         try {
             await updateNavigationPage(id, patchItem);
             window.emitter.emit('GuidelineNavigationUpdated');
@@ -124,7 +124,7 @@ export const useNavigationActions = () => {
         }
     };
 
-    const updateLink = async (id: number, patchItem: StyleguideLinkPatch) => {
+    const updateLink = async (id: number, patchItem: GuidelineLinkPatch) => {
         try {
             await updateNavigationLink(id, patchItem);
             window.emitter.emit('GuidelineNavigationUpdated');
@@ -133,7 +133,7 @@ export const useNavigationActions = () => {
         }
     };
 
-    const updateLibrary = async (id: number, patchItem: StyleguideLibraryPatch) => {
+    const updateLibrary = async (id: number, patchItem: GuidelineLibraryPatch) => {
         try {
             await updateNavigationLibrary(id, patchItem);
             window.emitter.emit('GuidelineNavigationUpdated');
@@ -174,7 +174,7 @@ export const useNavigationActions = () => {
         }
     };
 
-    const createItem = async (item: StyleguideNavigationItemCreate) => {
+    const createItem = async (item: GuidelineNavigationItemCreate) => {
         try {
             await createNavigationItem(item);
             window.emitter.emit('GuidelineNavigationUpdated');

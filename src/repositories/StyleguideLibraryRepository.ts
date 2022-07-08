@@ -1,6 +1,6 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { StyleguideLibrary, StyleguideLibraryCreate, StyleguideLibraryPatch } from '../types';
+import { GuidelineLibrary, GuidelineLibraryCreate, GuidelineLibraryPatch } from '../types';
 import { HttpClient } from '../utilities/httpClient';
 
 export type StyleguideLibraryApi = {
@@ -9,19 +9,19 @@ export type StyleguideLibraryApi = {
     title: string;
 };
 
-export const mapToStyleguideLibraryType = (object: StyleguideLibraryApi): StyleguideLibrary => ({
+export const mapToStyleguideLibraryType = (object: StyleguideLibraryApi): GuidelineLibrary => ({
     id: object.id,
     styleguideNavigationId: object.styleguide_navigation_id,
     title: object.title,
 });
 
-export const mapToStyleguideLibraryApi = (object: Partial<StyleguideLibrary>): Partial<StyleguideLibraryApi> => ({
+export const mapToStyleguideLibraryApi = (object: Partial<GuidelineLibrary>): Partial<StyleguideLibraryApi> => ({
     id: object.id,
     styleguide_navigation_id: object.styleguideNavigationId,
     title: object.title,
 });
 
-export const createNavigationLibrary = async (library: StyleguideLibraryCreate): Promise<StyleguideLibrary> => {
+export const createNavigationLibrary = async (library: GuidelineLibraryCreate): Promise<GuidelineLibrary> => {
     const { result } = await HttpClient.post<StyleguideLibraryApi>(
         '/api/styleguide-library',
         mapToStyleguideLibraryApi(library),
@@ -32,8 +32,8 @@ export const createNavigationLibrary = async (library: StyleguideLibraryCreate):
 
 export const updateNavigationLibrary = async (
     itemId: number,
-    item: StyleguideLibraryPatch,
-): Promise<StyleguideLibrary> => {
+    item: GuidelineLibraryPatch,
+): Promise<GuidelineLibrary> => {
     const { result } = await HttpClient.patch<StyleguideLibraryApi>(
         `/api/styleguide-library/${itemId}`,
         mapToStyleguideLibraryApi(item),

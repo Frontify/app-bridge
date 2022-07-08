@@ -13,7 +13,7 @@ export type Guideline = {
     themeSettings?: string;
 };
 
-export type StyleguideNavigationItem = {
+export type GuidelineNavigationItem = {
     id: number;
     creator: number;
     created: string;
@@ -28,55 +28,55 @@ export type StyleguideNavigationItem = {
     styleguideFolderId: Nullable<number>;
     styleguideLinkId: Nullable<number>;
     styleguideLibraryId: Nullable<number>;
-    styleguideLibrary: Nullable<StyleguideLibrary>;
-    styleguidePage: Nullable<StyleguidePage>;
-    styleguideFolder: Nullable<StyleguideFolder>;
-    styleguideLink: Nullable<StyleguideLink>;
+    styleguideLibrary: Nullable<GuidelineLibrary>;
+    styleguidePage: Nullable<GuidelinePage>;
+    styleguideFolder: Nullable<GuidelineFolder>;
+    styleguideLink: Nullable<GuidelineLink>;
 
     // Enriched
-    dropdownItems?: StyleguideNavigationItem[];
+    dropdownItems?: GuidelineNavigationItem[];
 };
 
-export type StyleguidePage = {
+export type GuidelinePage = {
     id: number;
     styleguideNavigationId: number;
     title: string;
     navigationTitle: Nullable<string>;
 };
-export type StyleguidePagePatch = Partial<StyleguidePage>;
-export type StyleguidePageCreate = Omit<StyleguidePage, 'id'>;
+export type GuidelinePagePatch = Partial<GuidelinePage>;
+export type GuidelinePageCreate = Omit<GuidelinePage, 'id'>;
 
-export type StyleguideFolder = {
+export type GuidelineFolder = {
     id: number;
     styleguideNavigationId: number;
     title: string;
     dropdown: boolean;
 };
-export type StyleguideFolderPatch = Partial<StyleguideFolder>;
-export type StyleguideFolderCreate = Omit<StyleguideFolder, 'id'>;
+export type GuidelineFolderPatch = Partial<GuidelineFolder>;
+export type GuidelineFolderCreate = Omit<GuidelineFolder, 'id'>;
 
-export type StyleguideLink = {
+export type GuidelineLink = {
     id: number;
     styleguideNavigationId: number;
     title: string;
     url: string;
     openInNewTab: boolean;
 };
-export type StyleguideLinkPatch = Partial<StyleguideLink>;
-export type StyleguideLinkCreate = Omit<StyleguideLink, 'id'>;
+export type GuidelineLinkPatch = Partial<GuidelineLink>;
+export type GuidelineLinkCreate = Omit<GuidelineLink, 'id'>;
 
-export type StyleguideLibrary = {
+export type GuidelineLibrary = {
     id: number;
     styleguideNavigationId: number;
     title: string;
     // TODO: add missing fields if any are missing
 };
-export type StyleguideLibraryPatch = Partial<StyleguideLibrary>;
-export type StyleguideLibraryCreate = Omit<StyleguideLibrary, 'id'>;
+export type GuidelineLibraryPatch = Partial<GuidelineLibrary>;
+export type GuidelineLibraryCreate = Omit<GuidelineLibrary, 'id'>;
 
-export type StyleguideNavigationUsageType = 'main' | 'footer' | 'hidden' | 'trash';
+export type GuidelineNavigationUsageType = 'main' | 'footer' | 'hidden' | 'trash';
 
-export type StyleguideNavigation = {
+export type GuidelineNavigation = {
     id: number;
     creator: number;
     created: string;
@@ -85,12 +85,12 @@ export type StyleguideNavigation = {
     validTo: Nullable<string>;
     projectId: number;
     styleguideId: number;
-    usage: StyleguideNavigationUsageType;
+    usage: GuidelineNavigationUsageType;
 };
 
-export type StyleguideNavigationItemCreate = Partial<StyleguideNavigationItem>;
-export type StyleguideNavigationItemPatch = Partial<StyleguideNavigationItem>;
+export type GuidelineNavigationItemCreate = Partial<GuidelineNavigationItem>;
+export type GuidelineNavigationItemPatch = Partial<GuidelineNavigationItem>;
 
-export type StyleguideNavigationArea = 'main' | 'footer' | 'trash' | 'hidden';
-export type StyleguideNavigations = Record<StyleguideNavigationArea, StyleguideNavigationItem[]>;
-export type StyleguideNavigationsId = Record<StyleguideNavigationArea, Nullable<number>>;
+export type GuidelineNavigationArea = 'main' | 'footer' | 'trash' | 'hidden';
+export type GuidelineNavigations = Record<GuidelineNavigationArea, GuidelineNavigationItem[]>;
+export type GuidelineNavigationsId = Record<GuidelineNavigationArea, Nullable<number>>;
