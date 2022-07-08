@@ -24,14 +24,14 @@ export type GuidelineNavigationItem = {
     parentId: Nullable<number>;
     sort: Nullable<number>;
     published: boolean;
-    styleguidePageId: Nullable<number>;
-    styleguideFolderId: Nullable<number>;
-    styleguideLinkId: Nullable<number>;
-    styleguideLibraryId: Nullable<number>;
-    styleguideLibrary: Nullable<GuidelineLibrary>;
-    styleguidePage: Nullable<GuidelinePage>;
-    styleguideFolder: Nullable<GuidelineFolder>;
-    styleguideLink: Nullable<GuidelineLink>;
+    guidelinePageId: Nullable<number>;
+    guidelineFolderId: Nullable<number>;
+    guidelineLinkId: Nullable<number>;
+    guidelineLibraryId: Nullable<number>;
+    guidelineLibrary: Nullable<GuidelineLibrary>;
+    guidelinePage: Nullable<GuidelinePage>;
+    guidelineFolder: Nullable<GuidelineFolder>;
+    guidelineLink: Nullable<GuidelineLink>;
 
     // Enriched
     dropdownItems?: GuidelineNavigationItem[];
@@ -84,7 +84,7 @@ export type GuidelineNavigation = {
     modified: Nullable<string>;
     validTo: Nullable<string>;
     projectId: number;
-    styleguideId: number;
+    guidelineId: number;
     usage: GuidelineNavigationUsageType;
 };
 

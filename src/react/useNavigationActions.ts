@@ -36,7 +36,7 @@ export const useNavigationActions = () => {
 
             await createItem({
                 guidelineNavigationId: folder.guidelineNavigationId,
-                styleguideFolderId: createdFolder.id,
+                guidelineFolderId: createdFolder.id,
                 parentId,
             });
         } catch (event) {
@@ -50,7 +50,7 @@ export const useNavigationActions = () => {
 
             await createItem({
                 guidelineNavigationId: page.guidelineNavigationId,
-                styleguidePageId: createdPage.id,
+                guidelinePageId: createdPage.id,
                 parentId,
             });
         } catch (event) {
@@ -64,7 +64,7 @@ export const useNavigationActions = () => {
 
             await createItem({
                 guidelineNavigationId: link.guidelineNavigationId,
-                styleguideLinkId: createdLink.id,
+                guidelineLinkId: createdLink.id,
                 parentId,
             });
         } catch (event) {
@@ -78,7 +78,7 @@ export const useNavigationActions = () => {
 
             await createItem({
                 guidelineNavigationId: library.guidelineNavigationId,
-                styleguideLibraryId: createdLibrary.id,
+                guidelineLibraryId: createdLibrary.id,
                 parentId,
             });
         } catch (event) {
@@ -88,14 +88,14 @@ export const useNavigationActions = () => {
 
     const renameItem = async (title: string, item: GuidelineNavigationItem) => {
         try {
-            if (item.styleguideFolderId) {
-                await updateFolder(item.styleguideFolderId, { title });
-            } else if (item.styleguidePageId) {
-                await updatePage(item.styleguidePageId, { title });
-            } else if (item.styleguideLinkId) {
-                await updateLink(item.styleguideLinkId, { title });
-            } else if (item.styleguideLibraryId) {
-                await updateLibrary(item.styleguideLibraryId, { title });
+            if (item.guidelineFolderId) {
+                await updateFolder(item.guidelineFolderId, { title });
+            } else if (item.guidelinePageId) {
+                await updatePage(item.guidelinePageId, { title });
+            } else if (item.guidelineLinkId) {
+                await updateLink(item.guidelineLinkId, { title });
+            } else if (item.guidelineLibraryId) {
+                await updateLibrary(item.guidelineLibraryId, { title });
             } else {
                 throw new Error('Invalid StyleguideNavigationItemType');
             }

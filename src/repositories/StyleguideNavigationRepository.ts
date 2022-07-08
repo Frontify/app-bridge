@@ -28,6 +28,6 @@ const mapToStyleguideNavigationType = (object: StyleguideNavigationApi): Guideli
     modified: object.modified,
     validTo: object.valid_to,
     projectId: object.project_id,
-    styleguideId: object.styleguide_id,
+    guidelineId: object.styleguide_id,
     usage: object.usage,
 });
