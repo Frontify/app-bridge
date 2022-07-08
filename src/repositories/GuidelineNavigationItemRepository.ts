@@ -14,25 +14,25 @@ export type GuidelineNavigationItemApi = {
     modifier: Nullable<number>;
     modified: Nullable<string>;
     valid_to: Nullable<string>;
-    styleguide_navigation_id: number;
+    guideline_navigation_id: number;
     parent_id: Nullable<number>;
     sort: Nullable<number>;
     published: boolean;
-    styleguide_page_id: Nullable<number>;
-    styleguide_folder_id: Nullable<number>;
-    styleguide_link_id: Nullable<number>;
-    styleguide_library_id: Nullable<number>;
-    styleguide_page: null;
-    styleguide_folder: null;
-    styleguide_link: null;
-    styleguide_library: null;
+    guideline_page_id: Nullable<number>;
+    guideline_folder_id: Nullable<number>;
+    guideline_link_id: Nullable<number>;
+    guideline_library_id: Nullable<number>;
+    guideline_page: null;
+    guideline_folder: null;
+    guideline_link: null;
+    guideline_library: null;
 };
 
 export type GuidelineNavigationItemApiEnriched = GuidelineNavigationItemApi & {
-    styleguide_page: Nullable<GuidelinePageApi>;
-    styleguide_folder: Nullable<GuidelineFolderApi>;
-    styleguide_link: Nullable<GuidelineLinkApi>;
-    styleguide_library: Nullable<GuidelineLibraryApi>;
+    guideline_page: Nullable<GuidelinePageApi>;
+    guideline_folder: Nullable<GuidelineFolderApi>;
+    guideline_link: Nullable<GuidelineLinkApi>;
+    guideline_library: Nullable<GuidelineLibraryApi>;
 };
 
 export const getGuidelineNavigationItems = async (
@@ -41,14 +41,14 @@ export const getGuidelineNavigationItems = async (
 ): Promise<GuidelineNavigationItem[]> => {
     const queryParams = ancestorId ? `?ancestor_id=${ancestorId}` : '';
     const { result } = await HttpClient.get<GuidelineNavigationItemApi[]>(
-        `/api/styleguide-navigation/${navigationId}/item${queryParams}`,
+        `/api/guideline-navigation/${navigationId}/item${queryParams}`,
     );
     return result.data.map(mapToGuidelineNavigationItemType);
 };
 
 export const createNavigationItem = async (item: GuidelineNavigationItemCreate): Promise<GuidelineNavigationItem> => {
     const { result } = await HttpClient.post<GuidelineNavigationItemApiEnriched>(
-        '/api/styleguide-navigation-item',
+        '/api/guideline-navigation-item',
         mapToGuidelineNavigationItemApi(item),
     );
 
@@ -60,7 +60,7 @@ export const updateNavigationItem = async (
     item: GuidelineNavigationItemPatch,
 ): Promise<GuidelineNavigationItem> => {
     const { result } = await HttpClient.patch<GuidelineNavigationItemApiEnriched>(
-        `/api/styleguide-navigation-item/${itemId}`,
+        `/api/guideline-navigation-item/${itemId}`,
         item,
     );
 
@@ -68,14 +68,14 @@ export const updateNavigationItem = async (
 };
 
 export const deleteNavigationItem = async (itemId: number): Promise<boolean> => {
-    const { result } = await HttpClient.delete(`/api/styleguide-navigation-item/${itemId}`);
+    const { result } = await HttpClient.delete(`/api/guideline-navigation-item/${itemId}`);
 
     return result.success;
 };
 
 export const duplicateNavigationItem = async (itemId: number): Promise<GuidelineNavigationItem> => {
     const { result } = await HttpClient.post<GuidelineNavigationItemApiEnriched>(
-        `/api/styleguide-navigation-item/${itemId}/duplicate`,
+        `/api/guideline-navigation-item/${itemId}/duplicate`,
         {
             suffix: '(Copy)',
         },
@@ -91,9 +91,9 @@ export const moveNavigationItem = async (
     positionBeforeId: Nullable<number>,
 ): Promise<GuidelineNavigationItem> => {
     const { result } = await HttpClient.post<GuidelineNavigationItemApiEnriched>(
-        `/api/styleguide-navigation-item/${itemId}/move`,
+        `/api/guideline-navigation-item/${itemId}/move`,
         {
-            target_styleguide_navigation_id: destinationNavigationId,
+            target_guideline_navigation_id: destinationNavigationId,
             target_parent_id: destinationParentId,
             position_before_id: positionBeforeId,
         },
@@ -104,7 +104,7 @@ export const moveNavigationItem = async (
 
 export const moveNavigationItemToTrash = async (itemId: number): Promise<boolean> => {
     const { result } = await HttpClient.post<GuidelineNavigationItemApiEnriched>(
-        `/api/styleguide-navigation-item/${itemId}/move-to-trash`,
+        `/api/guideline-navigation-item/${itemId}/move-to-trash`,
     );
 
     return result.success;
@@ -112,7 +112,7 @@ export const moveNavigationItemToTrash = async (itemId: number): Promise<boolean
 
 export const restoreNavigationItemFromTrash = async (itemId: number): Promise<GuidelineNavigationItem> => {
     const { result } = await HttpClient.post<GuidelineNavigationItemApiEnriched>(
-        `/api/styleguide-navigation-item/${itemId}/restore-from-trash`,
+        `/api/guideline-navigation-item/${itemId}/restore-from-trash`,
     );
 
     return mapToGuidelineNavigationItemType(result.data);
@@ -125,18 +125,18 @@ const mapToGuidelineNavigationItemType = (object: GuidelineNavigationItemApiEnri
     modifier: object.modifier,
     modified: object.modified,
     validTo: object.valid_to,
-    guidelineNavigationId: object.styleguide_navigation_id,
+    guidelineNavigationId: object.guideline_navigation_id,
     parentId: object.parent_id,
     sort: object.sort,
     published: object.published,
-    guidelinePageId: object.styleguide_page_id,
-    guidelineFolderId: object.styleguide_folder_id,
-    guidelineLinkId: object.styleguide_link_id,
-    guidelineLibraryId: object.styleguide_library_id,
-    guidelinePage: object.styleguide_page ? mapToGuidelinePageType(object.styleguide_page) : null,
-    guidelineFolder: object.styleguide_folder ? mapToGuidelineFolderType(object.styleguide_folder) : null,
-    guidelineLink: object.styleguide_link ? mapToGuidelineLinkType(object.styleguide_link) : null,
-    guidelineLibrary: object.styleguide_library ? mapToGuidelineLibraryType(object.styleguide_library) : null,
+    guidelinePageId: object.guideline_page_id,
+    guidelineFolderId: object.guideline_folder_id,
+    guidelineLinkId: object.guideline_link_id,
+    guidelineLibraryId: object.guideline_library_id,
+    guidelinePage: object.guideline_page ? mapToGuidelinePageType(object.guideline_page) : null,
+    guidelineFolder: object.guideline_folder ? mapToGuidelineFolderType(object.guideline_folder) : null,
+    guidelineLink: object.guideline_link ? mapToGuidelineLinkType(object.guideline_link) : null,
+    guidelineLibrary: object.guideline_library ? mapToGuidelineLibraryType(object.guideline_library) : null,
 
     // Enriched
     dropdownItems: [],
@@ -151,16 +151,16 @@ export const mapToGuidelineNavigationItemApi = (
     modifier: object.modifier,
     modified: object.modified,
     valid_to: object.validTo,
-    styleguide_navigation_id: object.guidelineNavigationId,
+    guideline_navigation_id: object.guidelineNavigationId,
     parent_id: object.parentId,
     sort: object.sort,
     published: object.published,
-    styleguide_page_id: object.guidelinePageId,
-    styleguide_folder_id: object.guidelineFolderId,
-    styleguide_link_id: object.guidelineLinkId,
-    styleguide_library_id: object.guidelineLibraryId,
-    styleguide_page: null,
-    styleguide_folder: null,
-    styleguide_link: null,
-    styleguide_library: null,
+    guideline_page_id: object.guidelinePageId,
+    guideline_folder_id: object.guidelineFolderId,
+    guideline_link_id: object.guidelineLinkId,
+    guideline_library_id: object.guidelineLibraryId,
+    guideline_page: null,
+    guideline_folder: null,
+    guideline_link: null,
+    guideline_library: null,
 });

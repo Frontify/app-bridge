@@ -11,12 +11,12 @@ type GuidelineNavigationApi = {
     modified: Nullable<string>;
     valid_to: Nullable<string>;
     project_id: number;
-    styleguide_id: number;
+    guideline_id: number;
     usage: GuidelineNavigationUsageType;
 };
 
 export const getGuidelineNavigations = async (guidelineId: number): Promise<GuidelineNavigation[]> => {
-    const { result } = await HttpClient.get<GuidelineNavigationApi[]>(`/api/styleguide/${guidelineId}/navigation`);
+    const { result } = await HttpClient.get<GuidelineNavigationApi[]>(`/api/guideline/${guidelineId}/navigation`);
     return result.data.map(mapToGuidelineNavigationType);
 };
 
@@ -28,6 +28,6 @@ const mapToGuidelineNavigationType = (object: GuidelineNavigationApi): Guideline
     modified: object.modified,
     validTo: object.valid_to,
     projectId: object.project_id,
-    guidelineId: object.styleguide_id,
+    guidelineId: object.guideline_id,
     usage: object.usage,
 });

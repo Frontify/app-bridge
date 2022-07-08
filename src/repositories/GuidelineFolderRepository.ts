@@ -5,28 +5,28 @@ import { HttpClient } from '../utilities/httpClient';
 
 export type GuidelineFolderApi = {
     id: number;
-    styleguide_navigation_id: number;
+    guideline_navigation_id: number;
     title: string;
     dropdown: boolean;
 };
 
 export const mapToGuidelineFolderType = (object: GuidelineFolderApi): GuidelineFolder => ({
     id: object.id,
-    guidelineNavigationId: object.styleguide_navigation_id,
+    guidelineNavigationId: object.guideline_navigation_id,
     title: object.title,
     dropdown: object.dropdown,
 });
 
 export const mapToGuidelineFolderApi = (object: Partial<GuidelineFolder>): Partial<GuidelineFolderApi> => ({
     id: object.id,
-    styleguide_navigation_id: object.guidelineNavigationId,
+    guideline_navigation_id: object.guidelineNavigationId,
     title: object.title,
     dropdown: object.dropdown,
 });
 
 export const createNavigationFolder = async (folder: GuidelineFolderCreate): Promise<GuidelineFolder> => {
     const { result } = await HttpClient.post<GuidelineFolderApi>(
-        '/api/styleguide-folder',
+        '/api/guideline-folder',
         mapToGuidelineFolderApi(folder),
     );
 
@@ -35,7 +35,7 @@ export const createNavigationFolder = async (folder: GuidelineFolderCreate): Pro
 
 export const updateNavigationFolder = async (itemId: number, item: GuidelineFolderPatch): Promise<GuidelineFolder> => {
     const { result } = await HttpClient.patch<GuidelineFolderApi>(
-        `/api/styleguide-folder/${itemId}`,
+        `/api/guideline-folder/${itemId}`,
         mapToGuidelineFolderApi(item),
     );
 

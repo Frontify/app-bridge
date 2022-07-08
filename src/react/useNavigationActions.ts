@@ -97,7 +97,7 @@ export const useNavigationActions = () => {
             } else if (item.guidelineLibraryId) {
                 await updateLibrary(item.guidelineLibraryId, { title });
             } else {
-                throw new Error('Invalid StyleguideNavigationItemType');
+                throw new Error('Invalid GuidelineNavigationItemType');
             }
 
             window.emitter.emit('GuidelineNavigationUpdated');
