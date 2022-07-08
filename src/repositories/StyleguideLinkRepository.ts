@@ -3,7 +3,7 @@
 import { GuidelineLink, GuidelineLinkCreate, GuidelineLinkPatch } from '../types';
 import { HttpClient } from '../utilities/httpClient';
 
-export type StyleguideLinkApi = {
+export type GuidelineLinkApi = {
     id: number;
     styleguide_navigation_id: number;
     title: string;
@@ -11,7 +11,7 @@ export type StyleguideLinkApi = {
     open_in_new_tab: boolean;
 };
 
-export const mapToStyleguideLinkApi = (object: Partial<GuidelineLink>): Partial<StyleguideLinkApi> => ({
+export const mapToGuidelineLinkApi = (object: Partial<GuidelineLink>): Partial<GuidelineLinkApi> => ({
     id: object.id,
     styleguide_navigation_id: object.guidelineNavigationId,
     title: object.title,
@@ -20,21 +20,21 @@ export const mapToStyleguideLinkApi = (object: Partial<GuidelineLink>): Partial<
 });
 
 export const createNavigationLink = async (item: GuidelineLinkCreate): Promise<GuidelineLink> => {
-    const { result } = await HttpClient.post<StyleguideLinkApi>('/api/styleguide-link', mapToStyleguideLinkApi(item));
+    const { result } = await HttpClient.post<GuidelineLinkApi>('/api/styleguide-link', mapToGuidelineLinkApi(item));
 
-    return mapToStyleguideLinkType(result.data);
+    return mapToGuidelineLinkType(result.data);
 };
 
 export const updateNavigationLink = async (itemId: number, item: GuidelineLinkPatch): Promise<GuidelineLink> => {
-    const { result } = await HttpClient.patch<StyleguideLinkApi>(
+    const { result } = await HttpClient.patch<GuidelineLinkApi>(
         `/api/styleguide-link/${itemId}`,
-        mapToStyleguideLinkApi(item),
+        mapToGuidelineLinkApi(item),
     );
 
-    return mapToStyleguideLinkType(result.data);
+    return mapToGuidelineLinkType(result.data);
 };
 
-export const mapToStyleguideLinkType = (object: StyleguideLinkApi): GuidelineLink => ({
+export const mapToGuidelineLinkType = (object: GuidelineLinkApi): GuidelineLink => ({
     id: object.id,
     guidelineNavigationId: object.styleguide_navigation_id,
     title: object.title,

@@ -3,7 +3,7 @@
 import { HttpClient } from '../utilities/httpClient';
 import { GuidelineNavigation, GuidelineNavigationUsageType } from '../types';
 
-type StyleguideNavigationApi = {
+type GuidelineNavigationApi = {
     id: number;
     creator: number;
     created: string;
@@ -15,12 +15,12 @@ type StyleguideNavigationApi = {
     usage: GuidelineNavigationUsageType;
 };
 
-export const getStyleguideNavigations = async (guidelineId: number): Promise<GuidelineNavigation[]> => {
-    const { result } = await HttpClient.get<StyleguideNavigationApi[]>(`/api/styleguide/${guidelineId}/navigation`);
-    return result.data.map(mapToStyleguideNavigationType);
+export const getGuidelineNavigations = async (guidelineId: number): Promise<GuidelineNavigation[]> => {
+    const { result } = await HttpClient.get<GuidelineNavigationApi[]>(`/api/styleguide/${guidelineId}/navigation`);
+    return result.data.map(mapToGuidelineNavigationType);
 };
 
-const mapToStyleguideNavigationType = (object: StyleguideNavigationApi): GuidelineNavigation => ({
+const mapToGuidelineNavigationType = (object: GuidelineNavigationApi): GuidelineNavigation => ({
     id: object.id,
     creator: object.creator,
     created: object.created,

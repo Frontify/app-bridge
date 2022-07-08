@@ -1,8 +1,8 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
 import { useEffect, useState } from 'react';
-import { getStyleguideNavigations } from '../repositories/StyleguideNavigationRepository';
-import { getStyleguideNavigationItems } from '../repositories/StyleguideNavigationItemRepository';
+import { getGuidelineNavigations } from '../repositories/StyleguideNavigationRepository';
+import { getGuidelineNavigationItems } from '../repositories/StyleguideNavigationItemRepository';
 import { GuidelineNavigationArea, GuidelineNavigations, GuidelineNavigationsId } from '../types/Guideline';
 
 export const useNavigation = (
@@ -30,11 +30,11 @@ export const useNavigation = (
         const fetchNavigation = async () => {
             try {
                 if (styleguideId) {
-                    const styleguideNavigations = await getStyleguideNavigations(styleguideId);
+                    const styleguideNavigations = await getGuidelineNavigations(styleguideId);
 
                     const navigationItems = await Promise.all(
                         styleguideNavigations.map((styleguideNavigation) =>
-                            getStyleguideNavigationItems(styleguideNavigation.id),
+                            getGuidelineNavigationItems(styleguideNavigation.id),
                         ),
                     );
 

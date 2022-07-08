@@ -3,21 +3,21 @@
 import { GuidelineFolder, GuidelineFolderCreate, GuidelineFolderPatch } from '../types';
 import { HttpClient } from '../utilities/httpClient';
 
-export type StyleguideFolderApi = {
+export type GuidelineFolderApi = {
     id: number;
     styleguide_navigation_id: number;
     title: string;
     dropdown: boolean;
 };
 
-export const mapToStyleguideFolderType = (object: StyleguideFolderApi): GuidelineFolder => ({
+export const mapToGuidelineFolderType = (object: GuidelineFolderApi): GuidelineFolder => ({
     id: object.id,
     guidelineNavigationId: object.styleguide_navigation_id,
     title: object.title,
     dropdown: object.dropdown,
 });
 
-export const mapToStyleguideFolderApi = (object: Partial<GuidelineFolder>): Partial<StyleguideFolderApi> => ({
+export const mapToGuidelineFolderApi = (object: Partial<GuidelineFolder>): Partial<GuidelineFolderApi> => ({
     id: object.id,
     styleguide_navigation_id: object.guidelineNavigationId,
     title: object.title,
@@ -25,19 +25,19 @@ export const mapToStyleguideFolderApi = (object: Partial<GuidelineFolder>): Part
 });
 
 export const createNavigationFolder = async (folder: GuidelineFolderCreate): Promise<GuidelineFolder> => {
-    const { result } = await HttpClient.post<StyleguideFolderApi>(
+    const { result } = await HttpClient.post<GuidelineFolderApi>(
         '/api/styleguide-folder',
-        mapToStyleguideFolderApi(folder),
+        mapToGuidelineFolderApi(folder),
     );
 
-    return mapToStyleguideFolderType(result.data);
+    return mapToGuidelineFolderType(result.data);
 };
 
 export const updateNavigationFolder = async (itemId: number, item: GuidelineFolderPatch): Promise<GuidelineFolder> => {
-    const { result } = await HttpClient.patch<StyleguideFolderApi>(
+    const { result } = await HttpClient.patch<GuidelineFolderApi>(
         `/api/styleguide-folder/${itemId}`,
-        mapToStyleguideFolderApi(item),
+        mapToGuidelineFolderApi(item),
     );
 
-    return mapToStyleguideFolderType(result.data);
+    return mapToGuidelineFolderType(result.data);
 };
