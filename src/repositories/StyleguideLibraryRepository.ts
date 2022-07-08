@@ -11,13 +11,13 @@ export type StyleguideLibraryApi = {
 
 export const mapToStyleguideLibraryType = (object: StyleguideLibraryApi): GuidelineLibrary => ({
     id: object.id,
-    styleguideNavigationId: object.styleguide_navigation_id,
+    guidelineNavigationId: object.styleguide_navigation_id,
     title: object.title,
 });
 
 export const mapToStyleguideLibraryApi = (object: Partial<GuidelineLibrary>): Partial<StyleguideLibraryApi> => ({
     id: object.id,
-    styleguide_navigation_id: object.styleguideNavigationId,
+    styleguide_navigation_id: object.guidelineNavigationId,
     title: object.title,
 });
 

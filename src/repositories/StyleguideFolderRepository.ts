@@ -12,14 +12,14 @@ export type StyleguideFolderApi = {
 
 export const mapToStyleguideFolderType = (object: StyleguideFolderApi): GuidelineFolder => ({
     id: object.id,
-    styleguideNavigationId: object.styleguide_navigation_id,
+    guidelineNavigationId: object.styleguide_navigation_id,
     title: object.title,
     dropdown: object.dropdown,
 });
 
 export const mapToStyleguideFolderApi = (object: Partial<GuidelineFolder>): Partial<StyleguideFolderApi> => ({
     id: object.id,
-    styleguide_navigation_id: object.styleguideNavigationId,
+    styleguide_navigation_id: object.guidelineNavigationId,
     title: object.title,
     dropdown: object.dropdown,
 });

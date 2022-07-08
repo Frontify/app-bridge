@@ -13,7 +13,7 @@ export type StyleguideLinkApi = {
 
 export const mapToStyleguideLinkApi = (object: Partial<GuidelineLink>): Partial<StyleguideLinkApi> => ({
     id: object.id,
-    styleguide_navigation_id: object.styleguideNavigationId,
+    styleguide_navigation_id: object.guidelineNavigationId,
     title: object.title,
     url: object.url,
     open_in_new_tab: object.openInNewTab,
@@ -36,7 +36,7 @@ export const updateNavigationLink = async (itemId: number, item: GuidelineLinkPa
 
 export const mapToStyleguideLinkType = (object: StyleguideLinkApi): GuidelineLink => ({
     id: object.id,
-    styleguideNavigationId: object.styleguide_navigation_id,
+    guidelineNavigationId: object.styleguide_navigation_id,
     title: object.title,
     url: object.url,
     openInNewTab: object.open_in_new_tab,

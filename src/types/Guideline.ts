@@ -20,7 +20,7 @@ export type GuidelineNavigationItem = {
     modifier: Nullable<number>;
     modified: Nullable<string>;
     validTo: Nullable<string>;
-    styleguideNavigationId: number;
+    guidelineNavigationId: number;
     parentId: Nullable<number>;
     sort: Nullable<number>;
     published: boolean;
@@ -39,7 +39,7 @@ export type GuidelineNavigationItem = {
 
 export type GuidelinePage = {
     id: number;
-    styleguideNavigationId: number;
+    guidelineNavigationId: number;
     title: string;
     navigationTitle: Nullable<string>;
 };
@@ -48,7 +48,7 @@ export type GuidelinePageCreate = Omit<GuidelinePage, 'id'>;
 
 export type GuidelineFolder = {
     id: number;
-    styleguideNavigationId: number;
+    guidelineNavigationId: number;
     title: string;
     dropdown: boolean;
 };
@@ -57,7 +57,7 @@ export type GuidelineFolderCreate = Omit<GuidelineFolder, 'id'>;
 
 export type GuidelineLink = {
     id: number;
-    styleguideNavigationId: number;
+    guidelineNavigationId: number;
     title: string;
     url: string;
     openInNewTab: boolean;
@@ -67,7 +67,7 @@ export type GuidelineLinkCreate = Omit<GuidelineLink, 'id'>;
 
 export type GuidelineLibrary = {
     id: number;
-    styleguideNavigationId: number;
+    guidelineNavigationId: number;
     title: string;
     // TODO: add missing fields if any are missing
 };

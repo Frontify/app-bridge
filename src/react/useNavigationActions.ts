@@ -35,7 +35,7 @@ export const useNavigationActions = () => {
             const createdFolder = await createNavigationFolder(folder);
 
             await createItem({
-                styleguideNavigationId: folder.styleguideNavigationId,
+                guidelineNavigationId: folder.guidelineNavigationId,
                 styleguideFolderId: createdFolder.id,
                 parentId,
             });
@@ -49,7 +49,7 @@ export const useNavigationActions = () => {
             const createdPage = await createNavigationPage(page);
 
             await createItem({
-                styleguideNavigationId: page.styleguideNavigationId,
+                guidelineNavigationId: page.guidelineNavigationId,
                 styleguidePageId: createdPage.id,
                 parentId,
             });
@@ -63,7 +63,7 @@ export const useNavigationActions = () => {
             const createdLink = await createNavigationLink(link);
 
             await createItem({
-                styleguideNavigationId: link.styleguideNavigationId,
+                guidelineNavigationId: link.guidelineNavigationId,
                 styleguideLinkId: createdLink.id,
                 parentId,
             });
@@ -77,7 +77,7 @@ export const useNavigationActions = () => {
             const createdLibrary = await createNavigationLibrary(library);
 
             await createItem({
-                styleguideNavigationId: library.styleguideNavigationId,
+                guidelineNavigationId: library.guidelineNavigationId,
                 styleguideLibraryId: createdLibrary.id,
                 parentId,
             });

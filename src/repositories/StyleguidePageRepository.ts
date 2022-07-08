@@ -12,14 +12,14 @@ export type StyleguidePageApi = {
 
 export const mapToStyleguidePageType = (object: StyleguidePageApi): GuidelinePage => ({
     id: object.id,
-    styleguideNavigationId: object.styleguide_navigation_id,
+    guidelineNavigationId: object.styleguide_navigation_id,
     title: object.title,
     navigationTitle: object.navigation_title,
 });
 
 export const mapToStyleguidePageApi = (object: Partial<GuidelinePage>): Partial<StyleguidePageApi> => ({
     id: object.id,
-    styleguide_navigation_id: object.styleguideNavigationId,
+    styleguide_navigation_id: object.guidelineNavigationId,
     title: object.title,
     navigation_title: object.navigationTitle,
 });
