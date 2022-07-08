@@ -2,10 +2,10 @@
 
 import { HttpClient } from '../utilities/httpClient';
 import { GuidelineNavigationItem, GuidelineNavigationItemCreate, GuidelineNavigationItemPatch } from '../types';
-import { GuidelineLinkApi, mapToGuidelineLinkType } from './StyleguideLinkRepository';
-import { GuidelinePageApi, mapToGuidelinePageType } from './StyleguidePageRepository';
-import { GuidelineFolderApi, mapToGuidelineFolderType } from './StyleguideFolderRepository';
-import { GuidelineLibraryApi, mapToGuidelineLibraryType } from './StyleguideLibraryRepository';
+import { GuidelineLinkApi, mapToGuidelineLinkType } from './GuidelineLinkRepository';
+import { GuidelinePageApi, mapToGuidelinePageType } from './GuidelinePageRepository';
+import { GuidelineFolderApi, mapToGuidelineFolderType } from './GuidelineFolderRepository';
+import { GuidelineLibraryApi, mapToGuidelineLibraryType } from './GuidelineLibraryRepository';
 
 export type GuidelineNavigationItemApi = {
     id: number;

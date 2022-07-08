@@ -1,6 +1,6 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { createNavigationLink, updateNavigationLink } from '../repositories/StyleguideLinkRepository';
+import { createNavigationLink, updateNavigationLink } from '../repositories/GuidelineLinkRepository';
 import {
     createNavigationItem,
     deleteNavigationItem,
@@ -9,7 +9,7 @@ import {
     moveNavigationItemToTrash,
     restoreNavigationItemFromTrash,
     updateNavigationItem,
-} from '../repositories/StyleguideNavigationItemRepository';
+} from '../repositories/GuidelineNavigationItemRepository';
 
 import {
     GuidelineFolderCreate,
@@ -18,9 +18,9 @@ import {
     GuidelineNavigationItemCreate,
     GuidelinePageCreate,
 } from '../types';
-import { createNavigationPage, updateNavigationPage } from '../repositories/StyleguidePageRepository';
-import { createNavigationFolder, updateNavigationFolder } from '../repositories/StyleguideFolderRepository';
-import { createNavigationLibrary, updateNavigationLibrary } from '../repositories/StyleguideLibraryRepository';
+import { createNavigationPage, updateNavigationPage } from '../repositories/GuidelinePageRepository';
+import { createNavigationFolder, updateNavigationFolder } from '../repositories/GuidelineFolderRepository';
+import { createNavigationLibrary, updateNavigationLibrary } from '../repositories/GuidelineLibraryRepository';
 import {
     GuidelineFolderPatch,
     GuidelineLibraryCreate,

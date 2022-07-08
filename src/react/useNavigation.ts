@@ -1,8 +1,8 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
 import { useEffect, useState } from 'react';
-import { getGuidelineNavigations } from '../repositories/StyleguideNavigationRepository';
-import { getGuidelineNavigationItems } from '../repositories/StyleguideNavigationItemRepository';
+import { getGuidelineNavigations } from '../repositories/GuidelineNavigationRepository';
+import { getGuidelineNavigationItems } from '../repositories/GuidelineNavigationItemRepository';
 import { GuidelineNavigationArea, GuidelineNavigations, GuidelineNavigationsId } from '../types/Guideline';
 
 export const useNavigation = (
