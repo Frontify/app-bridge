@@ -60,10 +60,10 @@ export const useNavigation = (
         };
         fetchNavigation();
 
-        window.emitter.on('StyleguideNavigationUpdated', fetchNavigation);
+        window.emitter.on('GuidelineNavigationUpdated', fetchNavigation);
 
         return () => {
-            window.emitter.off('StyleguideNavigationUpdated', fetchNavigation);
+            window.emitter.off('GuidelineNavigationUpdated', fetchNavigation);
         };
     }, [styleguideId]);
 
