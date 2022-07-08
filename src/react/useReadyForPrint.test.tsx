@@ -14,7 +14,7 @@ const ReadyForPrintDummy = ({ missingContainer = false }) => {
     const { containerRef, isReadyForPrint, setIsReadyForPrint } = useReadyForPrint();
 
     return (
-        <div data-testid={IS_READY_CONTAINER} className="mod block" data-ready="true">
+        <div data-testid={IS_READY_CONTAINER} className="mod block">
             <div ref={missingContainer ? null : containerRef}>
                 {(isReadyForPrint && IS_READY_FOR_PRINT) || IS_NOT_READY_FOR_PRINT}
                 <button data-testid={SET_TO_FALSE_BUTTON} onClick={() => setIsReadyForPrint(false)} />
@@ -25,13 +25,13 @@ const ReadyForPrintDummy = ({ missingContainer = false }) => {
 };
 
 describe('useReadyForPrint hook', () => {
-    test('Should read the data-ready attribute and set the value', () => {
+    test('Should initially set the data-ready attribute to false', () => {
         render(<ReadyForPrintDummy />);
 
         const container = screen.getByTestId(IS_READY_CONTAINER);
 
-        expect(container.getAttribute('data-ready')).toBe('true');
-        expect(screen.getByText(IS_READY_FOR_PRINT)).toBeDefined;
+        expect(container.getAttribute('data-ready')).toBe('false');
+        expect(screen.getByText(IS_NOT_READY_FOR_PRINT)).toBeDefined;
         cleanup();
     });
 
@@ -42,15 +42,15 @@ describe('useReadyForPrint hook', () => {
         const setToTrueButton = screen.getByTestId(SET_TO_TRUE_BUTTON);
         const container = screen.getByTestId(IS_READY_CONTAINER);
 
-        fireEvent.click(setToFalseButton);
-
-        expect(container.getAttribute('data-ready')).toBe('false');
-        expect(screen.getByText(IS_NOT_READY_FOR_PRINT)).toBeDefined;
-
         fireEvent.click(setToTrueButton);
 
         expect(container.getAttribute('data-ready')).toBe('true');
         expect(screen.getByText(IS_READY_FOR_PRINT)).toBeDefined;
+
+        fireEvent.click(setToFalseButton);
+
+        expect(container.getAttribute('data-ready')).toBe('false');
+        expect(screen.getByText(IS_NOT_READY_FOR_PRINT)).toBeDefined;
         cleanup();
     });
 
@@ -59,7 +59,7 @@ describe('useReadyForPrint hook', () => {
 
         const container = screen.getByTestId(IS_READY_CONTAINER);
 
-        expect(container.getAttribute('data-ready')).toBe('true');
+        expect(container.getAttribute('data-ready')).toBe(null);
         cleanup();
     });
 });
