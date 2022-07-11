@@ -1,7 +1,7 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
 import { HttpClient } from '../utilities/httpClient';
-import { GuidelineNavigation, GuidelineNavigationUsageType } from '../types';
+import { GuidelineNavigation, GuidelineNavigationUsage } from '../types';
 
 type GuidelineNavigationApi = {
     id: number;
@@ -12,7 +12,7 @@ type GuidelineNavigationApi = {
     valid_to: Nullable<string>;
     project_id: number;
     guideline_id: number;
-    usage: GuidelineNavigationUsageType;
+    usage: Uppercase<GuidelineNavigationUsage>;
 };
 
 export const getGuidelineNavigations = async (guidelineId: number): Promise<GuidelineNavigation[]> => {
@@ -29,5 +29,5 @@ const mapToGuidelineNavigationType = (object: GuidelineNavigationApi): Guideline
     validTo: object.valid_to,
     projectId: object.project_id,
     guidelineId: object.guideline_id,
-    usage: object.usage,
+    usage: object.usage.toLocaleLowerCase() as GuidelineNavigationUsage,
 });

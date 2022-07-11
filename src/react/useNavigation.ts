@@ -3,11 +3,11 @@
 import { useEffect, useState } from 'react';
 import { getGuidelineNavigations } from '../repositories/GuidelineNavigationRepository';
 import { getGuidelineNavigationItems } from '../repositories/GuidelineNavigationItemRepository';
-import { GuidelineNavigationArea, GuidelineNavigations, GuidelineNavigationsId } from '../types/Guideline';
+import { GuidelineNavigationUsage, GuidelineNavigations, GuidelineNavigationsId } from '../types/Guideline';
 
 export const useNavigation = (
     guidelineId: number,
-): { navigation: GuidelineNavigations; getNavigationId: (usage: GuidelineNavigationArea) => Nullable<number> } => {
+): { navigation: GuidelineNavigations; getNavigationId: (usage: GuidelineNavigationUsage) => Nullable<number> } => {
     const [navigation, setNavigation] = useState<GuidelineNavigations>({
         main: [],
         footer: [],
@@ -22,7 +22,7 @@ export const useNavigation = (
         trash: null,
     });
 
-    const getNavigationId = (usage: GuidelineNavigationArea) => {
+    const getNavigationId = (usage: GuidelineNavigationUsage) => {
         return navigationId[usage];
     };
 
@@ -40,16 +40,14 @@ export const useNavigation = (
 
                     setNavigationId(
                         guidelineNavigations.reduce((stack, guidelineNavigation) => {
-                            stack[guidelineNavigation.usage.toLocaleLowerCase() as GuidelineNavigationArea] =
-                                guidelineNavigation.id;
+                            stack[guidelineNavigation.usage] = guidelineNavigation.id;
                             return stack;
                         }, {} as GuidelineNavigationsId),
                     );
 
                     setNavigation(
                         guidelineNavigations.reduce((stack, guidelineNavigation, index) => {
-                            stack[guidelineNavigation.usage.toLocaleLowerCase() as GuidelineNavigationArea] =
-                                navigationItems[index];
+                            stack[guidelineNavigation.usage] = navigationItems[index];
                             return stack;
                         }, {} as GuidelineNavigations),
                     );

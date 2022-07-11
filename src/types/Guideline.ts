@@ -74,8 +74,6 @@ export type GuidelineLibrary = {
 export type GuidelineLibraryPatch = Partial<GuidelineLibrary>;
 export type GuidelineLibraryCreate = Omit<GuidelineLibrary, 'id'>;
 
-export type GuidelineNavigationUsageType = 'main' | 'footer' | 'hidden' | 'trash';
-
 export type GuidelineNavigation = {
     id: number;
     creator: number;
@@ -85,12 +83,12 @@ export type GuidelineNavigation = {
     validTo: Nullable<string>;
     projectId: number;
     guidelineId: number;
-    usage: GuidelineNavigationUsageType;
+    usage: GuidelineNavigationUsage;
 };
 
 export type GuidelineNavigationItemCreate = Partial<GuidelineNavigationItem>;
 export type GuidelineNavigationItemPatch = Partial<GuidelineNavigationItem>;
 
-export type GuidelineNavigationArea = 'main' | 'footer' | 'trash' | 'hidden';
-export type GuidelineNavigations = Record<GuidelineNavigationArea, GuidelineNavigationItem[]>;
-export type GuidelineNavigationsId = Record<GuidelineNavigationArea, Nullable<number>>;
+export type GuidelineNavigationUsage = 'main' | 'footer' | 'trash' | 'hidden';
+export type GuidelineNavigations = Record<GuidelineNavigationUsage, GuidelineNavigationItem[]>;
+export type GuidelineNavigationsId = Record<GuidelineNavigationUsage, Nullable<number>>;
