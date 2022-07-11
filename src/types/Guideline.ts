@@ -11,6 +11,7 @@ export type Guideline = {
     brandId: number;
     name: string;
     themeSettings?: string;
+    marketplaceAppId?: number;
 };
 
 export type GuidelineNavigationItem = {
