@@ -1,71 +1,69 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
 import { useEffect, useState } from 'react';
-import { getStyleguideNavigations } from '../repositories/StyleguideNavigationRepository';
-import { getStyleguideNavigationItems } from '../repositories/StyleguideNavigationItemRepository';
-import { StyleguideNavigationArea, StyleguideNavigations, StyleguideNavigationsId } from '../types/Styleguide';
+import { getGuidelineNavigations } from '../repositories/GuidelineNavigationRepository';
+import { getGuidelineNavigationItems } from '../repositories/GuidelineNavigationItemRepository';
+import { GuidelineNavigationUsage, GuidelineNavigations, GuidelineNavigationsId } from '../types/Guideline';
 
 export const useNavigation = (
-    styleguideId: number,
-): { navigation: StyleguideNavigations; getNavigationId: (usage: StyleguideNavigationArea) => Nullable<number> } => {
-    const [navigation, setNavigation] = useState<StyleguideNavigations>({
+    guidelineId: number,
+): { navigation: GuidelineNavigations; getNavigationId: (usage: GuidelineNavigationUsage) => Nullable<number> } => {
+    const [navigation, setNavigation] = useState<GuidelineNavigations>({
         main: [],
         footer: [],
         hidden: [],
         trash: [],
     });
 
-    const [navigationId, setNavigationId] = useState<StyleguideNavigationsId>({
+    const [navigationId, setNavigationId] = useState<GuidelineNavigationsId>({
         main: null,
         footer: null,
         hidden: null,
         trash: null,
     });
 
-    const getNavigationId = (usage: StyleguideNavigationArea) => {
+    const getNavigationId = (usage: GuidelineNavigationUsage) => {
         return navigationId[usage];
     };
 
     useEffect(() => {
         const fetchNavigation = async () => {
             try {
-                if (styleguideId) {
-                    const styleguideNavigations = await getStyleguideNavigations(styleguideId);
+                if (guidelineId) {
+                    const guidelineNavigations = await getGuidelineNavigations(guidelineId);
 
                     const navigationItems = await Promise.all(
-                        styleguideNavigations.map((styleguideNavigation) =>
-                            getStyleguideNavigationItems(styleguideNavigation.id),
+                        guidelineNavigations.map((guidelineNavigation) =>
+                            getGuidelineNavigationItems(guidelineNavigation.id),
                         ),
                     );
 
                     setNavigationId(
-                        styleguideNavigations.reduce((stack, styleguideNavigation) => {
-                            stack[styleguideNavigation.usage.toLocaleLowerCase() as StyleguideNavigationArea] =
-                                styleguideNavigation.id;
+                        guidelineNavigations.reduce((stack, guidelineNavigation) => {
+                            stack[guidelineNavigation.usage] = guidelineNavigation.id;
                             return stack;
-                        }, {} as StyleguideNavigationsId),
+                        }, {} as GuidelineNavigationsId),
                     );
 
                     setNavigation(
-                        styleguideNavigations.reduce((stack, styleguideNavigation, index) => {
-                            stack[styleguideNavigation.usage.toLocaleLowerCase() as StyleguideNavigationArea] =
-                                navigationItems[index];
+                        guidelineNavigations.reduce((stack, guidelineNavigation, index) => {
+                            stack[guidelineNavigation.usage] = navigationItems[index];
                             return stack;
-                        }, {} as StyleguideNavigations),
+                        }, {} as GuidelineNavigations),
                     );
                 }
             } catch (error) {
-                console.error("Couldn't fetch the styleguide navigation : ", error);
+                console.error("Couldn't fetch the guideline navigation : ", error);
             }
         };
         fetchNavigation();
 
-        window.emitter.on('StyleguideNavigationUpdated', fetchNavigation);
+        window.emitter.on('GuidelineNavigationUpdated', fetchNavigation);
 
         return () => {
-            window.emitter.off('StyleguideNavigationUpdated', fetchNavigation);
+            window.emitter.off('GuidelineNavigationUpdated', fetchNavigation);
         };
-    }, [styleguideId]);
+    }, [guidelineId]);
 
     return {
         navigation,

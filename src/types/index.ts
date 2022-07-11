@@ -12,7 +12,7 @@ export * from './IAppBridgeIframe';
 export * from './IAppBridgeNative';
 export * from './OauthTokens';
 export * from './PostExternalAssetParams';
-export * from './Styleguide';
+export * from './Guideline';
 export * from './Template';
 export * from './Terrific';
 export * from './Topic';

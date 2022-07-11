@@ -1,6 +1,6 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { createNavigationLink, updateNavigationLink } from '../repositories/StyleguideLinkRepository';
+import { createNavigationLink, updateNavigationLink } from '../repositories/GuidelineLinkRepository';
 import {
     createNavigationItem,
     deleteNavigationItem,
@@ -9,34 +9,34 @@ import {
     moveNavigationItemToTrash,
     restoreNavigationItemFromTrash,
     updateNavigationItem,
-} from '../repositories/StyleguideNavigationItemRepository';
+} from '../repositories/GuidelineNavigationItemRepository';
 
 import {
-    StyleguideFolderCreate,
-    StyleguideLinkCreate,
-    StyleguideNavigationItem,
-    StyleguideNavigationItemCreate,
-    StyleguidePageCreate,
+    GuidelineFolderCreate,
+    GuidelineLinkCreate,
+    GuidelineNavigationItem,
+    GuidelineNavigationItemCreate,
+    GuidelinePageCreate,
 } from '../types';
-import { createNavigationPage, updateNavigationPage } from '../repositories/StyleguidePageRepository';
-import { createNavigationFolder, updateNavigationFolder } from '../repositories/StyleguideFolderRepository';
-import { createNavigationLibrary, updateNavigationLibrary } from '../repositories/StyleguideLibraryRepository';
+import { createNavigationPage, updateNavigationPage } from '../repositories/GuidelinePageRepository';
+import { createNavigationFolder, updateNavigationFolder } from '../repositories/GuidelineFolderRepository';
+import { createNavigationLibrary, updateNavigationLibrary } from '../repositories/GuidelineLibraryRepository';
 import {
-    StyleguideFolderPatch,
-    StyleguideLibraryCreate,
-    StyleguideLibraryPatch,
-    StyleguideLinkPatch,
-    StyleguidePagePatch,
-} from '../types/Styleguide';
+    GuidelineFolderPatch,
+    GuidelineLibraryCreate,
+    GuidelineLibraryPatch,
+    GuidelineLinkPatch,
+    GuidelinePagePatch,
+} from '../types/Guideline';
 
 export const useNavigationActions = () => {
-    const createFolder = async (folder: StyleguideFolderCreate, parentId: Nullable<number>) => {
+    const createFolder = async (folder: GuidelineFolderCreate, parentId: Nullable<number>) => {
         try {
             const createdFolder = await createNavigationFolder(folder);
 
             await createItem({
-                styleguideNavigationId: folder.styleguideNavigationId,
-                styleguideFolderId: createdFolder.id,
+                guidelineNavigationId: folder.guidelineNavigationId,
+                guidelineFolderId: createdFolder.id,
                 parentId,
             });
         } catch (event) {
@@ -44,13 +44,13 @@ export const useNavigationActions = () => {
         }
     };
 
-    const createPage = async (page: StyleguidePageCreate, parentId: Nullable<number>) => {
+    const createPage = async (page: GuidelinePageCreate, parentId: Nullable<number>) => {
         try {
             const createdPage = await createNavigationPage(page);
 
             await createItem({
-                styleguideNavigationId: page.styleguideNavigationId,
-                styleguidePageId: createdPage.id,
+                guidelineNavigationId: page.guidelineNavigationId,
+                guidelinePageId: createdPage.id,
                 parentId,
             });
         } catch (event) {
@@ -58,13 +58,13 @@ export const useNavigationActions = () => {
         }
     };
 
-    const createLink = async (link: StyleguideLinkCreate, parentId: Nullable<number>) => {
+    const createLink = async (link: GuidelineLinkCreate, parentId: Nullable<number>) => {
         try {
             const createdLink = await createNavigationLink(link);
 
             await createItem({
-                styleguideNavigationId: link.styleguideNavigationId,
-                styleguideLinkId: createdLink.id,
+                guidelineNavigationId: link.guidelineNavigationId,
+                guidelineLinkId: createdLink.id,
                 parentId,
             });
         } catch (event) {
@@ -72,13 +72,13 @@ export const useNavigationActions = () => {
         }
     };
 
-    const createLibrary = async (library: StyleguideLibraryCreate, parentId: Nullable<number>) => {
+    const createLibrary = async (library: GuidelineLibraryCreate, parentId: Nullable<number>) => {
         try {
             const createdLibrary = await createNavigationLibrary(library);
 
             await createItem({
-                styleguideNavigationId: library.styleguideNavigationId,
-                styleguideLibraryId: createdLibrary.id,
+                guidelineNavigationId: library.guidelineNavigationId,
+                guidelineLibraryId: createdLibrary.id,
                 parentId,
             });
         } catch (event) {
@@ -86,57 +86,57 @@ export const useNavigationActions = () => {
         }
     };
 
-    const renameItem = async (title: string, item: StyleguideNavigationItem) => {
+    const renameItem = async (title: string, item: GuidelineNavigationItem) => {
         try {
-            if (item.styleguideFolderId) {
-                await updateFolder(item.styleguideFolderId, { title });
-            } else if (item.styleguidePageId) {
-                await updatePage(item.styleguidePageId, { title });
-            } else if (item.styleguideLinkId) {
-                await updateLink(item.styleguideLinkId, { title });
-            } else if (item.styleguideLibraryId) {
-                await updateLibrary(item.styleguideLibraryId, { title });
+            if (item.guidelineFolderId) {
+                await updateFolder(item.guidelineFolderId, { title });
+            } else if (item.guidelinePageId) {
+                await updatePage(item.guidelinePageId, { title });
+            } else if (item.guidelineLinkId) {
+                await updateLink(item.guidelineLinkId, { title });
+            } else if (item.guidelineLibraryId) {
+                await updateLibrary(item.guidelineLibraryId, { title });
             } else {
-                throw new Error('Invalid StyleguideNavigationItemType');
+                throw new Error('Invalid GuidelineNavigationItemType');
             }
 
-            window.emitter.emit('StyleguideNavigationUpdated');
+            window.emitter.emit('GuidelineNavigationUpdated');
         } catch (event) {
             console.error('Error: ', event);
         }
     };
 
-    const updateFolder = async (id: number, patchItem: StyleguideFolderPatch) => {
+    const updateFolder = async (id: number, patchItem: GuidelineFolderPatch) => {
         try {
             await updateNavigationFolder(id, patchItem);
-            window.emitter.emit('StyleguideNavigationUpdated');
+            window.emitter.emit('GuidelineNavigationUpdated');
         } catch (event) {
             console.error('Error: ', event);
         }
     };
 
-    const updatePage = async (id: number, patchItem: StyleguidePagePatch) => {
+    const updatePage = async (id: number, patchItem: GuidelinePagePatch) => {
         try {
             await updateNavigationPage(id, patchItem);
-            window.emitter.emit('StyleguideNavigationUpdated');
+            window.emitter.emit('GuidelineNavigationUpdated');
         } catch (event) {
             console.error('Error: ', event);
         }
     };
 
-    const updateLink = async (id: number, patchItem: StyleguideLinkPatch) => {
+    const updateLink = async (id: number, patchItem: GuidelineLinkPatch) => {
         try {
             await updateNavigationLink(id, patchItem);
-            window.emitter.emit('StyleguideNavigationUpdated');
+            window.emitter.emit('GuidelineNavigationUpdated');
         } catch (event) {
             console.error('Error: ', event);
         }
     };
 
-    const updateLibrary = async (id: number, patchItem: StyleguideLibraryPatch) => {
+    const updateLibrary = async (id: number, patchItem: GuidelineLibraryPatch) => {
         try {
             await updateNavigationLibrary(id, patchItem);
-            window.emitter.emit('StyleguideNavigationUpdated');
+            window.emitter.emit('GuidelineNavigationUpdated');
         } catch (event) {
             console.error('Error: ', event);
         }
@@ -150,7 +150,7 @@ export const useNavigationActions = () => {
     ) => {
         try {
             await moveNavigationItem(id, destinationNavigationId, targetParentId, positionBeforeId);
-            window.emitter.emit('StyleguideNavigationUpdated');
+            window.emitter.emit('GuidelineNavigationUpdated');
         } catch (event) {
             console.error('Error: ', event);
         }
@@ -159,7 +159,7 @@ export const useNavigationActions = () => {
     const toggleItemVisibility = async (id: number, published: boolean) => {
         try {
             await updateNavigationItem(id, { published });
-            window.emitter.emit('StyleguideNavigationUpdated');
+            window.emitter.emit('GuidelineNavigationUpdated');
         } catch (event) {
             console.error('Error: ', event);
         }
@@ -168,16 +168,16 @@ export const useNavigationActions = () => {
     const moveItemToTrash = async (id: number) => {
         try {
             await moveNavigationItemToTrash(id);
-            window.emitter.emit('StyleguideNavigationUpdated');
+            window.emitter.emit('GuidelineNavigationUpdated');
         } catch (event) {
             console.error('Error: ', event);
         }
     };
 
-    const createItem = async (item: StyleguideNavigationItemCreate) => {
+    const createItem = async (item: GuidelineNavigationItemCreate) => {
         try {
             await createNavigationItem(item);
-            window.emitter.emit('StyleguideNavigationUpdated');
+            window.emitter.emit('GuidelineNavigationUpdated');
         } catch (event) {
             console.error('Error: ', event);
         }
@@ -186,7 +186,7 @@ export const useNavigationActions = () => {
     const duplicateItem = async (id: number) => {
         try {
             await duplicateNavigationItem(id);
-            window.emitter.emit('StyleguideNavigationUpdated');
+            window.emitter.emit('GuidelineNavigationUpdated');
         } catch (event) {
             console.error('Error: ', event);
         }
@@ -195,7 +195,7 @@ export const useNavigationActions = () => {
     const deleteItemPermanently = async (id: number) => {
         try {
             await deleteNavigationItem(id);
-            window.emitter.emit('StyleguideNavigationUpdated');
+            window.emitter.emit('GuidelineNavigationUpdated');
         } catch (event) {
             console.error('Error: ', event);
         }
@@ -204,7 +204,7 @@ export const useNavigationActions = () => {
     const restoreItem = async (id: number) => {
         try {
             await restoreNavigationItemFromTrash(id);
-            window.emitter.emit('StyleguideNavigationUpdated');
+            window.emitter.emit('GuidelineNavigationUpdated');
         } catch (event) {
             console.error('Error: ', event);
         }
@@ -215,7 +215,7 @@ export const useNavigationActions = () => {
             await updateNavigationFolder(folderId, {
                 dropdown,
             });
-            window.emitter.emit('StyleguideNavigationUpdated');
+            window.emitter.emit('GuidelineNavigationUpdated');
         } catch (event) {
             console.error('Error: ', event);
         }
@@ -229,7 +229,7 @@ export const useNavigationActions = () => {
     ) => {
         try {
             await moveNavigationItem(id, navigationId, parentId, positionBeforeId);
-            window.emitter.emit('StyleguideNavigationUpdated');
+            window.emitter.emit('GuidelineNavigationUpdated');
         } catch (event) {
             console.error('Error: ', event);
         }
