@@ -10,6 +10,7 @@ export type Styleguide = {
     projectId: number;
     brandId: number;
     name: string;
+    marketplaceAppId?: number;
     themeSettings?: string;
 };
 
