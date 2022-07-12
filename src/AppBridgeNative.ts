@@ -221,7 +221,7 @@ export class AppBridgeNative implements IAppBridgeNative {
         const { translationLanguage } = getJqueryDataByElement(document.body);
 
         const { result } = await HttpClient.post(`/api/document/block/${pageId}/${this.sectionId}/${this.blockId}`, {
-            settings: newSettings,
+            settings: { settings: newSettings },
             ...(translationLanguage ? { language: translationLanguage } : {}),
         });
 
