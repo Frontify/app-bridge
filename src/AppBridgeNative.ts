@@ -205,7 +205,7 @@ export class AppBridgeNative implements IAppBridgeNative {
             throw new Error('Could not get the block settings');
         }
 
-        return responseJson.settings as T;
+        return responseJson.settings.settings as T;
     }
 
     public async updateBlockSettings<T = Record<string, unknown>>(newSettings: T): Promise<void> {
