@@ -24,17 +24,10 @@ export const useReadyForPrint = <T extends HTMLElement>(): {
             return;
         }
 
-        setReady(blockWrapper.getAttribute('data-ready') === 'true');
-    }, []);
+        blockWrapper.setAttribute('data-ready', ready.toString());
+    }, [ready]);
 
     const setIsReadyForPrint = (isReady: boolean) => {
-        const blockWrapper = getBlockWrapper();
-
-        if (!blockWrapper) {
-            return;
-        }
-
-        blockWrapper.setAttribute('data-ready', isReady.toString());
         setReady(isReady);
     };
 
