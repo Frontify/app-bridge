@@ -205,7 +205,7 @@ export class AppBridgeNative implements IAppBridgeNative {
             throw new Error('Could not get the block settings');
         }
 
-        return responseJson.settings.settings as T;
+        return responseJson.settings.fields as T;
     }
 
     public async updateBlockSettings<T = Record<string, unknown>>(newSettings: T): Promise<void> {
@@ -221,7 +221,7 @@ export class AppBridgeNative implements IAppBridgeNative {
         const { translationLanguage } = getJqueryDataByElement(document.body);
 
         const { result } = await HttpClient.post(`/api/document/block/${pageId}/${this.sectionId}/${this.blockId}`, {
-            settings: { settings: newSettings },
+            settings: { fields: newSettings },
             ...(translationLanguage ? { language: translationLanguage } : {}),
         });
 
