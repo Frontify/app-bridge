@@ -3,6 +3,7 @@
     "author": "Frontify Developers <developers@frontify.com>",
     "version": "2.20.0",
     "description": "Package to establish communication between Frontify and marketplace apps",
+    "sideEffects": false,
     "main": "dist/index.umd.js",
     "unpkg": "dist/index.umd.js",
     "jsdelivr": "dist/index.umd.js",
