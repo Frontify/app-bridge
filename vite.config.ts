@@ -3,6 +3,7 @@
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import dts from 'vite-plugin-dts';
+import copy from 'rollup-plugin-copy';
 import { defineConfig } from 'vitest/config';
 import { dependencies as dependenciesMap, peerDependencies as peerDependenciesMap } from './package.json';
 
@@ -15,7 +16,14 @@ export const globals = {
 };
 
 export default defineConfig({
-    plugins: [react(), dts({ insertTypesEntry: true })],
+    plugins: [
+        react(),
+        dts({ insertTypesEntry: true }),
+        copy({
+            targets: [{ src: './src/workers/upload.worker.js', dest: './dist' }],
+            hook: 'writeBundle',
+        }),
+    ],
     build: {
         lib: {
             entry: resolve(__dirname, 'src/index.ts'),

@@ -9,9 +9,6 @@ declare global {
         APPLICATION_CONFIG: {
             version: string;
             bugsnagKey: string | null;
-            webworker: {
-                upload: string;
-            };
         };
         application: {
             config: {

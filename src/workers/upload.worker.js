@@ -1,48 +1,48 @@
-// From Clarify
-
 let files = [];
-let files_metadata = [];
-let files_metadata_add = [];
+let filesMetadata = [];
+let filesMetadataAdd = [];
 let progress = [];
 let progressAll = {
     loaded: 0,
     total: 0,
 };
-const upload_chunk_queue = [];
-let is_uploading = false;
+const uploadChunkQueue = [];
+let isUploading = false;
 
 // @TODO implement parallel uploads (e.g. 4 workers)
 // @see https://github.com/cinely/mule-uploader/blob/master/src/mule-uploader.js
 
 function consumeNextUploadFromQueue() {
     // Abort early if there is nothing left to do
-    if (upload_chunk_queue.length <= 0) {
+    if (uploadChunkQueue.length <= 0) {
         return;
     }
 
     // Start the next pending upload
-    upload_chunk_queue.shift().start();
+    uploadChunkQueue.shift().start();
 }
 
 function upload(data, chunk) {
     const xhr = new XMLHttpRequest();
 
     try {
-        xhr.upload.onprogress = function (e) {
-            progressAll.loaded += e.loaded - progress[data.index][data.chunk].loaded;
-            progress[data.index][data.chunk].loaded = e.loaded;
+        xhr.upload.onprogress = function (event) {
+            progressAll.loaded += event.loaded - progress[data.index][data.chunk].loaded;
+            progress[data.index][data.chunk].loaded = event.loaded;
 
             // Calculate loaded bytes of single file considering chunks
             let loaded = 0;
-            for (const chunkProgress of progress[data.index]) {
+
+            // eslint-disable-next-line unicorn/no-array-for-each
+            progress[data.index].forEach((chunkProgress) => {
                 loaded += chunkProgress.loaded;
-            }
+            });
 
             self.postMessage({
                 event: 'onProgress',
                 loaded,
                 total: data.total,
-                lengthComputable: e.lengthComputable,
+                lengthComputable: event.lengthComputable,
                 index: data.index,
             });
 
@@ -55,11 +55,11 @@ function upload(data, chunk) {
     } catch (error) {
         // IE11 xhr.upload.onprogress seems to be not supported within web-workers
         // Omit file progress and just send overall progress
-        xhr.onprogress = function (e) {
+        xhr.onprogress = function (event) {
             self.postMessage({
                 event: 'onProgressAll',
-                loaded: e.loaded,
-                total: e.total,
+                loaded: event.loaded,
+                total: event.total,
             });
         };
     }
@@ -78,12 +78,13 @@ function upload(data, chunk) {
             files[data.index].finished = true;
             const xhr2 = new XMLHttpRequest();
             xhr2.open('POST', `${self.location.origin}/api/file/progress`, true);
+            xhr2.setRequestHeader('content-type', 'application/json');
             xhr2.onload = function () {
                 let response;
 
                 try {
                     response = JSON.parse(xhr2.responseText);
-                } catch (e) {
+                } catch {
                     response = {};
                 }
 
@@ -109,7 +110,7 @@ function upload(data, chunk) {
     };
 }
 
-function init(data) {
+function init() {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', `${self.location.origin}/api/file/init`, true);
     xhr.setRequestHeader('content-type', 'application/json');
@@ -118,7 +119,7 @@ function init(data) {
 
         try {
             response = JSON.parse(xhr.responseText);
-        } catch (e) {
+        } catch {
             response = { success: false };
         }
 
@@ -127,21 +128,15 @@ function init(data) {
             return;
         }
 
-        files_metadata = files_metadata.concat(response.files);
+        filesMetadata = filesMetadata.concat(response.files);
 
         // Only start processing if there are no ongoing uploads
-        if (!is_uploading) {
-            is_uploading = true;
+        if (!isUploading) {
+            isUploading = true;
             process();
         }
     };
-    xhr.send(
-        JSON.stringify({
-            files: files_metadata_add,
-            project: data.project,
-            object_type: data.fileType,
-        }),
-    );
+    xhr.send(JSON.stringify({ files: filesMetadataAdd }));
 }
 
 function process() {
@@ -151,7 +146,7 @@ function process() {
         const file = files[i];
         if (!found && !file.finished) {
             found = true;
-            processFile(i, files[i], files_metadata[i]);
+            processFile(i, files[i], filesMetadata[i]);
         }
     }
 
@@ -161,14 +156,14 @@ function process() {
     }
 }
 
-function processFile(index, file, file_metadata) {
-    if (typeof file_metadata !== 'object') {
+function processFile(index, file, fileMetadata) {
+    if (typeof fileMetadata !== 'object') {
         error(index, file, {});
         return;
     }
 
-    if (!file_metadata.success) {
-        error(index, file, file_metadata);
+    if (!fileMetadata.success) {
+        error(index, file, fileMetadata);
         return;
     }
 
@@ -183,14 +178,14 @@ function processFile(index, file, file_metadata) {
     while (start < SIZE) {
         const chunk = blob.slice(start, end);
         progress[index][chunkNr] = { finished: false, loaded: 0 };
-        upload_chunk_queue.push(
+        uploadChunkQueue.push(
             upload(
                 {
                     index,
                     start,
-                    upload: file_metadata.upload,
-                    object: file_metadata.object,
-                    url: file_metadata.upload.urls[chunkNr],
+                    upload: fileMetadata.upload,
+                    object: fileMetadata.object,
+                    url: fileMetadata.upload.urls[chunkNr],
                     more: end < SIZE,
                     end: Math.min(end, SIZE - 1),
                     total: SIZE,
@@ -210,18 +205,18 @@ function processFile(index, file, file_metadata) {
     }
 }
 
-function error(index, file, file_metadata) {
-    const error = file_metadata && file_metadata.error ? file_metadata.error : 'Unable to process file.';
+function error(index, file, fileMetadata) {
+    const error = fileMetadata?.error ?? 'Unable to process file.';
 
     self.postMessage({
         event: 'onAssetFail',
         index,
         file,
-        file_metadata,
+        file_metadata: fileMetadata,
         error,
     });
 
-    is_uploading = false;
+    isUploading = false;
     file.finished = true;
 
     // Process next file
@@ -230,26 +225,26 @@ function error(index, file, file_metadata) {
 
 function reset() {
     files = [];
-    files_metadata = [];
-    files_metadata_add = [];
+    filesMetadata = [];
+    filesMetadataAdd = [];
     progress = [];
     progressAll = {
         loaded: 0,
         total: 0,
     };
-    is_uploading = false;
+    isUploading = false;
 
     self.postMessage({
         event: 'onDoneAll',
     });
 }
 
-self.onmessage = function (e) {
+self.onmessage = function (event) {
     // Allows to add files during ongoing uploads
-    files_metadata_add = [];
+    filesMetadataAdd = [];
 
-    for (let index = 0; index < e.data.files.length; index++) {
-        const file = e.data.files[index];
+    for (let index = 0; index < event.data.files.length; index++) {
+        const file = event.data.files[index];
         let metadata = {
             name: file.name,
             size: file.size,
@@ -260,24 +255,15 @@ self.onmessage = function (e) {
             metadata.name = metadata.name.normalize('NFC');
         }
 
-        if (file.async) {
-            // Force async processing
-            metadata['async'] = file.async;
-        }
-
         progressAll.total += file.size;
 
-        if (e.data.formData) {
-            metadata = { ...metadata, ...e.data.formData[index] };
-        }
-
-        if (Array.isArray(e.data.formData) && e.data.fileType === 'ASSET_PREVIEW') {
-            metadata['screen_id'] = e.data.formData[index].screen_id;
+        if (event.data.formData) {
+            metadata = { ...metadata, ...event.data.formData[index] };
         }
 
         files.push(file);
-        files_metadata_add.push(metadata);
+        filesMetadataAdd.push(metadata);
     }
 
-    init({ project: e.data.formData?.project, fileType: e.data.fileType });
+    init();
 };

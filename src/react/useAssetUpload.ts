@@ -3,26 +3,22 @@
 import { Asset } from '../types';
 import { useEffect, useRef, useState } from 'react';
 import Worker from '../workers/upload.worker.js?worker&inline';
+import { createAssetByFileId } from '../repositories/AssetRepository';
 
-export type UseFileUploadTypes = {
-    options?: UseFileUploadOptionsTypes;
-    onUploadProgress?: (event: MessageEvent<Asset>) => void;
-    onUploadProgressAll?: (event: MessageEvent<Asset>) => void;
-    onUploadDone?: (event: MessageEvent<Asset>) => void;
-    onUploadDoneAll?: (event: MessageEvent<Asset[]>) => void;
+export type UseAssetUploadParameters = {
+    onUploadProgress?: (event: MessageEvent) => void;
+    onUploadProgressAll?: (event: MessageEvent) => void;
+    onUploadDone?: (event: MessageEvent<FrontifyFile>) => void;
+    onUploadDoneAll?: (event: Asset[]) => void;
     onUploadFail?: () => void;
-    onUploadAssetFail?: (event: MessageEvent<Asset>) => void;
+    onUploadAssetFail?: (event: MessageEvent) => void;
 };
 
-export type UseFileUploadOptionsTypes = {
-    fileType: UploadFileType;
+type FrontifyFile = {
+    file_id: string;
+    file_name: string;
+    generic_url: string;
 };
-
-export enum UploadFileType {
-    Agnostic = 'AGNOSTIC',
-    Asset = 'ASSET',
-    AssetPreview = 'ASSET_PREVIEW',
-}
 
 enum WorkerEvent {
     OnProgress = 'onProgress',
@@ -31,22 +27,19 @@ enum WorkerEvent {
     OnDoneAll = 'onDoneAll',
     OnFail = 'onFail',
     OnAssetFail = 'onAssetFail',
-    OnLog = 'onLog',
 }
 
-export type UseFileUploadReturnTypes = [(files: FileList | File) => void, { results: Asset[]; doneAll: boolean }];
+export type UseAssetUploadReturnTypes = [(files: FileList | File) => void, { results: Asset[]; doneAll: boolean }];
 
-export const useFileUpload = ({
-    options = { fileType: UploadFileType.Asset },
-    onUploadProgress,
-    onUploadProgressAll,
-    onUploadDone,
-    onUploadDoneAll,
-    onUploadFail,
-    onUploadAssetFail,
-}: UseFileUploadTypes): UseFileUploadReturnTypes => {
+export const useAssetUpload = (props?: UseAssetUploadParameters): UseAssetUploadReturnTypes => {
     const results = useRef<Asset[]>([]);
+    const promises = useRef<Promise<unknown>[]>([]);
     const [doneAll, setDoneAll] = useState(false);
+
+    const { onUploadProgress, onUploadProgressAll, onUploadDone, onUploadDoneAll, onUploadFail, onUploadAssetFail } =
+        props ?? {};
+
+    const projectId = window.application?.sandbox?.config?.context?.project?.id;
 
     const workerRef = useRef<Worker>();
 
@@ -54,7 +47,7 @@ export const useFileUpload = ({
         const worker = new Worker();
         workerRef.current = worker;
 
-        worker.addEventListener('message', (workerEvent) => {
+        worker.addEventListener('message', async (workerEvent) => {
             switch (workerEvent.data.event) {
                 case WorkerEvent.OnProgress:
                     onProgress(workerEvent);
@@ -63,19 +56,16 @@ export const useFileUpload = ({
                     onProgressAll(workerEvent);
                     break;
                 case WorkerEvent.OnDone:
-                    onDone(workerEvent);
+                    await onDone(workerEvent);
                     break;
                 case WorkerEvent.OnDoneAll:
-                    onDoneAll(workerEvent);
+                    await onDoneAll();
                     break;
                 case WorkerEvent.OnFail:
                     onFail();
                     break;
                 case WorkerEvent.OnAssetFail:
                     onAssetFail(workerEvent);
-                    break;
-                case WorkerEvent.OnLog:
-                    onLog(workerEvent);
                     break;
                 default:
                     throw new Error(`${workerEvent.data.event} is not handled`);
@@ -87,35 +77,38 @@ export const useFileUpload = ({
         };
     }, []);
 
-    const onProgress = (workerEvent: MessageEvent<Asset>) => {
-        onUploadProgress && onUploadProgress(workerEvent);
+    const onProgress = (workerEvent: MessageEvent<FrontifyFile>) => {
+        onUploadProgress?.(workerEvent);
     };
 
-    const onProgressAll = (workerEvent: MessageEvent<Asset>) => {
-        onUploadProgressAll && onUploadProgressAll(workerEvent);
+    const onProgressAll = (workerEvent: MessageEvent<FrontifyFile>) => {
+        onUploadProgressAll?.(workerEvent);
     };
 
-    const onDone = (workerEvent: MessageEvent<Asset>) => {
-        onUploadDone && onUploadDone(workerEvent);
-        results.current = [...results.current, workerEvent.data];
+    const onDone = async (workerEvent: MessageEvent<FrontifyFile>) => {
+        const assetPromise = createAssetFromFileIds(workerEvent.data.file_id);
+        promises.current.push(assetPromise);
+
+        onUploadDone?.(workerEvent);
+
+        results.current = [...results.current, await assetPromise];
     };
 
-    const onDoneAll = (workerEvent: MessageEvent<Asset[]>) => {
-        onUploadDoneAll && onUploadDoneAll(workerEvent);
+    const onDoneAll = async () => {
+        await Promise.all(promises.current);
+
+        onUploadDoneAll?.(results.current);
+
         setDoneAll(true);
     };
 
     const onFail = () => {
-        onUploadFail && onUploadFail();
+        onUploadFail?.();
         throw new Error('Asset upload failed');
     };
 
-    const onAssetFail = (workerEvent: MessageEvent<Asset>) => {
-        onUploadAssetFail && onUploadAssetFail(workerEvent);
-    };
-
-    const onLog = (workerEvent: MessageEvent) => {
-        console.log(workerEvent.data?.message);
+    const onAssetFail = (workerEvent: MessageEvent<FrontifyFile>) => {
+        onUploadAssetFail?.(workerEvent);
     };
 
     const getFilesAsArray = (files: FileList | File): File[] => {
@@ -145,17 +138,18 @@ export const useFileUpload = ({
             return;
         }
 
-        const projectId = window.application?.sandbox?.config?.context?.project?.id;
-
         const message = {
             files: fileArray,
-            fileType: options.fileType,
             formData: projectId ? [{ project_id: projectId }] : null,
         };
 
         if (workerRef?.current) {
             workerRef.current.postMessage(message);
         }
+    };
+
+    const createAssetFromFileIds = async (fileId: string) => {
+        return await createAssetByFileId(fileId, projectId);
     };
 
     return [uploadFiles, { results: results.current, doneAll }];
