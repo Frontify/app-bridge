@@ -15,7 +15,7 @@ specifiers:
   jsdom: ^20.0.0
   mitt: ^3.0.0
   msw: 0.44.2
-  prettier: 2.6.2
+  prettier: 2.7.1
   react: ^17.0.2
   react-dom: ^17.0.2
   sinon: ^14.0.0
@@ -29,7 +29,7 @@ dependencies:
 
 devDependencies:
   '@cypress/react': 5.12.5_wlnv5by5u7ivrvd5n7kbxzwjfi
-  '@frontify/eslint-config-react': 0.15.2_6gknzytv62dszl3ifj53khcprm
+  '@frontify/eslint-config-react': 0.15.2_7tjuy5ankvodetd2guyxiocle4
   '@testing-library/react': 12.1.5_sfoxds7t5ydpegc3knd667wn6m
   '@testing-library/react-hooks': 8.0.1_nn45z5sr7igu7sfun6tiae5hx4
   '@types/react': 17.0.47
@@ -42,7 +42,7 @@ devDependencies:
   jsdom: 20.0.0
   mitt: 3.0.0
   msw: 0.44.2_typescript@4.7.3
-  prettier: 2.6.2
+  prettier: 2.7.1
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
   typescript: 4.7.3
@@ -426,7 +426,7 @@ packages:
       - supports-color
     dev: true
 
-  /@frontify/eslint-config-basic/0.15.2_ddjd75dz7x3czaucyvuaamiqdi:
+  /@frontify/eslint-config-basic/0.15.2_yey3kxzzdu2cqvnvvwhd4ioddi:
     resolution: {integrity: sha512-SvFp81SubqqyA0NIm1NkIAyzsM36iWUfjotZOSKICs6p8R9GNATvqgw9fWmS79WO5jMiRRmsbjoQFYnqvjHE4Q==}
     peerDependencies:
       eslint: '>=8.5.0'
@@ -436,20 +436,20 @@ packages:
       eslint-plugin-html: 6.2.0
       eslint-plugin-jsonc: 2.3.0_eslint@8.17.0
       eslint-plugin-node: 11.1.0_eslint@8.17.0
-      eslint-plugin-prettier: 4.0.0_ucegkljdju7q4zmvwxzqoprf3y
+      eslint-plugin-prettier: 4.0.0_hsbo72uvra2cjko46y2c4fgzzm
       eslint-plugin-promise: 6.0.0_eslint@8.17.0
       eslint-plugin-unicorn: 40.1.0_eslint@8.17.0
     transitivePeerDependencies:
       - prettier
     dev: true
 
-  /@frontify/eslint-config-react/0.15.2_6gknzytv62dszl3ifj53khcprm:
+  /@frontify/eslint-config-react/0.15.2_7tjuy5ankvodetd2guyxiocle4:
     resolution: {integrity: sha512-hUpgr016KiFlnraq7xUkzWjez3xGmruIKBRJ9+n67c63WdQi+ko4MjsZFDIu0jwUc6i+4zZoKxUBYC5Bxc5TUA==}
     peerDependencies:
       eslint: '>=8.5.0'
       react: '>=17.0.0'
     dependencies:
-      '@frontify/eslint-config-typescript': 0.15.2_fbjqqrcmu5kf5fxbq7jfq7ql3a
+      '@frontify/eslint-config-typescript': 0.15.2_u7622vc7cwoalnkagekejtw7ge
       eslint: 8.17.0
       eslint-plugin-react: 7.30.0_eslint@8.17.0
       eslint-plugin-react-hooks: 4.6.0_eslint@8.17.0
@@ -460,13 +460,13 @@ packages:
       - typescript
     dev: true
 
-  /@frontify/eslint-config-typescript/0.15.2_fbjqqrcmu5kf5fxbq7jfq7ql3a:
+  /@frontify/eslint-config-typescript/0.15.2_u7622vc7cwoalnkagekejtw7ge:
     resolution: {integrity: sha512-mS/cFU7qDndYhmVj5pJl/4EYuqpM+RLX44oebl0ZFPqpF3OjMQqFo6MYvfD7fvHhCs2L5SAaEFPR5q+Wv7uCgQ==}
     peerDependencies:
       eslint: '>=8.5.0'
       typescript: '>=4.5.2'
     dependencies:
-      '@frontify/eslint-config-basic': 0.15.2_ddjd75dz7x3czaucyvuaamiqdi
+      '@frontify/eslint-config-basic': 0.15.2_yey3kxzzdu2cqvnvvwhd4ioddi
       '@typescript-eslint/eslint-plugin': 5.28.0_7yumg2qjgbp7maccqlfhx2vudu
       '@typescript-eslint/parser': 5.28.0_ud6rd4xtew5bv4yhvkvu24pzm4
       eslint: 8.17.0
@@ -2315,7 +2315,7 @@ packages:
       semver: 6.3.0
     dev: true
 
-  /eslint-plugin-prettier/4.0.0_ucegkljdju7q4zmvwxzqoprf3y:
+  /eslint-plugin-prettier/4.0.0_hsbo72uvra2cjko46y2c4fgzzm:
     resolution: {integrity: sha512-98MqmCJ7vJodoQK359bqQWaxOE0CS8paAz/GgjaZLyex4TTk3g9HugoO89EqWCrFiOqn9EVvcoo7gZzONCWVwQ==}
     engines: {node: '>=6.0.0'}
     peerDependencies:
@@ -2328,7 +2328,7 @@ packages:
     dependencies:
       eslint: 8.17.0
       eslint-config-prettier: 8.5.0_eslint@8.17.0
-      prettier: 2.6.2
+      prettier: 2.7.1
       prettier-linter-helpers: 1.0.0
     dev: true
 
@@ -4424,8 +4424,8 @@ packages:
       fast-diff: 1.2.0
     dev: true
 
-  /prettier/2.6.2:
-    resolution: {integrity: sha512-PkUpF+qoXTqhOeWL9fu7As8LXsIUZ1WYaJiY/a7McAQzxjk82OF0tibkFXVCDImZtWxbvojFjerkiLb0/q8mew==}
+  /prettier/2.7.1:
+    resolution: {integrity: sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
