@@ -12,7 +12,6 @@ declare global {
                 upload: string;
             };
         };
-        blockSettings: Record<number, Record<string, unknown>>;
         application: {
             config: {
                 context: {
@@ -73,7 +72,6 @@ declare global {
 
 declare namespace Cypress {
     interface AUTWindow {
-        blockSettings: Record<number, Record<string, unknown>>;
         emitter: Emitter<{
             StyleguideBlockSettingsUpdated: {
                 blockId: number;
