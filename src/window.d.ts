@@ -51,11 +51,16 @@ declare global {
                         brand: {
                             id: number;
                         };
+                        guideline: any;
                     };
                 };
             };
         };
         emitter: Emitter<{
+            StyleguideBlockSettingsUpdated: {
+                blockId: number;
+                blockSettings: unknown;
+            };
             StyleguideBlockAssetsUpdated: {
                 blockId: number;
                 blockAssets: Record<string, Asset[]>;
@@ -70,6 +75,10 @@ declare namespace Cypress {
     interface AUTWindow {
         blockSettings: Record<number, Record<string, unknown>>;
         emitter: Emitter<{
+            StyleguideBlockSettingsUpdated: {
+                blockId: number;
+                blockSettings: unknown;
+            };
             StyleguideBlockAssetsUpdated: {
                 blockId: number;
                 blockAssets: Record<string, Asset[]>;

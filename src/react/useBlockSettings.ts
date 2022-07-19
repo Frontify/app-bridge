@@ -1,5 +1,8 @@
-import { useState } from 'react';
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
+import { useEffect, useState } from 'react';
 import { IAppBridgeNative } from '../types/IAppBridgeNative';
+import { compareObjects } from '../utilities/object';
 
 export const useBlockSettings = <T = Record<string, unknown>>(
     appBridge: IAppBridgeNative,
@@ -10,30 +13,43 @@ export const useBlockSettings = <T = Record<string, unknown>>(
         throw new Error('You need to instanciate the App Bridge with a block id.');
     }
 
-    if (!window.blockSettings[blockId].__isProxy) {
-        window.blockSettings[blockId] = new Proxy(window.blockSettings[blockId], {
-            get: (target: Record<string, unknown>, property: string, received: unknown) => {
-                if (property === '__isProxy') {
-                    return true;
-                }
-                return Reflect.get(target, property, received);
-            },
-            set: (target: Record<string, unknown>, property: string, value: unknown) => {
-                setBlockSettings({ ...(target as T), [property]: value });
-                target[property] = value;
-                return true;
-            },
-        });
-    }
+    const [blockSettings, setBlockSettings] = useState<T>({} as T);
 
-    const [blockSettings, setBlockSettings] = useState<T>(window.blockSettings[blockId] as T);
+    // Fetch the block settings on mount.
+    // And add listener for block settings updates.
+    useEffect(() => {
+        const updateBlockSettingsFromEvent = (event: { blockId: number; blockSettings: unknown }) => {
+            if (event.blockId === blockId && !compareObjects(event.blockSettings, blockSettings)) {
+                setBlockSettings({ ...blockSettings, ...(event.blockSettings as Partial<T>) });
+            }
+        };
 
-    const setBlockSettingsAndUpdate = async (newSettings: Partial<T>): Promise<void> => {
-        for (const settingsIndex in newSettings) {
-            window.blockSettings[blockId][settingsIndex] = newSettings[settingsIndex];
+        if (blockId) {
+            const mountingFetch = async () => {
+                const allBlockSettings = await appBridge.getBlockSettings<T>();
+                setBlockSettings(allBlockSettings);
+            };
+            mountingFetch();
+
+            window.emitter.on('StyleguideBlockSettingsUpdated', updateBlockSettingsFromEvent);
         }
-        await appBridge.updateBlockSettings({ ...newSettings });
+
+        return () => {
+            window.emitter.off('StyleguideBlockSettingsUpdated', updateBlockSettingsFromEvent);
+        };
+    }, [appBridge]);
+
+    const updateBlockSettings = async (blockSettings: Partial<T>) => {
+        try {
+            await appBridge.updateBlockSettings(blockSettings);
+            window.emitter.emit('StyleguideBlockSettingsUpdated', {
+                blockId,
+                blockSettings: await appBridge.getBlockSettings<T>(),
+            });
+        } catch (error) {
+            console.error(error);
+        }
     };
 
-    return [blockSettings, setBlockSettingsAndUpdate];
+    return [blockSettings, updateBlockSettings];
 };
