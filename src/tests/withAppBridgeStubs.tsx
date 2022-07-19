@@ -14,11 +14,7 @@ type GetStubbedAppBridgeProps = {
     closeAssetChooser?: () => void;
 };
 
-const stubWindowObject = (
-    windowObject: Window | Cypress.AUTWindow,
-    options: { blockId: number; blockSettings: Record<string, unknown> },
-) => {
-    windowObject.blockSettings = { [options.blockId]: options.blockSettings };
+const stubWindowObject = (windowObject: Window | Cypress.AUTWindow) => {
     windowObject.emitter = {
         emit: () => null,
         off: () => null,
@@ -39,12 +35,11 @@ const getStubbedAppBridge = ({
     closeAssetChooser = () => null,
 }: GetStubbedAppBridgeProps): IAppBridgeNative => {
     const appBridge = new AppBridgeNativeDummy();
-    const blockId = appBridge.getBlockId() ?? 0;
 
     if (cy) {
-        cy.window().then((window) => stubWindowObject(window, { blockId, blockSettings }));
+        cy.window().then((window) => stubWindowObject(window));
     } else {
-        stubWindowObject(window, { blockId, blockSettings });
+        stubWindowObject(window);
     }
 
     stub(appBridge, 'closeAssetChooser').callsFake(closeAssetChooser);

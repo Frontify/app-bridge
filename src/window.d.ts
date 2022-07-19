@@ -2,6 +2,7 @@
 
 import { AssetChooserAssetChosenCallback, TerrificEvent } from './types/Terrific';
 import type { Emitter } from 'mitt';
+import { BlockSettingsUpdateEvent } from './react';
 
 declare global {
     interface Window {
@@ -12,7 +13,6 @@ declare global {
                 upload: string;
             };
         };
-        blockSettings: Record<number, Record<string, unknown>>;
         application: {
             config: {
                 context: {
@@ -51,12 +51,14 @@ declare global {
                         brand: {
                             id: number;
                         };
+                        guideline: any;
                     };
                 };
             };
         };
         emitter: Emitter<{
-            StyleguideBlockAssetsUpdated: {
+            'AppBridge:BlockSettingsUpdated': BlockSettingsUpdateEvent;
+            'AppBridge:BlockAssetsUpdated': {
                 blockId: number;
                 blockAssets: Record<string, Asset[]>;
             };
@@ -68,9 +70,12 @@ declare global {
 
 declare namespace Cypress {
     interface AUTWindow {
-        blockSettings: Record<number, Record<string, unknown>>;
         emitter: Emitter<{
-            StyleguideBlockAssetsUpdated: {
+            'AppBridge:BlockSettingsUpdated': {
+                blockId: number;
+                blockSettings: unknown;
+            };
+            'AppBridge:BlockAssetsUpdated': {
                 blockId: number;
                 blockAssets: Record<string, Asset[]>;
             };

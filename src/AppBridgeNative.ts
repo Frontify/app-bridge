@@ -182,7 +182,7 @@ export class AppBridgeNative implements IAppBridgeNative {
         return responseJson.palettes;
     }
 
-    public async getBlockSettings<T = Record<string, unknown>>(): Promise<T> {
+    private async getDocumentBlockSettings<T = Record<string, unknown>>(): Promise<T> {
         if (!this.blockId) {
             throw new Error('You need to instanciate the App Bridge with a block id.');
         }
@@ -208,7 +208,32 @@ export class AppBridgeNative implements IAppBridgeNative {
         return responseJson.settings as T;
     }
 
-    public async updateBlockSettings<T = Record<string, unknown>>(newSettings: T): Promise<void> {
+    private async getGuidelineBlockSettings<T = Record<string, unknown>>(): Promise<T> {
+        const { result } = await HttpClient.get<{ settings: T }>(`/api/guideline-block/${this.blockId}`);
+        if (!result.success) {
+            throw new Error('Could not get the block settings');
+        }
+
+        return result.data.settings;
+    }
+
+    private isNewGuideline(): boolean {
+        return !!window.application.sandbox.config.context.guideline;
+    }
+
+    public async getBlockSettings<T = Record<string, unknown>>(): Promise<T> {
+        if (!this.blockId) {
+            throw new Error('You need to instanciate the App Bridge with a block id.');
+        }
+
+        if (!this.isNewGuideline()) {
+            return this.getDocumentBlockSettings();
+        }
+
+        return this.getGuidelineBlockSettings();
+    }
+
+    private async updateDocumentBlockSettings<T = Record<string, unknown>>(newSettings: T): Promise<void> {
         if (!this.blockId) {
             throw new Error('You need to instanciate the App Bridge with a block id.');
         }
@@ -230,14 +255,38 @@ export class AppBridgeNative implements IAppBridgeNative {
         }
     }
 
-    public getEditorState(): boolean {
+    private async updateGuidelineBlockSettings<T = Record<string, unknown>>(newSettings: T): Promise<void> {
+        const { result } = await HttpClient.patch(`/api/guideline-block/${this.blockId}`, { settings: newSettings });
+        if (!result.success) {
+            throw new Error('Could not update the block settings');
+        }
+    }
+
+    public async updateBlockSettings<T = Record<string, unknown>>(newSettings: T): Promise<void> {
         if (!this.blockId) {
             throw new Error('You need to instanciate the App Bridge with a block id.');
         }
 
-        const blockElement = document.querySelector(`[data-block="${this.blockId}"]`) as HTMLElement;
-        const isReferencedBlock = blockElement.dataset.referenceToken !== undefined ? true : false;
-        return !isReferencedBlock && document.body.classList.contains('editor-enabled');
+        if (!this.isNewGuideline()) {
+            return this.updateDocumentBlockSettings(newSettings);
+        }
+
+        return this.updateGuidelineBlockSettings(newSettings);
+    }
+
+    public getEditorState(): boolean {
+        return (
+            this.getBlockReferenceToken() === null && !!document.querySelector('.js-co-powerbar__sg-edit.state-active')
+        );
+    }
+
+    public getBlockReferenceToken(): string | null {
+        if (!this.blockId) {
+            throw new Error('You need to instanciate the App Bridge with a block id.');
+        }
+
+        const blockElement = document.querySelector(`[data-block="${this.blockId}"]`) as HTMLElement | null;
+        return blockElement?.dataset?.referenceToken ?? null;
     }
 
     public getProjectId(): number {
