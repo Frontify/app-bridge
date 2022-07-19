@@ -2,6 +2,7 @@
 
 import { AssetChooserAssetChosenCallback, TerrificEvent } from './types/Terrific';
 import type { Emitter } from 'mitt';
+import { BlockSettingsUpdateEvent } from './react';
 
 declare global {
     interface Window {
@@ -56,10 +57,7 @@ declare global {
             };
         };
         emitter: Emitter<{
-            'AppBridge:BlockSettingsUpdated': {
-                blockId: number;
-                blockSettings: unknown;
-            };
+            'AppBridge:BlockSettingsUpdated': BlockSettingsUpdateEvent;
             'AppBridge:BlockAssetsUpdated': {
                 blockId: number;
                 blockAssets: Record<string, Asset[]>;

@@ -4,6 +4,11 @@ import { useEffect, useState } from 'react';
 import { IAppBridgeNative } from '../types/IAppBridgeNative';
 import { compareObjects } from '../utilities/object';
 
+export type BlockSettingsUpdateEvent<T> = {
+    blockId: number;
+    blockSettings: T;
+};
+
 export const useBlockSettings = <T = Record<string, unknown>>(
     appBridge: IAppBridgeNative,
 ): [T, (newSettings: Partial<T>) => Promise<void>] => {
@@ -18,7 +23,7 @@ export const useBlockSettings = <T = Record<string, unknown>>(
     // Fetch the block settings on mount.
     // And add listener for block settings updates.
     useEffect(() => {
-        const updateBlockSettingsFromEvent = (event: { blockId: number; blockSettings: unknown }) => {
+        const updateBlockSettingsFromEvent = (event: BlockSettingsUpdateEvent<T>) => {
             if (event.blockId === blockId && !compareObjects(event.blockSettings, blockSettings)) {
                 setBlockSettings({ ...blockSettings, ...(event.blockSettings as Partial<T>) });
             }
