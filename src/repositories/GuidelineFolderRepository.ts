@@ -3,14 +3,9 @@
 import { GuidelineFolder, GuidelineFolderCreate, GuidelineFolderPatch } from '../types';
 import { HttpClient } from '../utilities/httpClient';
 
-export type GuidelineFolderApi = {
-    id: number;
-    guideline_navigation_id: number;
-    title: string;
-    dropdown: boolean;
-};
+export type GuidelineFolderApi = CamelKeysToSnakeCase<GuidelineFolder>;
 
-export const mapToGuidelineFolderType = (object: GuidelineFolderApi): GuidelineFolder => ({
+export const mapToGuidelineFolder = (object: GuidelineFolderApi): GuidelineFolder => ({
     id: object.id,
     guidelineNavigationId: object.guideline_navigation_id,
     title: object.title,
@@ -30,7 +25,7 @@ export const createNavigationFolder = async (folder: GuidelineFolderCreate): Pro
         mapToGuidelineFolderApi(folder),
     );
 
-    return mapToGuidelineFolderType(result.data);
+    return mapToGuidelineFolder(result.data);
 };
 
 export const updateNavigationFolder = async (itemId: number, item: GuidelineFolderPatch): Promise<GuidelineFolder> => {
@@ -39,5 +34,5 @@ export const updateNavigationFolder = async (itemId: number, item: GuidelineFold
         mapToGuidelineFolderApi(item),
     );
 
-    return mapToGuidelineFolderType(result.data);
+    return mapToGuidelineFolder(result.data);
 };

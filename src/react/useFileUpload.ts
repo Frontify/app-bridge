@@ -1,3 +1,5 @@
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
 import { Asset } from '../types';
 import { useEffect, useRef, useState } from 'react';
 import Worker from '../workers/upload.worker.js?worker&inline';

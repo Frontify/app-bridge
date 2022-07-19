@@ -1,3 +1,5 @@
+/* (c) Copyright Frontify Ltd., all rights reserved. */
+
 import { useState } from 'react';
 
 export type UseFileInputInterface = {

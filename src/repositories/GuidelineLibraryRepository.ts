@@ -3,13 +3,9 @@
 import { GuidelineLibrary, GuidelineLibraryCreate, GuidelineLibraryPatch } from '../types';
 import { HttpClient } from '../utilities/httpClient';
 
-export type GuidelineLibraryApi = {
-    id: number;
-    guideline_navigation_id: number;
-    title: string;
-};
+export type GuidelineLibraryApi = CamelKeysToSnakeCase<GuidelineLibrary>;
 
-export const mapToGuidelineLibraryType = (object: GuidelineLibraryApi): GuidelineLibrary => ({
+export const mapToGuidelineLibrary = (object: GuidelineLibraryApi): GuidelineLibrary => ({
     id: object.id,
     guidelineNavigationId: object.guideline_navigation_id,
     title: object.title,
@@ -27,7 +23,7 @@ export const createNavigationLibrary = async (library: GuidelineLibraryCreate): 
         mapToGuidelineLibraryApi(library),
     );
 
-    return mapToGuidelineLibraryType(result.data);
+    return mapToGuidelineLibrary(result.data);
 };
 
 export const updateNavigationLibrary = async (
@@ -39,5 +35,5 @@ export const updateNavigationLibrary = async (
         mapToGuidelineLibraryApi(item),
     );
 
-    return mapToGuidelineLibraryType(result.data);
+    return mapToGuidelineLibrary(result.data);
 };

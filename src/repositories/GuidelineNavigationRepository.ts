@@ -3,24 +3,14 @@
 import { HttpClient } from '../utilities/httpClient';
 import { GuidelineNavigation, GuidelineNavigationUsage } from '../types';
 
-type GuidelineNavigationApi = {
-    id: number;
-    creator: number;
-    created: string;
-    modifier: Nullable<number>;
-    modified: Nullable<string>;
-    valid_to: Nullable<string>;
-    project_id: number;
-    guideline_id: number;
-    usage: Uppercase<GuidelineNavigationUsage>;
-};
+type GuidelineNavigationApi = CamelKeysToSnakeCase<GuidelineNavigation>;
 
 export const getGuidelineNavigations = async (guidelineId: number): Promise<GuidelineNavigation[]> => {
     const { result } = await HttpClient.get<GuidelineNavigationApi[]>(`/api/guideline/${guidelineId}/navigation`);
-    return result.data.map(mapToGuidelineNavigationType);
+    return result.data.map(mapToGuidelineNavigation);
 };
 
-const mapToGuidelineNavigationType = (object: GuidelineNavigationApi): GuidelineNavigation => ({
+const mapToGuidelineNavigation = (object: GuidelineNavigationApi): GuidelineNavigation => ({
     id: object.id,
     creator: object.creator,
     created: object.created,

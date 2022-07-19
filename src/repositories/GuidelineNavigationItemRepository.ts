@@ -2,69 +2,61 @@
 
 import { HttpClient } from '../utilities/httpClient';
 import { GuidelineNavigationItem, GuidelineNavigationItemCreate, GuidelineNavigationItemPatch } from '../types';
-import { GuidelineLinkApi, mapToGuidelineLinkType } from './GuidelineLinkRepository';
-import { GuidelinePageApi, mapToGuidelinePageType } from './GuidelinePageRepository';
-import { GuidelineFolderApi, mapToGuidelineFolderType } from './GuidelineFolderRepository';
-import { GuidelineLibraryApi, mapToGuidelineLibraryType } from './GuidelineLibraryRepository';
+import { GuidelineLinkApi, mapToGuidelineLink } from './GuidelineLinkRepository';
+import { GuidelinePageApi, mapToGuidelinePage } from './GuidelinePageRepository';
+import { GuidelineFolderApi, mapToGuidelineFolder } from './GuidelineFolderRepository';
+import { GuidelineLibraryApi, mapToGuidelineLibrary } from './GuidelineLibraryRepository';
 
-export type GuidelineNavigationItemApi = {
-    id: number;
-    creator: number;
-    created: string;
-    modifier: Nullable<number>;
-    modified: Nullable<string>;
-    valid_to: Nullable<string>;
-    guideline_navigation_id: number;
-    parent_id: Nullable<number>;
-    sort: Nullable<number>;
-    published: boolean;
-    guideline_page_id: Nullable<number>;
-    guideline_folder_id: Nullable<number>;
-    guideline_link_id: Nullable<number>;
-    guideline_library_id: Nullable<number>;
-    guideline_page: null;
-    guideline_folder: null;
-    guideline_link: null;
-    guideline_library: null;
-};
-
-export type GuidelineNavigationItemApiEnriched = GuidelineNavigationItemApi & {
+export type GuidelineNavigationItemApi = CamelKeysToSnakeCase<GuidelineNavigationItem> & {
     guideline_page: Nullable<GuidelinePageApi>;
     guideline_folder: Nullable<GuidelineFolderApi>;
-    guideline_link: Nullable<GuidelineLinkApi>;
     guideline_library: Nullable<GuidelineLibraryApi>;
+    guideline_link: Nullable<GuidelineLinkApi>;
 };
 
 export const getGuidelineNavigationItems = async (
     navigationId: number,
     ancestorId?: number,
 ): Promise<GuidelineNavigationItem[]> => {
-    const queryParams = ancestorId ? `?ancestor_id=${ancestorId}` : '';
+    const searchParams = new URLSearchParams();
+    if (ancestorId !== undefined) {
+        searchParams.append('ancestor_id', ancestorId.toString());
+    }
+
     const { result } = await HttpClient.get<GuidelineNavigationItemApi[]>(
-        `/api/guideline-navigation/${navigationId}/item${queryParams}`,
+        `/api/guideline-navigation/${navigationId}/item${searchParams.toString()}`,
     );
-    return result.data.map(mapToGuidelineNavigationItemType);
+
+    return result.data.map(mapToGuidelineNavigationItem);
+};
+
+export const getGuidelineNavigationItemById = async (navigationItemId: number): Promise<GuidelineNavigationItem> => {
+    const { result } = await HttpClient.get<GuidelineNavigationItemApi>(
+        `/api/guideline-navigation-item/${navigationItemId}`,
+    );
+
+    return mapToGuidelineNavigationItem(result.data);
 };
 
 export const createNavigationItem = async (item: GuidelineNavigationItemCreate): Promise<GuidelineNavigationItem> => {
-    const { result } = await HttpClient.post<GuidelineNavigationItemApiEnriched>(
+    const { result } = await HttpClient.post<GuidelineNavigationItemApi>(
         '/api/guideline-navigation-item',
         mapToGuidelineNavigationItemApi(item),
     );
 
-    return mapToGuidelineNavigationItemType(result.data);
+    return mapToGuidelineNavigationItem(result.data);
 };
 
 export const updateNavigationItem = async (
     itemId: number,
     item: GuidelineNavigationItemPatch,
 ): Promise<GuidelineNavigationItem> => {
-    const { result } = await HttpClient.patch<GuidelineNavigationItemApiEnriched>(
+    const { result } = await HttpClient.patch<GuidelineNavigationItemApi>(
         `/api/guideline-navigation-item/${itemId}`,
         item,
     );
 
-    return mapToGuidelineNavigationItemType(result.data);
+    return mapToGuidelineNavigationItem(result.data);
 };
 
 export const deleteNavigationItem = async (itemId: number): Promise<boolean> => {
@@ -74,14 +66,14 @@ export const deleteNavigationItem = async (itemId: number): Promise<boolean> => 
 };
 
 export const duplicateNavigationItem = async (itemId: number): Promise<GuidelineNavigationItem> => {
-    const { result } = await HttpClient.post<GuidelineNavigationItemApiEnriched>(
+    const { result } = await HttpClient.post<GuidelineNavigationItemApi>(
         `/api/guideline-navigation-item/${itemId}/duplicate`,
         {
             suffix: '(Copy)',
         },
     );
 
-    return mapToGuidelineNavigationItemType(result.data);
+    return mapToGuidelineNavigationItem(result.data);
 };
 
 export const moveNavigationItem = async (
@@ -90,7 +82,7 @@ export const moveNavigationItem = async (
     destinationParentId: Nullable<number>,
     positionBeforeId: Nullable<number>,
 ): Promise<GuidelineNavigationItem> => {
-    const { result } = await HttpClient.post<GuidelineNavigationItemApiEnriched>(
+    const { result } = await HttpClient.post<GuidelineNavigationItemApi>(
         `/api/guideline-navigation-item/${itemId}/move`,
         {
             target_guideline_navigation_id: destinationNavigationId,
@@ -99,11 +91,11 @@ export const moveNavigationItem = async (
         },
     );
 
-    return mapToGuidelineNavigationItemType(result.data);
+    return mapToGuidelineNavigationItem(result.data);
 };
 
 export const moveNavigationItemToTrash = async (itemId: number): Promise<boolean> => {
-    const { result } = await HttpClient.post<GuidelineNavigationItemApiEnriched>(
+    const { result } = await HttpClient.post<GuidelineNavigationItemApi>(
         `/api/guideline-navigation-item/${itemId}/move-to-trash`,
     );
 
@@ -111,14 +103,14 @@ export const moveNavigationItemToTrash = async (itemId: number): Promise<boolean
 };
 
 export const restoreNavigationItemFromTrash = async (itemId: number): Promise<GuidelineNavigationItem> => {
-    const { result } = await HttpClient.post<GuidelineNavigationItemApiEnriched>(
+    const { result } = await HttpClient.post<GuidelineNavigationItemApi>(
         `/api/guideline-navigation-item/${itemId}/restore-from-trash`,
     );
 
-    return mapToGuidelineNavigationItemType(result.data);
+    return mapToGuidelineNavigationItem(result.data);
 };
 
-const mapToGuidelineNavigationItemType = (object: GuidelineNavigationItemApiEnriched): GuidelineNavigationItem => ({
+const mapToGuidelineNavigationItem = (object: GuidelineNavigationItemApi): GuidelineNavigationItem => ({
     id: object.id,
     creator: object.creator,
     created: object.created,
@@ -133,10 +125,10 @@ const mapToGuidelineNavigationItemType = (object: GuidelineNavigationItemApiEnri
     guidelineFolderId: object.guideline_folder_id,
     guidelineLinkId: object.guideline_link_id,
     guidelineLibraryId: object.guideline_library_id,
-    guidelinePage: object.guideline_page ? mapToGuidelinePageType(object.guideline_page) : null,
-    guidelineFolder: object.guideline_folder ? mapToGuidelineFolderType(object.guideline_folder) : null,
-    guidelineLink: object.guideline_link ? mapToGuidelineLinkType(object.guideline_link) : null,
-    guidelineLibrary: object.guideline_library ? mapToGuidelineLibraryType(object.guideline_library) : null,
+    guidelinePage: object.guideline_page ? mapToGuidelinePage(object.guideline_page) : null,
+    guidelineFolder: object.guideline_folder ? mapToGuidelineFolder(object.guideline_folder) : null,
+    guidelineLink: object.guideline_link ? mapToGuidelineLink(object.guideline_link) : null,
+    guidelineLibrary: object.guideline_library ? mapToGuidelineLibrary(object.guideline_library) : null,
 
     // Enriched
     dropdownItems: [],

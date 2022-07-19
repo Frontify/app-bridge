@@ -3,13 +3,7 @@
 import { GuidelineLink, GuidelineLinkCreate, GuidelineLinkPatch } from '../types';
 import { HttpClient } from '../utilities/httpClient';
 
-export type GuidelineLinkApi = {
-    id: number;
-    guideline_navigation_id: number;
-    title: string;
-    url: string;
-    open_in_new_tab: boolean;
-};
+export type GuidelineLinkApi = CamelKeysToSnakeCase<GuidelineLink>;
 
 export const mapToGuidelineLinkApi = (object: Partial<GuidelineLink>): Partial<GuidelineLinkApi> => ({
     id: object.id,
@@ -22,7 +16,7 @@ export const mapToGuidelineLinkApi = (object: Partial<GuidelineLink>): Partial<G
 export const createNavigationLink = async (item: GuidelineLinkCreate): Promise<GuidelineLink> => {
     const { result } = await HttpClient.post<GuidelineLinkApi>('/api/guideline-link', mapToGuidelineLinkApi(item));
 
-    return mapToGuidelineLinkType(result.data);
+    return mapToGuidelineLink(result.data);
 };
 
 export const updateNavigationLink = async (itemId: number, item: GuidelineLinkPatch): Promise<GuidelineLink> => {
@@ -31,10 +25,10 @@ export const updateNavigationLink = async (itemId: number, item: GuidelineLinkPa
         mapToGuidelineLinkApi(item),
     );
 
-    return mapToGuidelineLinkType(result.data);
+    return mapToGuidelineLink(result.data);
 };
 
-export const mapToGuidelineLinkType = (object: GuidelineLinkApi): GuidelineLink => ({
+export const mapToGuidelineLink = (object: GuidelineLinkApi): GuidelineLink => ({
     id: object.id,
     guidelineNavigationId: object.guideline_navigation_id,
     title: object.title,
