@@ -275,7 +275,9 @@ export class AppBridgeNative implements IAppBridgeNative {
     }
 
     public getEditorState(): boolean {
-        return !!document.querySelector('.js-co-powerbar__sg-edit.state-active');
+        return (
+            this.getBlockReferenceToken() === null && !!document.querySelector('.js-co-powerbar__sg-edit.state-active')
+        );
     }
 
     public getBlockReferenceToken(): string | null {
