@@ -31,18 +31,18 @@ export const useBlockSettings = <T = Record<string, unknown>>(
             };
             mountingFetch();
 
-            window.emitter.on('StyleguideBlockSettingsUpdated', updateBlockSettingsFromEvent);
+            window.emitter.on('AppBridge:BlockSettingsUpdated', updateBlockSettingsFromEvent);
         }
 
         return () => {
-            window.emitter.off('StyleguideBlockSettingsUpdated', updateBlockSettingsFromEvent);
+            window.emitter.off('AppBridge:BlockSettingsUpdated', updateBlockSettingsFromEvent);
         };
     }, [appBridge]);
 
     const updateBlockSettings = async (blockSettings: Partial<T>) => {
         try {
             await appBridge.updateBlockSettings(blockSettings);
-            window.emitter.emit('StyleguideBlockSettingsUpdated', {
+            window.emitter.emit('AppBridge:BlockSettingsUpdated', {
                 blockId,
                 blockSettings: await appBridge.getBlockSettings<T>(),
             });

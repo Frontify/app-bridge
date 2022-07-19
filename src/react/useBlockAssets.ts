@@ -30,11 +30,11 @@ export const useBlockAssets = (appBridge: IAppBridgeNative) => {
             };
             mountingFetch();
 
-            window.emitter.on('StyleguideBlockAssetsUpdated', updateBlockAssetsFromEvent);
+            window.emitter.on('AppBridge:BlockAssetsUpdated', updateBlockAssetsFromEvent);
         }
 
         return () => {
-            window.emitter.off('StyleguideBlockAssetsUpdated', updateBlockAssetsFromEvent);
+            window.emitter.off('AppBridge:BlockAssetsUpdated', updateBlockAssetsFromEvent);
         };
     }, [appBridge]);
 
@@ -53,7 +53,7 @@ export const useBlockAssets = (appBridge: IAppBridgeNative) => {
             await appBridge.addAssetIdsToBlockAssetKey(key, assetIdsToAdd);
         }
 
-        window.emitter.emit('StyleguideBlockAssetsUpdated', {
+        window.emitter.emit('AppBridge:BlockAssetsUpdated', {
             blockId,
             blockAssets: await appBridge.getBlockAssets(),
         });

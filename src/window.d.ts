@@ -56,11 +56,11 @@ declare global {
             };
         };
         emitter: Emitter<{
-            StyleguideBlockSettingsUpdated: {
+            'AppBridge:BlockSettingsUpdated': {
                 blockId: number;
                 blockSettings: unknown;
             };
-            StyleguideBlockAssetsUpdated: {
+            'AppBridge:BlockAssetsUpdated': {
                 blockId: number;
                 blockAssets: Record<string, Asset[]>;
             };
@@ -73,11 +73,11 @@ declare global {
 declare namespace Cypress {
     interface AUTWindow {
         emitter: Emitter<{
-            StyleguideBlockSettingsUpdated: {
+            'AppBridge:BlockSettingsUpdated': {
                 blockId: number;
                 blockSettings: unknown;
             };
-            StyleguideBlockAssetsUpdated: {
+            'AppBridge:BlockAssetsUpdated': {
                 blockId: number;
                 blockAssets: Record<string, Asset[]>;
             };
