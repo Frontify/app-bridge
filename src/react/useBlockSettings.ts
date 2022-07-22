@@ -14,10 +14,6 @@ export const useBlockSettings = <T = Record<string, unknown>>(
 ): [T, (newSettings: Partial<T>) => Promise<void>] => {
     const blockId = appBridge.getBlockId();
 
-    if (blockId === undefined) {
-        throw new Error('You need to instanciate the App Bridge with a block id.');
-    }
-
     const [blockSettings, setBlockSettings] = useState<T>({} as T);
 
     // Fetch the block settings on mount.
@@ -29,15 +25,13 @@ export const useBlockSettings = <T = Record<string, unknown>>(
             }
         };
 
-        if (blockId) {
-            const mountingFetch = async () => {
-                const allBlockSettings = await appBridge.getBlockSettings<T>();
-                setBlockSettings(allBlockSettings);
-            };
-            mountingFetch();
+        const mountingFetch = async () => {
+            const allBlockSettings = await appBridge.getBlockSettings<T>();
+            setBlockSettings(allBlockSettings);
+        };
+        mountingFetch();
 
-            window.emitter.on('AppBridge:BlockSettingsUpdated', updateBlockSettingsFromEvent);
-        }
+        window.emitter.on('AppBridge:BlockSettingsUpdated', updateBlockSettingsFromEvent);
 
         return () => {
             window.emitter.off('AppBridge:BlockSettingsUpdated', updateBlockSettingsFromEvent);

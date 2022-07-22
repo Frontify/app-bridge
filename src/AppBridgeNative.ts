@@ -17,11 +17,11 @@ import { getJqueryDataByElement, getJqueryDatasetByClassName } from './utilities
 import { HttpClient } from './utilities/httpClient';
 
 export class AppBridgeNative implements IAppBridgeNative {
-    constructor(public blockId?: number, public sectionId?: number) {
+    constructor(public blockId: number = 0, public sectionId?: number) {
         this.registerAppBridgeSubscriberInTerrificContext();
     }
 
-    public getBlockId(): number | undefined {
+    public getBlockId(): number {
         return this.blockId;
     }
 
