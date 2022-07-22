@@ -37,7 +37,6 @@ export default defineConfig({
                     format: 'es',
                     preserveModules: true,
                     preserveModulesRoot: 'src',
-                    sourcemap: false,
                     globals,
                 },
                 {
@@ -52,7 +51,7 @@ export default defineConfig({
         },
     },
     test: {
-        environment: 'jsdom',
+        environment: 'happy-dom',
         coverage: {
             all: true,
             reporter: ['text', 'lcov'],
