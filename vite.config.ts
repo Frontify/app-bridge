@@ -27,7 +27,7 @@ export default defineConfig({
     build: {
         lib: {
             entry: resolve(__dirname, 'src/index.ts'),
-            fileName: (format: string) => `index.${format}.js`,
+            fileName: (format: string) => `[name].${format}.js`,
             name: 'AppBridge',
         },
         sourcemap: true,
@@ -39,6 +39,7 @@ export default defineConfig({
                     format: 'es',
                     preserveModules: true,
                     preserveModulesRoot: 'src',
+                    sourcemap: false,
                     globals,
                 },
                 {
