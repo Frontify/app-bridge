@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { IAppBridgeNative } from '../types/IAppBridgeNative';
-import { compareObjects } from '../utilities/object';
+import { compareObjects, mergeDeep } from '../utilities/object';
 
 export type BlockSettingsUpdateEvent<T> = {
     blockId: number;
@@ -21,7 +21,7 @@ export const useBlockSettings = <T = Record<string, unknown>>(
     useEffect(() => {
         const updateBlockSettingsFromEvent = (event: BlockSettingsUpdateEvent<T>) => {
             if (event.blockId === blockId && !compareObjects(event.blockSettings, blockSettings)) {
-                setBlockSettings({ ...blockSettings, ...(event.blockSettings as Partial<T>) });
+                setBlockSettings(mergeDeep<T>(blockSettings, event.blockSettings));
             }
         };
 
