@@ -9,7 +9,7 @@ type UseTemplateChooserType = {
     closeTemplateChooser: () => void;
 };
 
-export const useTemplateChooser = (appBridge: IAppBridgeNative): UseTemplateChooserType => {
+export const useTemplateChooser = (appBridge?: IAppBridgeNative): UseTemplateChooserType => {
     const { openTemplateChooser, closeTemplateChooser } = appBridge ?? new AppBridgeNative(0, 0);
     return { openTemplateChooser, closeTemplateChooser };
 };
