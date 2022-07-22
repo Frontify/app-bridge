@@ -1,6 +1,5 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import dts from 'vite-plugin-dts';
 import copy from 'rollup-plugin-copy';
@@ -17,7 +16,6 @@ export const globals = {
 
 export default defineConfig({
     plugins: [
-        react(),
         dts({ insertTypesEntry: true }),
         copy({
             targets: [{ src: './src/workers/upload.worker.js', dest: './dist' }],
