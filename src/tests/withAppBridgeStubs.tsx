@@ -3,8 +3,9 @@
 import { AppBridgeNativeDummy } from './AppBridgeNativeDummy';
 import { Asset } from '../types/Asset';
 import { IAppBridgeNative } from '../types/IAppBridgeNative';
-import { ComponentType } from 'react';
+import React, { ComponentType } from 'react';
 import { stub } from 'sinon';
+import mitt from 'mitt';
 
 type GetStubbedAppBridgeProps = {
     blockSettings?: Record<string, unknown>;
@@ -14,19 +15,6 @@ type GetStubbedAppBridgeProps = {
     closeAssetChooser?: () => void;
 };
 
-const stubWindowObject = (windowObject: Window | Cypress.AUTWindow) => {
-    windowObject.emitter = {
-        emit: () => null,
-        off: () => null,
-        on: () => null,
-        // We don't mock the `all` for now
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any;
-    stub(windowObject.emitter, 'emit');
-    stub(windowObject.emitter, 'off');
-    stub(windowObject.emitter, 'on');
-};
-
 const getStubbedAppBridge = ({
     blockSettings = {},
     blockAssets = {},
@@ -34,13 +22,9 @@ const getStubbedAppBridge = ({
     openAssetChooser = () => null,
     closeAssetChooser = () => null,
 }: GetStubbedAppBridgeProps): IAppBridgeNative => {
-    const appBridge = new AppBridgeNativeDummy();
+    window.emitter = mitt();
 
-    if (cy) {
-        cy.window().then((window) => stubWindowObject(window));
-    } else {
-        stubWindowObject(window);
-    }
+    const appBridge = new AppBridgeNativeDummy();
 
     stub(appBridge, 'closeAssetChooser').callsFake(closeAssetChooser);
     stub(appBridge, 'getBlockAssets').callsFake(() => new Promise((resolve) => resolve(blockAssets)));
