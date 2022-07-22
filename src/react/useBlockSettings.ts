@@ -43,7 +43,7 @@ export const useBlockSettings = <T = Record<string, unknown>>(
             await appBridge.updateBlockSettings(blockSettings);
             window.emitter.emit('AppBridge:BlockSettingsUpdated', {
                 blockId,
-                blockSettings: await appBridge.getBlockSettings<T>(),
+                blockSettings,
             });
         } catch (error) {
             console.error(error);
